@@ -20,13 +20,11 @@ Projeto para Controle de finanças com recompensas
 
 ## Stack utilizada
 
-**Front-end:** Flutter  
-![My Skills](https://skillicons.dev/icons?i=flutter)
-**Back-end:** C# Minimal
-![My Skills](https://skillicons.dev/icons?i=cs)
+**Front-end:** Flutter    ![My Skills](https://skillicons.dev/icons?i=flutter)
 
-**Data-Base**: SqlServer (Microsoft Management Studio)
-![My Skills](https://skillicons.dev/icons?i=mysql)
+**Back-end:** C# Minimal  ![My Skills](https://skillicons.dev/icons?i=cs)
+
+**Data-Base**: SqlServer (Microsoft Management Studio)  ![My Skills](https://skillicons.dev/icons?i=mysql)
 
 
 ## Autores
