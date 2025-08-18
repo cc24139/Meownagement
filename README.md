@@ -1,7 +1,13 @@
 
 # Meownagement
 
-Projeto para Controle de finanças com recompensas 
+Projeto para controle de finanças, anote seus gastos e rendas recorrentes, defina metas e economias para organizar sua vida financeira!
+
+Use o fórum para compartilhar conselhos ou pedir ajuda para outros usuários,
+faça amizades e curta post que você achou interessantes.
+
+Quanto mais utiliza do aplicativo ganhe moedas para gastar na loja e desbloqueie vários gatos personalizados, cada gato possui
+uma raridade!
 
 
 ## Funcionalidades
