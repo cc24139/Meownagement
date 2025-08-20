@@ -4,7 +4,7 @@ public class Usuario
 {
     /*
      senha VARCHAR(n),  
-     nome INT,  
+     nome Varchar(n),  
     email VARCHAR(n),  
     saldo FLOAT,  
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,  
@@ -14,6 +14,6 @@ public class Usuario
     public string Nome { get; set; }
     public string Email { get; set; }
     public string Senha { get; set; }
-    public float Saldo { get; set; }
+    public decimal Saldo { get; set; }
     public int Pontos { get; set; }
 }

@@ -6,22 +6,15 @@ public class DBMeownagement : DbContext
     {
     }
     
-    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Usuario> Usuario { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configura o schema para a tabela Usuario
-        modelBuilder.Entity<Usuario>().ToTable("Usuario", "Meownagement");
-        
-        // Configura a chave primária
-        modelBuilder.Entity<Usuario>()
-            .HasKey(u => u.IdUsuario);
-            
-        // Configura o IdUsuario como auto-increment
-        modelBuilder.Entity<Usuario>()
-            .Property(u => u.IdUsuario)
-            .ValueGeneratedOnAdd();
-            
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("Meownagement");
+        /*
+        Precisa referenciar a chave primária da tabela
+        Os outros campos não precisam ser referenciados aqui, apenas nas classes Models
+        */
+         modelBuilder.Entity<Usuario>().HasKey(u => u.IdUsuario);
     }
 }

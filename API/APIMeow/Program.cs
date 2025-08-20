@@ -25,16 +25,16 @@ app.UseHttpsRedirection();
 
 // GET: /Usuarios (Listar todos os Usuarios)
 app.MapGet("/Usuarios", async (DBMeownagement db) =>
-    await db.Usuarios.ToListAsync());
+    await db.Usuario.ToListAsync());
 
 // GET: /Usuarios/{id} (Buscar um Usuario por ID)
 app.MapGet("/Usuarios/{id}", async (int id, DBMeownagement db) =>
-    await db.Usuarios.FindAsync(id) is Usuario Usuario ? Results.Ok(Usuario) : Results.NotFound());
+    await db.Usuario.FindAsync(id) is Usuario Usuario ? Results.Ok(Usuario) : Results.NotFound());
 
 // POST: /Usuarios (Criar um novo Usuario)
 app.MapPost("/Usuarios", async (Usuario Usuario, DBMeownagement db) =>
 {
-    db.Usuarios.Add(Usuario);
+    db.Usuario.Add(Usuario);
     await db.SaveChangesAsync();
     return Results.Created($"/Usuarios/{Usuario.IdUsuario}", Usuario);
 });
@@ -42,7 +42,7 @@ app.MapPost("/Usuarios", async (Usuario Usuario, DBMeownagement db) =>
 // PUT: /Usuarios/{id} (Atualizar um Usuario existente)
 app.MapPut("/Usuarios/{id}", async (int id, Usuario UsuarioAtualizado, DBMeownagement db) =>
 {
-    var Usuario = await db.Usuarios.FindAsync(id);
+    var Usuario = await db.Usuario.FindAsync(id);
     if (Usuario is null) return Results.NotFound();
     Usuario.Nome = UsuarioAtualizado.Nome;
     await db.SaveChangesAsync();
@@ -52,9 +52,9 @@ app.MapPut("/Usuarios/{id}", async (int id, Usuario UsuarioAtualizado, DBMeownag
 // DELETE: /Usuarios/{id} (Excluir um Usuario)
 app.MapDelete("/Usuarios/{id}", async (int id, DBMeownagement db) =>
 {
-    var Usuario = await db.Usuarios.FindAsync(id);
+    var Usuario = await db.Usuario.FindAsync(id);
     if (Usuario is null) return Results.NotFound();
-    db.Usuarios.Remove(Usuario);
+    db.Usuario.Remove(Usuario);
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
