@@ -1,7 +1,8 @@
+using APIMeow.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddTransient<TokenServices>(); //Injeção de Depedência
 // Adiciona o contexto do banco de dados
 builder.Services.AddDbContext<DBMeownagement>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
