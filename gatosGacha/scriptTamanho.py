@@ -13,9 +13,6 @@ widthPequena = heightPequena = 150
 path = "./gatosGacha/imagens"
 out  = "./gatosGacha/imagensTamanhos"
 
-def imgResize(img : Image.ImageFile, width, height):
-    return img.resize((width, height), resample=Image.LANCZOS)
-
 def criaPasta(caminho):
     Path(caminho).mkdir(parents=True, exist_ok=True)
 
@@ -43,10 +40,10 @@ def mudaTipo(caminho, nomeImagem):
         print("File is not a .png")
 
 def processarImagens():
-    for caminhoImagem in os.listdir(path):
-        nome = nomeImagem(caminhoImagem)
+    # for caminhoImagem in os.listdir(path):
+    #     nome = nomeImagem(caminhoImagem)
 
-        mudaTipo(path + "/" + caminhoImagem, nome)
+    #     mudaTipo(path + "/" + caminhoImagem, nome)
 
     for caminhoImagem in os.listdir(path):
         # abre a imagem
@@ -54,13 +51,15 @@ def processarImagens():
 
         img = Image.open(path + "/" + caminhoImagem)
 
-        pequena = imgResize(img, widthPequena, heightPequena)
-        media   = imgResize(img, widthMedia  , heightMedia  )
-        grande  = imgResize(img, widthGrande , heightGrande )
+        pequena = img.resize((widthPequena, heightPequena), resample=Image.LANCZOS)
+        media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
+        grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
 
         criaPasta(out + "/" + nome)
 
-        pequena.save(out + "/" + nome + "/" + nome + ".jpg")
+        pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
+        media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
+        grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
 
 
 if __name__ == "__main__":
