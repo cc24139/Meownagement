@@ -329,3 +329,4 @@ C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\obj\Debug\net
 C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\APIMeow.pdb
 C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\APIMeow.genruntimeconfig.cache
 C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\ref\APIMeow.dll
+C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
