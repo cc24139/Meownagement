@@ -19,7 +19,7 @@ def criaPasta(caminho):
 def nomeImagem(nomeImg):
     nome = ""
     for letra in nomeImg:
-        if letra != 'Q':
+        if letra != 'Q' and letra != ".":
             nome += letra
         else:
             break;
