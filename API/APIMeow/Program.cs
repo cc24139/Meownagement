@@ -13,8 +13,8 @@ builder.Services.AddTransient<TokenJWTUsuario>(); //Injeção de Depedência
 builder.Services.AddDbContext<DBMeownagement>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//Ligando a autorização do token  com base na key
 var keys = Encoding.ASCII.GetBytes(Configuration.PrivateKey);
-builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -32,12 +32,14 @@ builder.Services.AddAuthentication(x =>
     };
 }
 );
+builder.Services.AddAuthorization();
 
 // Adiciona o suporte para endpoints da API e Swagger. Opcional.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddControllers();
 var app = builder.Build();
+app.MapControllers();
 
 // Configure the HTTP request pipeline. Opcional.
 if (app.Environment.IsDevelopment())
@@ -49,42 +51,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-// Mapeamento dos endpoints da API
 
-// GET: /Usuarios (Listar todos os Usuarios)
-app.MapGet("/Usuarios", async (DBMeownagement db) =>
-    await db.Usuario.ToListAsync());
 
-// GET: /Usuarios/{id} (Buscar um Usuario por ID)
-app.MapGet("/Usuarios/{id}", async (int id, DBMeownagement db) =>
-    await db.Usuario.FindAsync(id) is Usuario Usuario ? Results.Ok(Usuario) : Results.NotFound());
-
-// POST: /Usuarios (Criar um novo Usuario)
-app.MapPost("/Usuarios", async (Usuario Usuario, DBMeownagement db) =>
-{
-    db.Usuario.Add(Usuario);
-    await db.SaveChangesAsync();
-    return Results.Created($"/Usuarios/{Usuario.IdUsuario}", Usuario);
-});
-
-// PUT: /Usuarios/{id} (Atualizar um Usuario existente)
-app.MapPut("/Usuarios/{id}", async (int id, Usuario UsuarioAtualizado, DBMeownagement db) =>
-{
-    var Usuario = await db.Usuario.FindAsync(id);
-    if (Usuario is null) return Results.NotFound();
-    Usuario.Nome = UsuarioAtualizado.Nome;
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-
-// DELETE: /Usuarios/{id} (Excluir um Usuario)
-app.MapDelete("/Usuarios/{id}", async (int id, DBMeownagement db) =>
-{
-    var Usuario = await db.Usuario.FindAsync(id);
-    if (Usuario is null) return Results.NotFound();
-    db.Usuario.Remove(Usuario);
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
 
 app.Run();

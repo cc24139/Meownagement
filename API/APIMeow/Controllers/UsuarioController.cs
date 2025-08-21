@@ -1,21 +1,23 @@
 using APIMeow.Controllers;
+using APIMeow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
-[Route("v1/usuarios")]
+[Route("v1")]
 public class UsuarioController : ControllerBase
 {
     [HttpPost]
-    [Route("login")]
-    public async Task<IActionResult> Login([FromBody] string Login,string Senha, DBMeownagement db)
+    [Route("usuarios/login")]
+    public async Task<IActionResult> Login([FromBody] LoginViewModel Login, DBMeownagement db)
     {
-        if (string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(Senha))
+        if (string.IsNullOrEmpty(Login.Login) || string.IsNullOrEmpty(Login.Senha))
         {
             return BadRequest("Usuário ou senha inválidos.");
         }
-        var achou = db.Usuario
-            .FirstOrDefault(u => u.Email == Login && u.Senha == Senha);
+        var achou = await db.Usuario
+            .FirstOrDefaultAsync(u => u.Email == Login.Login && u.Senha == Login.Senha);
 
         if (achou == null)
         {
@@ -27,10 +29,14 @@ public class UsuarioController : ControllerBase
 
     [Authorize]
     [HttpGet]
-    [Route("listar")]
-    public IActionResult ListarUsuarios(DBMeownagement db)
+    [Route("usuarios/listar")]
+    public async Task<IActionResult> ListarUsuarios(DBMeownagement db)
     {
-        var usuarios = db.Usuario.ToList();
+        var usuarios = await db.Usuario.AsNoTracking().ToListAsync();
+        if (usuarios == null || !usuarios.Any())
+        {
+            return NotFound("Nenhum usuário encontrado.");
+        }
         return Ok(usuarios);
     }
 }

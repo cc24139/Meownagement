@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 
 public class Usuario
@@ -10,6 +11,7 @@ public class Usuario
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,  
     pontos INT,  
  */
+    [Key]
     public int IdUsuario { get; set; }
     public string Nome { get; set; }
     public string Email { get; set; }
