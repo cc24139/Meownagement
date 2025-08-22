@@ -6,6 +6,7 @@ from PIL import Image
 import os
 from pathlib import Path
 
+# tamanhos
 widthGrande  = heightGrande  = 400
 widthMedia   = heightMedia   = 300
 widthPequena = heightPequena = 150
