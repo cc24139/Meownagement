@@ -39,4 +39,45 @@ public class UsuarioController : ControllerBase
         }
         return Ok(usuarios);
     }
+
+    //TODO: DANIEL FAZER SENHA HASH!!!!
+
+    [Authorize]
+    [HttpPost]
+    [Route("usuarios/cadastrar")]
+    public async Task<IActionResult> CadastrarUsuario([FromBody] Usuario usuario, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(usuario.Nome) || string.IsNullOrEmpty(usuario.Email) || string.IsNullOrEmpty(usuario.Senha))
+        {
+            return BadRequest("Nome, email ou senha inválidos.");
+        }
+        var emailExistente = await db.Usuario.AnyAsync(u => u.Email == usuario.Email);
+        if (emailExistente)
+        {
+            return Conflict("Email já está em uso.");
+        }
+        db.Usuario.Add(usuario);
+        await db.SaveChangesAsync();
+        return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.IdUsuario }, usuario);
+    }
+
+    [Authorize]
+    [HttpPatch]
+    [Route("usuarios/editar")]
+    public async Task<IActionResult> EditarUsuario([FromBody] Usuario usuario, DBMeownagement db)
+    {
+        if (usuario.IdUsuario <= 0 || string.IsNullOrEmpty(usuario.Nome) || string.IsNullOrEmpty(usuario.Email))
+        {
+            return BadRequest("ID, nome ou email inválidos.");
+        }
+        var usuarioExistente = await db.Usuario.FindAsync(usuario.IdUsuario);
+        if (usuarioExistente == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        usuarioExistente.Nome = usuario.Nome;
+        usuarioExistente.Email = usuario.Email;
+        await db.SaveChangesAsync();
+        return Ok(usuarioExistente);
+    }
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
+using System.Diagnostics.CodeAnalysis;
 
 public class Usuario
 {
@@ -13,8 +14,11 @@ public class Usuario
  */
     [Key]
     public int IdUsuario { get; set; }
+    [MaxLength(100)]
     public string Nome { get; set; }
+    [MaxLength(100)]
     public string Email { get; set; }
+    [Required]
     public string Senha { get; set; }
     public decimal Saldo { get; set; }
     public int Pontos { get; set; }

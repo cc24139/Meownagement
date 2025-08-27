@@ -33,7 +33,7 @@ namespace APIMeow.Controllers
         {
             var ci = new ClaimsIdentity();
             ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-            ci.AddClaim(new Claim("Senha", user.Senha));
+            ci.AddClaim(new Claim("ID", user.IdUsuario.ToString()));
             return ci;
         }
 
