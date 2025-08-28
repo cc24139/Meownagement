@@ -106,12 +106,12 @@ public class TransacaoController : ControllerBase
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var usuarioAtual = await db.Usuario.FindAsync(int.Parse(usuarioId));
         var transacoesPendentes = await db.Transacao
-            .Where(t => t.IdUsuario.ToString() == usuarioId && !t.Feita && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao)
+            .Where(t => t.IdUsuario.ToString() == usuarioId && t.Feita=='N' && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao)
             .ToListAsync();
 
         foreach (var transacao in transacoesPendentes)
         {
-            transacao.Feita = true;
+            transacao.Feita = 'S';
             transacao.SaldoAtual = transacao.QuantiaDinheiro + usuarioAtual.Saldo;
             usuarioAtual.Saldo += transacao.QuantiaDinheiro;
             if (await GerarNovaTransacao(transacao, db))
@@ -136,7 +136,7 @@ public class TransacaoController : ControllerBase
                 Nome = transacaoAntiga.Nome,
                 QuantiaDinheiro = transacaoAntiga.QuantiaDinheiro,
                 DataCriacao = transacaoAntiga.DataFinalizacao,
-                Feita = false,
+                Feita = 'N',
                 SaldoAtual = transacaoAntiga.SaldoAtual,
                 DataFinalizacao = novaDataFinalizacao,
                 IdUsuario = transacaoAntiga.IdUsuario,
@@ -152,14 +152,14 @@ public class TransacaoController : ControllerBase
         }
     }
         [Authorize]
-        [HttpPost("transacao/saldo")]
+        [HttpPatch("transacao/saldo")]
         public async Task<IActionResult> AtualizarSaldo(Transacao transacao, DBMeownagement db)
         {
-            if (transacao.DataFinalizacao == DateTime.Now && !transacao.Feita)
+            if (transacao.DataFinalizacao == DateTime.Now && transacao.Feita == 'N')
         {
             var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
             usuario.Saldo += transacao.QuantiaDinheiro;
-            transacao.Feita = true;
+            transacao.Feita = 'S';
             transacao.SaldoAtual = usuario.Saldo;
             await db.SaveChangesAsync();
             return Ok("Saldo Atualizado");

@@ -9,7 +9,7 @@ public class Transacao
     public string Nome { get; set; }
     public decimal QuantiaDinheiro { get; set; }
     public DateTime DataCriacao { get; set; }
-    public bool Feita { get; set; }
+    public char Feita { get; set; }
     public DateTime DataFinalizacao { get; set; }
     public decimal SaldoAtual{ get; set; }
 
