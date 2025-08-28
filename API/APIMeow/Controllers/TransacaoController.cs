@@ -18,12 +18,31 @@ public class TransacaoController : ControllerBase
         var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id).ToListAsync();
         return Ok(listTransacoes);
     }
+        //200
+    [Authorize]
+    [HttpGet("transacoes/listarPositivo")]
+    public async Task<IActionResult> GetTransacoesPositivas(DBMeownagement db)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro > 0).ToListAsync();
+        return Ok(listTransacoes);
+    }
+
+    //200
+    [Authorize]
+    [HttpGet("transacoes/listarNegativo")]
+    public async Task<IActionResult> GetTransacoesNegativas(DBMeownagement db)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro < 0).ToListAsync();
+        return Ok(listTransacoes);
+    }
+
     //204
     [Authorize]
     [HttpPatch("transacoes/editar")]
     public async Task<IActionResult> EditarTransacao(Transacao transacao, DBMeownagement db)
     {
-
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (usuarioId != transacao.IdUsuario.ToString())
         {
@@ -69,6 +88,7 @@ public class TransacaoController : ControllerBase
             QuantiaDinheiro = model.QuantiaDinheiro,
             DataCriacao = model.DataCriacao,
             Feita = model.Feita,
+            SaldoAtual = model.SaldoAtual,
             DataFinalizacao = model.DataFinalizacao,
             IdUsuario = int.Parse(usuarioId),
             IdClassificacao = model.IdClassificacao,
@@ -92,6 +112,7 @@ public class TransacaoController : ControllerBase
         foreach (var transacao in transacoesPendentes)
         {
             transacao.Feita = true;
+            transacao.SaldoAtual = transacao.QuantiaDinheiro + usuarioAtual.Saldo;
             usuarioAtual.Saldo += transacao.QuantiaDinheiro;
             if (await GerarNovaTransacao(transacao, db))
                 qtsAtualizadas++;
@@ -116,6 +137,7 @@ public class TransacaoController : ControllerBase
                 QuantiaDinheiro = transacaoAntiga.QuantiaDinheiro,
                 DataCriacao = transacaoAntiga.DataFinalizacao,
                 Feita = false,
+                SaldoAtual = transacaoAntiga.SaldoAtual,
                 DataFinalizacao = novaDataFinalizacao,
                 IdUsuario = transacaoAntiga.IdUsuario,
                 IdClassificacao = transacaoAntiga.IdClassificacao,
@@ -134,13 +156,14 @@ public class TransacaoController : ControllerBase
         public async Task<IActionResult> AtualizarSaldo(Transacao transacao, DBMeownagement db)
         {
             if (transacao.DataFinalizacao == DateTime.Now && !transacao.Feita)
-            {
-                var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
-                usuario.Saldo += transacao.QuantiaDinheiro;
-                transacao.Feita = true;
-                await db.SaveChangesAsync();
-                return Ok("Saldo Atualizado");
-            }
+        {
+            var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
+            usuario.Saldo += transacao.QuantiaDinheiro;
+            transacao.Feita = true;
+            transacao.SaldoAtual = usuario.Saldo;
+            await db.SaveChangesAsync();
+            return Ok("Saldo Atualizado");
+        }
             return BadRequest("Transação não pode ser atualizada");
         }
     }

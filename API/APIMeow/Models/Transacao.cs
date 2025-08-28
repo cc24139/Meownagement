@@ -11,6 +11,7 @@ public class Transacao
     public DateTime DataCriacao { get; set; }
     public bool Feita { get; set; }
     public DateTime DataFinalizacao { get; set; }
+    public decimal SaldoAtual{ get; set; }
 
     [ForeignKey("Usuario")]
     public int IdUsuario { get; set; }
