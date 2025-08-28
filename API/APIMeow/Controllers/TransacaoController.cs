@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using APIMeow.Models;
 using APIMeow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -77,25 +78,38 @@ public class TransacaoController : ControllerBase
     [HttpPost("transacoes/inserir")]
     public async Task<IActionResult> InserirTransacao(TransacaoViewModel model, DBMeownagement db)
     {
-        var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (db.Usuario.Find(int.Parse(usuarioId)) == null)
+        try
         {
-            return BadRequest("Usuário não encontrado.");
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (db.Usuario.Find(int.Parse(usuarioId)) == null)
+            {
+                return BadRequest("Usuário não encontrado.");
+            }
+            db.Transacao.Add(new Transacao
+            {
+                Nome = model.Nome,
+                QuantiaDinheiro = model.QuantiaDinheiro,
+                DataCriacao = model.DataCriacao,
+                Feita = model.Feita,
+                SaldoAtual = model.SaldoAtual,
+                DataFinalizacao = model.DataFinalizacao,
+                IdUsuario = int.Parse(usuarioId),
+                IdClassificacao = model.IdClassificacao,
+                IdRecorrencia = model.IdRecorrencia,
+            });
+            db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+            {
+                IdMeta = model.IdMeta,
+                IdCofrinho = model.IdCofrinho,
+                IdTransacao = db.Transacao.Last().IdTransacao
+            });
+            await db.SaveChangesAsync();
+            return Ok("Transação criada com sucesso");
         }
-        db.Transacao.Add(new Transacao
+        catch (Exception ex)
         {
-            Nome = model.Nome,
-            QuantiaDinheiro = model.QuantiaDinheiro,
-            DataCriacao = model.DataCriacao,
-            Feita = model.Feita,
-            SaldoAtual = model.SaldoAtual,
-            DataFinalizacao = model.DataFinalizacao,
-            IdUsuario = int.Parse(usuarioId),
-            IdClassificacao = model.IdClassificacao,
-            IdRecorrencia = model.IdRecorrencia
-        });
-        await db.SaveChangesAsync();
-        return Ok("Transação criada com sucesso");
+            return BadRequest($"Erro ao criar transação: {ex.Message}");
+        }
     }
 
     [Authorize]
@@ -108,13 +122,13 @@ public class TransacaoController : ControllerBase
         var transacoesPendentes = await db.Transacao
             .Where(t => t.IdUsuario.ToString() == usuarioId && t.Feita=='N' && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao)
             .ToListAsync();
-
         foreach (var transacao in transacoesPendentes)
         {
+            var metaCofrinhoTransacaoLigados = await db.MetaCofrinhoTransacao.Where(x=>x.IdTransacao == transacao.IdTransacao).ToListAsync();
             transacao.Feita = 'S';
             transacao.SaldoAtual = transacao.QuantiaDinheiro + usuarioAtual.Saldo;
             usuarioAtual.Saldo += transacao.QuantiaDinheiro;
-            if (await GerarNovaTransacao(transacao, db))
+            if (await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados))
                 qtsAtualizadas++;
         }
 
@@ -122,7 +136,7 @@ public class TransacaoController : ControllerBase
         return Ok($"{qtsAtualizadas} transações atualizadas e saldo do usuário ajustado.");
     }
 
-    private async Task<bool> GerarNovaTransacao(Transacao transacaoAntiga, DBMeownagement db)
+    private async Task<bool> GerarNovaTransacao(Transacao transacaoAntiga, DBMeownagement db, List<MetaCofrinhoTransacao> metaCofrinhoTransacaoLigados)
     {
         try
         {
@@ -141,8 +155,17 @@ public class TransacaoController : ControllerBase
                 DataFinalizacao = novaDataFinalizacao,
                 IdUsuario = transacaoAntiga.IdUsuario,
                 IdClassificacao = transacaoAntiga.IdClassificacao,
-                IdRecorrencia = transacaoAntiga.IdRecorrencia
+                IdRecorrencia = transacaoAntiga.IdRecorrencia,
             });
+            foreach (var x in metaCofrinhoTransacaoLigados)
+            { 
+                db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+                {
+                    IdMeta = x.IdMeta,
+                    IdCofrinho = x.IdCofrinho,
+                    IdTransacao = db.Transacao.Last().IdTransacao
+                });
+            }
             await db.SaveChangesAsync();
             return true;
         }

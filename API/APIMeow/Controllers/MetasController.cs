@@ -121,6 +121,8 @@ namespace APIMeow.Controllers
                     var listTransacaoGastos = await db.Transacao
                     .Where(t => t.IdUsuario.ToString() == usuarioId && t.IdClassificacao == meta.IdClassificacao
                     && t.DataCriacao <= meta.DataCriacao && t.DataFinalizacao >= meta.DataTermino && t.QuantiaDinheiro < 0
+                    //Busca todas as transacoes relacionadas a meta
+                    && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == t.IdTransacao && mct.IdMeta == meta.IdMeta) 
                     )
                     .ToListAsync();
                     decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro);

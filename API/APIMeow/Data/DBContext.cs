@@ -1,3 +1,4 @@
+using APIMeow.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class DBMeownagement : DbContext
@@ -16,6 +17,7 @@ public class DBMeownagement : DbContext
     public DbSet<Post> Post { get; set; }
     public DbSet<Recorrencia> Recorrencia { get; set; }
     public DbSet<UsuarioGato> UsuarioGato { get; set; }
+    public DbSet<MetaCofrinhoTransacao> MetaCofrinhoTransacao { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,6 +36,6 @@ public class DBMeownagement : DbContext
         modelBuilder.Entity<Post>().HasKey(p => p.IdPost);
         modelBuilder.Entity<Recorrencia>().HasKey(r => r.IdRecorrencia);
         modelBuilder.Entity<UsuarioGato>().HasKey(ug => new { ug.IdUsuario, ug.IdGato });
-        
+
     }
 }

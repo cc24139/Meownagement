@@ -15,5 +15,7 @@ namespace APIMeow.ViewModels
         public DateTime DataFinalizacao { get; set; }
         public int IdClassificacao { get; set; }
         public int IdRecorrencia { get; set; }
+        public int? IdMeta { get; set; }
+        public int? IdCofrinho { get; set; }
     }
 }

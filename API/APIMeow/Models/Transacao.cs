@@ -1,6 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using APIMeow.Models;
 
 public class Transacao
 {
@@ -11,7 +12,7 @@ public class Transacao
     public DateTime DataCriacao { get; set; }
     public char Feita { get; set; }
     public DateTime DataFinalizacao { get; set; }
-    public decimal SaldoAtual{ get; set; }
+    public decimal SaldoAtual { get; set; }
 
     [ForeignKey("Usuario")]
     public int IdUsuario { get; set; }
