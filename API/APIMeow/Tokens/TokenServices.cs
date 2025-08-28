@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using APIMeow.Tokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APIMeow.Controllers
+namespace APIMeow.Tokens
 {
     public class TokenJWTUsuario : ITokenGenerate<Usuario>
     {
@@ -16,7 +16,7 @@ namespace APIMeow.Controllers
         public string Generate(Usuario user)
         {
             //Instancia o pacote JWT
-            var _handler = new JwtSecurityTokenHandler();
+             _handler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Configuration.PrivateKey);
             var credencial = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -33,7 +33,7 @@ namespace APIMeow.Controllers
         {
             var ci = new ClaimsIdentity();
             ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-            ci.AddClaim(new Claim("ID", user.IdUsuario.ToString()));
+            ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()));
             return ci;
         }
 

@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+using System.ComponentModel.DataAnnotations;
 
-    public class Recorrencia
-    {
-       [key]
-       public int IdRecorrencia{get;set;}
-       [null]
-       public int QtsDias{get;set;}
-       [null]
-       public int QtsMeses{get;set;}
-       [null]
-       public int QtsAnos{get;set;}
-    }
+public class Recorrencia
+{
+   [Key]
+   public int IdRecorrencia { get; set; }
+   public int QtsDias { get; set; }
+   public int QtsMeses { get; set; }
+   public int QtsAnos { get; set; }
+}
