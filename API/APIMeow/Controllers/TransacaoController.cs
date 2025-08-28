@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using APIMeow.Controllers;
 using APIMeow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -87,7 +86,7 @@ public class TransacaoController : ControllerBase
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var usuarioAtual = await db.Usuario.FindAsync(int.Parse(usuarioId));
         var transacoesPendentes = await db.Transacao
-            .Where(t => t.IdUsuario.ToString() == usuarioId && !t.Feita && t.DataFinalizacao <= DateTime.Now)
+            .Where(t => t.IdUsuario.ToString() == usuarioId && !t.Feita && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao)
             .ToListAsync();
 
         foreach (var transacao in transacoesPendentes)
