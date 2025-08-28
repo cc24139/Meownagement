@@ -109,7 +109,7 @@ public class TransacaoController : ControllerBase
             novaDataFinalizacao.AddDays(transacaoAntiga.Recorrencia.QtsDias);
             novaDataFinalizacao.AddMonths(transacaoAntiga.Recorrencia.QtsMeses);
             novaDataFinalizacao.AddYears(transacaoAntiga.Recorrencia.QtsAnos);
-          
+
             db.Transacao.Add(new Transacao
             {
                 Nome = transacaoAntiga.Nome,
@@ -129,4 +129,18 @@ public class TransacaoController : ControllerBase
             return false;
         }
     }
-}
+        [Authorize]
+        [HttpPost("transacao/saldo")]
+        public async Task<IActionResult> AtualizarSaldo(Transacao transacao, DBMeownagement db)
+        {
+            if (transacao.DataFinalizacao == DateTime.Now && !transacao.Feita)
+            {
+                var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
+                usuario.Saldo += transacao.QuantiaDinheiro;
+                transacao.Feita = true;
+                await db.SaveChangesAsync();
+                return Ok("Saldo Atualizado");
+            }
+            return BadRequest("Transação não pode ser atualizada");
+        }
+    }
