@@ -18,6 +18,7 @@ public class Cofrinho
     public decimal DinheiroEconomizado { get; set; }
     public DateTime DataCriacao { get; set; }
     public DateTime DataTermino { get; set; }
+    public char Feita { get; set; }
     public string Nome { get; set; }
 
     [ForeignKey("Usuario")]
