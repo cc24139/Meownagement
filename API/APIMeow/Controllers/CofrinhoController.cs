@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using APIMeow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,8 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var user = await db.Usuario.FindAsync(User.Identity.Name);
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
                     return NotFound();
@@ -43,7 +46,8 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var user = await db.Usuario.FindAsync(User.Identity.Name);
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
                     return NotFound();
@@ -66,8 +70,10 @@ namespace APIMeow.Controllers
         [HttpGet("cofrinho/listarNaoConcluidos")]
         public async Task<IActionResult> ListarCofrinhosNaoConcluidos(DBMeownagement db)
         {
-            try {
-                var user = await db.Usuario.FindAsync(User.Identity.Name);
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
                     return NotFound();
@@ -89,13 +95,14 @@ namespace APIMeow.Controllers
         [HttpPut("cofrinho/criar")]
         public async Task<IActionResult> CriarCofrinho([FromBody] CreateCofrinhoViewModel model, DBMeownagement db)
         {
-            try {
+            try
+            {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
-
-                var user = await db.Usuario.FindAsync(User.Identity.Name);
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
                     return NotFound();
@@ -122,6 +129,75 @@ namespace APIMeow.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [Authorize]
+        [HttpDelete("cofrinho/deletar/{id}")]
+        public async Task<IActionResult> DeletarCofrinho(int id, DBMeownagement db)
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var cofre = await db.Cofrinho.FindAsync(id);
+                if (cofre == null || cofre.IdUsuario != user.IdUsuario)
+                {
+                    return NotFound();
+                }
+
+                db.Cofrinho.Remove(cofre);
+                await db.SaveChangesAsync();
+
+                return Ok("Cofrinho deletado com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao deletar cofre: {ex.Message}");
+            }
+        }
+        [Authorize]
+        [HttpPatch("cofrinho/concluir/{id}")]
+        public async Task<IActionResult> ConcluirCofrinho(int id, DBMeownagement db)
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await db.Usuario.FindAsync(idUser);
+                var cofre = await db.Cofrinho.FindAsync(id);
+                if (user == null || cofre == null || cofre.IdUsuario != user.IdUsuario)
+                {
+                    return NotFound();
+                }
+                var transacoes = db.Transacao.Where(x => x.IdUsuario == user.IdUsuario && x.IdClassificacao == cofre.IdClassificacao
+                && x.Feita == 'S' && x.DataCriacao >= cofre.DataCriacao && x.DataFinalizacao <= cofre.DataTermino && x.QuantiaDinheiro > 0
+                && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == x.IdTransacao && mct.IdCofrinho == cofre.IdCofrinho)
+                ).ToList();
+                var economias = transacoes.Sum(x => x.QuantiaDinheiro);
+                if (economias >= cofre.Economia)
+                {
+                    cofre.Feita = 'S';
+                    user.Pontos += cofre.QtsMoedas;
+                    db.Cofrinho.Update(cofre);
+                    db.Usuario.Update(user);
+                    await db.SaveChangesAsync();
+                    return Ok("Cofrinho concluído com sucesso!");
+                }
+                else
+                {
+                    cofre.Feita = 'N';
+                    db.Cofrinho.Update(cofre);
+                    await db.SaveChangesAsync();
+                    return BadRequest("Você não atingiu o valor necessário para concluir o cofrinho.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao concluir cofre: {ex.Message}");
             }
         }
     }
