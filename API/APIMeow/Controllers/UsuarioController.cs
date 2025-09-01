@@ -41,8 +41,6 @@ public class UsuarioController : ControllerBase
         return Ok(usuarios);
     }
 
-    //TODO: DANIEL FAZER SENHA HASH!!!!
-
     [Authorize]
     [HttpPost]
     [Route("usuarios/cadastrar")]
