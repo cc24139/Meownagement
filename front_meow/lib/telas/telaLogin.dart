@@ -23,19 +23,19 @@ class TelaLogin extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20), 
             child: Center(
                 child: Column(
-                children: [
-                SizedBox(
-                    width: 250,
-                    child: TextField(
-                    controller: txtEmail,
-                    decoration: InputDecoration(
-                        labelText: "Digite seu Email",
-                        hintText: "catlover@meow.com",
-                        border: OutlineInputBorder(),
-                    ),
-                    ),
-                ),
-                ],
+                    children: [
+                        SizedBox(
+                            width: 250,
+                            child: TextField(
+                            controller: txtEmail,
+                            decoration: InputDecoration(
+                                labelText: "Digite seu Email",
+                                hintText: "catlover@meow.com",
+                                border: OutlineInputBorder(),
+                                ),
+                            ),
+                        ),
+                    ],
             ),
             ) 
             
