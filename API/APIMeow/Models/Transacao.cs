@@ -23,6 +23,6 @@ public class Transacao
     public Classificacao Classificacao { get; set; }
 
     [ForeignKey("Recorrencia")]
-    public int IdRecorrencia { get; set; }
+    public int? IdRecorrencia { get; set; }
     public Recorrencia Recorrencia { get; set; }
 }

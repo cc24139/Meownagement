@@ -18,7 +18,7 @@ namespace APIMeow.Controllers
 
         [Authorize]
         [HttpGet("metas/listar")]
-        public async Task<IActionResult> GetMetas(DBMeownagement db)
+        public async Task<IActionResult> ListarMetas(DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
@@ -26,7 +26,7 @@ namespace APIMeow.Controllers
         }
         [Authorize]
         [HttpGet("metas/listarConcluidas")]
-        public async Task<IActionResult> GetMetasConcluidas(DBMeownagement db)
+        public async Task<IActionResult> ListarMetasConcluidas(DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.Feita == 'S').ToListAsync();
@@ -34,7 +34,7 @@ namespace APIMeow.Controllers
         }
         [Authorize]
         [HttpGet("metas/listarNaoConcluidas")]
-        public async Task<IActionResult> GetMetasNaoConcluidas (DBMeownagement db)
+        public async Task<IActionResult> ListarMetasNaoConcluidas(DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.Feita == 'N').ToListAsync();

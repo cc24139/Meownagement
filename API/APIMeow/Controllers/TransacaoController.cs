@@ -13,16 +13,25 @@ public class TransacaoController : ControllerBase
     //200
     [Authorize]
     [HttpGet("transacoes/listar")]
-    public async Task<IActionResult> GetTransacoes(DBMeownagement db)
+    public async Task<IActionResult> ListarTransacoes(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id).ToListAsync();
         return Ok(listTransacoes);
     }
-        //200
+    [Authorize]
+    [HttpGet("transacoes/listarRecorrentes")]
+    public async Task<IActionResult> ListarTransacoesRecorrentes(DBMeownagement db)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.IdRecorrencia != null).ToListAsync();
+        return Ok(listTransacoes);
+    }
+
+    //200
     [Authorize]
     [HttpGet("transacoes/listarPositivo")]
-    public async Task<IActionResult> GetTransacoesPositivas(DBMeownagement db)
+    public async Task<IActionResult> ListarTransacoesPositivas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro > 0).ToListAsync();
@@ -32,7 +41,7 @@ public class TransacaoController : ControllerBase
     //200
     [Authorize]
     [HttpGet("transacoes/listarNegativo")]
-    public async Task<IActionResult> GetTransacoesNegativas(DBMeownagement db)
+    public async Task<IActionResult> ListarTransacoesNegativas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro < 0).ToListAsync();
@@ -68,6 +77,14 @@ public class TransacaoController : ControllerBase
         if (usuarioId != transacao.IdUsuario.ToString())
         {
             return BadRequest("Usuário não autorizado a deletar esta transação.");
+        }
+        if(transacao.IdRecorrencia != null)
+        {
+            var recorrencia = await db.Recorrencia.Where(r => r.IdTransacao == transacao.IdTransacao).FirstOrDefaultAsync();
+            if (recorrencia != null)
+            {
+                db.Recorrencia.Remove(recorrencia);
+            }
         }
         db.Transacao.Remove(transacao);
         await db.SaveChangesAsync();
@@ -120,7 +137,8 @@ public class TransacaoController : ControllerBase
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var usuarioAtual = await db.Usuario.FindAsync(int.Parse(usuarioId));
         var transacoesPendentes = await db.Transacao
-            .Where(t => t.IdUsuario.ToString() == usuarioId && t.Feita=='N' && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao)
+            .Where(t => t.IdUsuario.ToString() == usuarioId && t.Feita=='N' && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao
+            && t.IdRecorrencia != null)
             .ToListAsync();
         foreach (var transacao in transacoesPendentes)
         {
