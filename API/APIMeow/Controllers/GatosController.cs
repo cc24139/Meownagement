@@ -22,6 +22,27 @@ namespace APIMeow.Controllers
             var gatos = await db.Gatos.Where(g => GatosUsuario.Contains(g.IdGato)).ToListAsync();
             return Ok(gatos);
         }
+
+        [Authorize]
+        [HttpGet("gatos/listarNome/{nome:string}")]
+        public async Task<IActionResult> ListarGatosPorNome(string nome, DBMeownagement db)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var GatosUsuario = await db.UsuarioGato.Where(ug => ug.IdUsuario == userId).Select(ug => ug.IdGato).ToListAsync();
+            var gatos = await db.Gatos.Where(g => GatosUsuario.Contains(g.IdGato) && g.Nome.Contains(nome)).ToListAsync();
+            return Ok(gatos);
+        }
+
+        [Authorize]
+        [HttpGet("gatos/listarIdGato/{id:int}")]
+        public async Task<IActionResult> ListarGatosPorId(int id, DBMeownagement db)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var GatosUsuario = await db.UsuarioGato.Where(ug => ug.IdUsuario == userId).Select(ug => ug.IdGato).ToListAsync();
+            var gatos = await db.Gatos.Where(g => GatosUsuario.Contains(g.IdGato) && g.IdGato == id).ToListAsync();
+            return Ok(gatos);
+        }
+
         [Authorize]
         [HttpGet("gatos/listarRaridade")]
         public async Task<IActionResult> ListarGatosPorRaridade(int raridade, DBMeownagement db)

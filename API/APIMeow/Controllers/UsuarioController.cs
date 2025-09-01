@@ -41,6 +41,32 @@ public class UsuarioController : ControllerBase
         return Ok(usuarios);
     }
 
+    [Authorize]
+    [HttpGet]
+    [Route("usuarios/usuarioNome/{nome:string}")]
+    public async Task<IActionResult> ObterUsuarioPorNome(string nome, DBMeownagement db)
+    {
+        var usuario = await db.Usuario.AsNoTracking().FirstOrDefaultAsync(u => u.Nome == nome);
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        return Ok(usuario);
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("usuarios/usuarioId/{id:int}")]
+    public async Task<IActionResult> ObterUsuarioPorId(int id, DBMeownagement db)
+    {
+        var usuario = await db.Usuario.AsNoTracking().FirstOrDefaultAsync(u => u.IdUsuario == id);
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        return Ok(usuario);
+    }
+
     //TODO: DANIEL FAZER SENHA HASH!!!!
 
     [Authorize]
