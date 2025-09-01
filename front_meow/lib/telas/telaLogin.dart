@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TelaLogin extends StatelessWidget {
-  const TelaLogin({super.key});
+  TelaLogin({super.key});
+  TextEditingController txtEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +13,33 @@ class TelaLogin extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: "Arial"
                 ),
             ),
             backgroundColor: Colors.white,
             centerTitle: true,
         ),
-        body: Column(
-            children: [
-                Text("email", style: TextStyle(fontFamily: "Arial"),)                                                                                                                                                                                                       
-            ],
-        )
+        body: Padding(
+            padding: const EdgeInsets.only(top: 20), 
+            child: Center(
+                child: Column(
+                children: [
+                SizedBox(
+                    width: 250,
+                    child: TextField(
+                    controller: txtEmail,
+                    decoration: InputDecoration(
+                        labelText: "Digite seu Email",
+                        hintText: "catlover@meow.com",
+                        border: OutlineInputBorder(),
+                    ),
+                    ),
+                ),
+                ],
+            ),
+            ) 
+            
+        ),
     );
   }
 }
