@@ -6,9 +6,20 @@ class TelaLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+            title: Text(
+                "Login",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                ),
+            ),
+            backgroundColor: Colors.white,
+            centerTitle: true,
+        ),
         body: Column(
             children: [
-                Text("Login")
+                Text("email", style: TextStyle(fontFamily: "Arial"),)                                                                                                                                                                                                       
             ],
         )
     );
