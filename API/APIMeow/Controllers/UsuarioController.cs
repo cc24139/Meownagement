@@ -1,7 +1,9 @@
 using APIMeow.Controllers;
+using APIMeow.Hash;
 using APIMeow.Tokens;
 using APIMeow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,17 +17,18 @@ public class UsuarioController : ControllerBase
     {
         if (string.IsNullOrEmpty(Login.Login) || string.IsNullOrEmpty(Login.Senha))
         {
-            return BadRequest("Usuário ou senha inválidos.");
+            return BadRequest("Campos Inválidos!");
         }
-        var achou = await db.Usuario
+        var user = await db.Usuario
             .FirstOrDefaultAsync(u => u.Email == Login.Login && u.Senha == Login.Senha);
-
-        if (achou == null)
+        var hash = new PasswordHasher<Usuario>();
+        var verifica = hash.VerifyHashedPassword(user, user.Senha, Login.Senha);
+        if (verifica == PasswordVerificationResult.Failed)
         {
             return Unauthorized("Usuário ou senha inválidos.");
         }
         var token = new TokenJWTUsuario();
-        return Ok(new { Token = token.Generate(achou) });
+        return Ok(new { Token = token.Generate(user) });
     }
 
     [Authorize]
@@ -55,6 +58,9 @@ public class UsuarioController : ControllerBase
         {
             return Conflict("Email já está em uso.");
         }
+        var senhaHash = new HashUsuario(db);
+        await senhaHash.RegistrarUsuarioAsync(usuario.Nome, usuario.Senha);
+        usuario.Senha = senhaHash.ToString();
         db.Usuario.Add(usuario);
         await db.SaveChangesAsync();
         return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.IdUsuario }, usuario);
