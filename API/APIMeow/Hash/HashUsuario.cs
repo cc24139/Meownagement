@@ -17,16 +17,12 @@ namespace APIMeow.Hash
             _context = context;
         }
 
-        public async Task RegistrarUsuarioAsync(string user, string senha)
+        public async Task RegistrarUsuarioAsync(Usuario usuario)
         {
-            var usuario = new Usuario
-            {
-                Nome = user,
-                Senha = _passwordHasher.HashPassword(null, senha)
-            };
-            
-                await _context.Usuario.AddAsync(usuario);
-                await _context.SaveChangesAsync();  
+            usuario.Senha = _passwordHasher.HashPassword(usuario, usuario.Senha);
+            await _context.Usuario.AddAsync(usuario);
+            await _context.SaveChangesAsync();
         }
+        
     }
 }

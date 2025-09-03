@@ -36,6 +36,7 @@ public class DBMeownagement : DbContext
         modelBuilder.Entity<Post>().HasKey(p => p.IdPost);
         modelBuilder.Entity<Recorrencia>().HasKey(r => r.IdRecorrencia);
         modelBuilder.Entity<UsuarioGato>().HasKey(ug => new { ug.IdUsuario, ug.IdGato });
+        modelBuilder.Entity<MetaCofrinhoTransacao>().HasKey(mct => mct.IdRel);
 
     }
 }

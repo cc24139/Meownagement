@@ -19,9 +19,15 @@ public class UsuarioController : ControllerBase
         {
             return BadRequest("Campos Inválidos!");
         }
+        var Hash = new HashUsuario(db);
+        var result = Hash.V(Login.Login, Login.Senha);
         var user = await db.Usuario
             .FirstOrDefaultAsync(u => u.Email == Login.Login && u.Senha == Login.Senha);
         var hash = new PasswordHasher<Usuario>();
+        if(user == null)
+        {
+            return Unauthorized("Usuário ou senha inválidos.");
+        }
         var verifica = hash.VerifyHashedPassword(user, user.Senha, Login.Senha);
         if (verifica == PasswordVerificationResult.Failed)
         {
@@ -43,26 +49,30 @@ public class UsuarioController : ControllerBase
         }
         return Ok(usuarios);
     }
-
-    [Authorize]
+    
     [HttpPost]
     [Route("usuarios/cadastrar")]
-    public async Task<IActionResult> CadastrarUsuario([FromBody] Usuario usuario, DBMeownagement db)
+    public async Task<IActionResult> CadastrarUsuario([FromBody] CreateUserViewModel userModel, DBMeownagement db)
     {
-        if (string.IsNullOrEmpty(usuario.Nome) || string.IsNullOrEmpty(usuario.Email) || string.IsNullOrEmpty(usuario.Senha))
-        {
-            return BadRequest("Nome, email ou senha inválidos.");
-        }
-        var emailExistente = await db.Usuario.AnyAsync(u => u.Email == usuario.Email);
+       if(!ModelState.IsValid || string.IsNullOrEmpty(userModel.Nome) || string.IsNullOrEmpty(userModel.Email) || string.IsNullOrEmpty(userModel.Senha))
+       {
+           return BadRequest("Nome, email ou senha inválidos.");
+       }
+        var emailExistente = await db.Usuario.AnyAsync(u => u.Email == userModel.Email);
         if (emailExistente)
         {
             return Conflict("Email já está em uso.");
         }
         var senhaHash = new HashUsuario(db);
-        await senhaHash.RegistrarUsuarioAsync(usuario.Nome, usuario.Senha);
-        usuario.Senha = senhaHash.ToString();
-        db.Usuario.Add(usuario);
-        await db.SaveChangesAsync();
+        var usuario = new Usuario
+        {
+            Nome = userModel.Nome,
+            Email = userModel.Email,
+            Senha = userModel.Senha,
+            Pontos = 500,
+            Saldo = 0,
+        };
+        await senhaHash.RegistrarUsuarioAsync(usuario);
         return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.IdUsuario }, usuario);
     }
 

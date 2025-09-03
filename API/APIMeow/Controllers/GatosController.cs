@@ -24,7 +24,7 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
-        [HttpGet("gatos/listarNome/{nome:string}")]
+        [HttpGet("gatos/listarNome/{nome}")]
         public async Task<IActionResult> ListarGatosPorNome(string nome, DBMeownagement db)
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
