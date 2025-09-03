@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using APIMeow.Controllers;
 using APIMeow.Hash;
 using APIMeow.Tokens;
@@ -19,12 +20,11 @@ public class UsuarioController : ControllerBase
         {
             return BadRequest("Campos Inválidos!");
         }
-        var Hash = new HashUsuario(db);
-        var result = Hash.V(Login.Login, Login.Senha);
         var user = await db.Usuario
-            .FirstOrDefaultAsync(u => u.Email == Login.Login && u.Senha == Login.Senha);
+            .FirstOrDefaultAsync(u => u.Email == Login.Login);
         var hash = new PasswordHasher<Usuario>();
-        if(user == null)
+
+        if (user == null)
         {
             return Unauthorized("Usuário ou senha inválidos.");
         }
@@ -79,19 +79,24 @@ public class UsuarioController : ControllerBase
     [Authorize]
     [HttpPatch]
     [Route("usuarios/editar")]
-    public async Task<IActionResult> EditarUsuario([FromBody] Usuario usuario, DBMeownagement db)
+    public async Task<IActionResult> EditarUsuario([FromBody] EditarUsuarioViewModel model, DBMeownagement db)
     {
-        if (usuario.IdUsuario <= 0 || string.IsNullOrEmpty(usuario.Nome) || string.IsNullOrEmpty(usuario.Email))
-        {
-            return BadRequest("ID, nome ou email inválidos.");
-        }
-        var usuarioExistente = await db.Usuario.FindAsync(usuario.IdUsuario);
+
+        var IdUsuario = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var usuarioExistente = await db.Usuario.FindAsync(int.Parse(IdUsuario));
+        var Hash = new PasswordHasher<Usuario>();
         if (usuarioExistente == null)
         {
             return NotFound("Usuário não encontrado.");
         }
-        usuarioExistente.Nome = usuario.Nome;
-        usuarioExistente.Email = usuario.Email;
+        if(!string.IsNullOrEmpty(model.Senha))
+        {
+           usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
+        }
+        if(!string.IsNullOrEmpty(model.Nome))
+        {
+           usuarioExistente.Nome = model.Nome;
+        }
         await db.SaveChangesAsync();
         return Ok(usuarioExistente);
     }
