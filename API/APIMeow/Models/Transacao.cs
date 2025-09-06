@@ -24,5 +24,5 @@ public class Transacao
 
     [ForeignKey("Recorrencia")]
     public int? IdRecorrencia { get; set; }
-    public Recorrencia Recorrencia { get; set; }
+    public Recorrencia? Recorrencia { get; set; }
 }

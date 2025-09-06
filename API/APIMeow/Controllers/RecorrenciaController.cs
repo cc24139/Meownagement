@@ -22,10 +22,10 @@ namespace APIMeow.Controllers
                 var idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var transacoesIds = await db.Transacao
                     .Where(t => t.IdUsuario == idUsuario)
-                    .Select(t => t.IdTransacao)
+                    .Select(t => t.IdRecorrencia)
                     .ToListAsync();
                 var recorrencias = await db.Recorrencia
-                    .Where(r => transacoesIds.Contains(r.IdTransacao))
+                    .Where(r => transacoesIds.Contains(r.IdRecorrencia))
                     .ToListAsync();
 
             return Ok(recorrencias);
@@ -68,7 +68,7 @@ namespace APIMeow.Controllers
             {
                 var idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var recorrencia = await db.Recorrencia.FindAsync(id);
-                var transacao = await db.Transacao.FindAsync(recorrencia.IdTransacao);
+                var transacao = await db.Transacao.Where(t=> t.IdRecorrencia == id).FirstOrDefaultAsync();
                 transacao.IdRecorrencia = null;
                 db.Recorrencia.Remove(recorrencia);
                 await db.SaveChangesAsync();
@@ -92,30 +92,20 @@ namespace APIMeow.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
-            var idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var transacao = await db.Transacao
-                .Where(t => t.IdUsuario == idUsuario && t.IdTransacao == model.IdTransacao)
-                .FirstOrDefaultAsync();
-
-            if (transacao == null)
-            {
-                return NotFound();
-            }
-
             var recorrencia = new Recorrencia
             {
-                IdTransacao = transacao.IdTransacao,
-                //atribui dia mas se for null define zero
                 QtsDias = model.QtsDias,
                 QtsAnos = model.QtsAnos,
                 QtsMeses = model.QtsMeses
             };
+            db.Recorrencia.Add(recorrencia);
+            await db.SaveChangesAsync();
             return Ok("Criado com sucesso");
-        }catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
         }
     }
 }

@@ -47,17 +47,17 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Nenhum usuário encontrado.");
         }
-        return Ok(usuarios);
+        return Ok(usuarios.Select(u => new { u.IdUsuario, u.Nome, u.Email, u.Pontos, u.Saldo }));
     }
-    
+
     [HttpPost]
     [Route("usuarios/cadastrar")]
     public async Task<IActionResult> CadastrarUsuario([FromBody] CreateUserViewModel userModel, DBMeownagement db)
     {
-       if(!ModelState.IsValid || string.IsNullOrEmpty(userModel.Nome) || string.IsNullOrEmpty(userModel.Email) || string.IsNullOrEmpty(userModel.Senha))
-       {
-           return BadRequest("Nome, email ou senha inválidos.");
-       }
+        if (!ModelState.IsValid || string.IsNullOrEmpty(userModel.Nome) || string.IsNullOrEmpty(userModel.Email) || string.IsNullOrEmpty(userModel.Senha))
+        {
+            return BadRequest("Nome, email ou senha inválidos.");
+        }
         var emailExistente = await db.Usuario.AnyAsync(u => u.Email == userModel.Email);
         if (emailExistente)
         {
@@ -89,15 +89,34 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Usuário não encontrado.");
         }
-        if(!string.IsNullOrEmpty(model.Senha))
+        if (!string.IsNullOrEmpty(model.Senha))
         {
-           usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
+            usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
         }
-        if(!string.IsNullOrEmpty(model.Nome))
+        if (!string.IsNullOrEmpty(model.Nome))
         {
-           usuarioExistente.Nome = model.Nome;
+            usuarioExistente.Nome = model.Nome;
         }
         await db.SaveChangesAsync();
         return Ok(usuarioExistente);
+    }
+
+    [HttpPatch]
+    [Route("usuarios/esquecerSenha")]
+    public async Task<IActionResult> EsquecerSenha([FromBody] EditarUsuarioViewModel model, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(model.Nome) || string.IsNullOrEmpty(model.Senha))
+        {
+            return BadRequest("Email ou nova senha inválidos.");
+        }
+        var usuarioExistente = await db.Usuario.FirstOrDefaultAsync(u => u.Email == model.Nome);
+        var Hash = new PasswordHasher<Usuario>();
+        if (usuarioExistente == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
+        await db.SaveChangesAsync();
+        return Ok("Senha alterada com sucesso.");
     }
 }

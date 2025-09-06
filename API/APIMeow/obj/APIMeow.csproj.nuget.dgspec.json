@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\u24139\\Documents\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj": {}
+    "C:\\Users\\lf446\\OneDrive\\Documentos\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj": {}
   },
   "projects": {
-    "C:\\Users\\u24139\\Documents\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj": {
+    "C:\\Users\\lf446\\OneDrive\\Documentos\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\u24139\\Documents\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj",
+        "projectUniqueName": "C:\\Users\\lf446\\OneDrive\\Documentos\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj",
         "projectName": "APIMeow",
-        "projectPath": "C:\\Users\\u24139\\Documents\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj",
-        "packagesPath": "C:\\Users\\u24139\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\u24139\\Documents\\GitHub\\Meownagement\\API\\APIMeow\\obj\\",
+        "projectPath": "C:\\Users\\lf446\\OneDrive\\Documentos\\GitHub\\Meownagement\\API\\APIMeow\\APIMeow.csproj",
+        "packagesPath": "C:\\Users\\lf446\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lf446\\OneDrive\\Documentos\\GitHub\\Meownagement\\API\\APIMeow\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\u24139\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lf446\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -95,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

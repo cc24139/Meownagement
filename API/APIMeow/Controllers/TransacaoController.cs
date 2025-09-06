@@ -16,7 +16,8 @@ public class TransacaoController : ControllerBase
     public async Task<IActionResult> ListarTransacoes(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id).ToListAsync();
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId).ToListAsync();
         return Ok(listTransacoes);
     }
     [Authorize]
@@ -24,7 +25,8 @@ public class TransacaoController : ControllerBase
     public async Task<IActionResult> ListarTransacoesRecorrentes(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.IdRecorrencia != null).ToListAsync();
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId && t.IdRecorrencia != null).ToListAsync();
         return Ok(listTransacoes);
     }
 
@@ -34,7 +36,8 @@ public class TransacaoController : ControllerBase
     public async Task<IActionResult> ListarTransacoesPositivas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro > 0).ToListAsync();
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId && t.QuantiaDinheiro > 0).ToListAsync();
         return Ok(listTransacoes);
     }
 
@@ -44,7 +47,8 @@ public class TransacaoController : ControllerBase
     public async Task<IActionResult> ListarTransacoesNegativas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario.ToString() == id && t.QuantiaDinheiro < 0).ToListAsync();
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId && t.QuantiaDinheiro < 0).ToListAsync();
         return Ok(listTransacoes);
     }
 
@@ -80,7 +84,7 @@ public class TransacaoController : ControllerBase
         }
         if(transacao.IdRecorrencia != null)
         {
-            var recorrencia = await db.Recorrencia.Where(r => r.IdTransacao == transacao.IdTransacao).FirstOrDefaultAsync();
+            var recorrencia = await db.Recorrencia.Where(r => r.IdRecorrencia == transacao.IdRecorrencia).FirstOrDefaultAsync();
             if (recorrencia != null)
             {
                 db.Recorrencia.Remove(recorrencia);
@@ -92,8 +96,8 @@ public class TransacaoController : ControllerBase
         return NoContent();
     }
     [Authorize]
-    [HttpPost("transacoes/inserir")]
-    public async Task<IActionResult> InserirTransacao(TransacaoViewModel model, DBMeownagement db)
+    [HttpPost("transacoes/criar")]
+    public async Task<IActionResult> CriarTransacao(TransacaoViewModel model, DBMeownagement db)
     {
         try
         {
@@ -102,24 +106,32 @@ public class TransacaoController : ControllerBase
             {
                 return BadRequest("Usuário não encontrado.");
             }
-            db.Transacao.Add(new Transacao
+            var user = await db.Usuario.FindAsync(int.Parse(usuarioId));
+            var novaTransacao = new Transacao
             {
                 Nome = model.Nome,
                 QuantiaDinheiro = model.QuantiaDinheiro,
                 DataCriacao = model.DataCriacao,
                 Feita = model.Feita,
-                SaldoAtual = model.SaldoAtual,
+                SaldoAtual = user.Saldo,
                 DataFinalizacao = model.DataFinalizacao,
                 IdUsuario = int.Parse(usuarioId),
                 IdClassificacao = model.IdClassificacao,
                 IdRecorrencia = model.IdRecorrencia,
-            });
-            db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+            };
+            
+            await db.Transacao.AddAsync(novaTransacao);
+            await db.SaveChangesAsync(); // Salva primeiro para gerar o ID
+            
+            if(model.IdMeta != null || model.IdCofrinho != null)
             {
-                IdMeta = model.IdMeta,
-                IdCofrinho = model.IdCofrinho,
-                IdTransacao = db.Transacao.Last().IdTransacao
-            });
+                db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+                {
+                    IdMeta = model.IdMeta,
+                    IdCofrinho = model.IdCofrinho,
+                    IdTransacao = novaTransacao.IdTransacao
+                });
+            }
             await db.SaveChangesAsync();
             return Ok("Transação criada com sucesso");
         }
@@ -135,9 +147,10 @@ public class TransacaoController : ControllerBase
     {
         var qtsAtualizadas = 0;
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var usuarioAtual = await db.Usuario.FindAsync(int.Parse(usuarioId));
+        var userId = int.Parse(usuarioId);
+        var usuarioAtual = await db.Usuario.FindAsync(userId);
         var transacoesPendentes = await db.Transacao
-            .Where(t => t.IdUsuario.ToString() == usuarioId && t.Feita=='N' && t.DataFinalizacao == DateTime.Now && t.DataFinalizacao != t.DataCriacao
+            .Where(t => t.IdUsuario == userId && t.Feita=='N' && t.DataFinalizacao.Date == DateTime.Now.Date 
             && t.IdRecorrencia != null)
             .ToListAsync();
         foreach (var transacao in transacoesPendentes)
@@ -158,12 +171,13 @@ public class TransacaoController : ControllerBase
     {
         try
         {
-            DateTime novaDataFinalizacao = transacaoAntiga.DataFinalizacao;
-            novaDataFinalizacao.AddDays(transacaoAntiga.Recorrencia.QtsDias);
-            novaDataFinalizacao.AddMonths(transacaoAntiga.Recorrencia.QtsMeses);
-            novaDataFinalizacao.AddYears(transacaoAntiga.Recorrencia.QtsAnos);
+            var recorrencia = await db.Recorrencia.FindAsync(transacaoAntiga.IdRecorrencia);
+            DateTime novaDataFinalizacao = transacaoAntiga.DataFinalizacao
+                .AddDays(recorrencia.QtsDias)
+                .AddMonths(recorrencia.QtsMeses)
+                .AddYears(recorrencia.QtsAnos);
 
-            db.Transacao.Add(new Transacao
+            var novaTransacao = new Transacao
             {
                 Nome = transacaoAntiga.Nome,
                 QuantiaDinheiro = transacaoAntiga.QuantiaDinheiro,
@@ -174,17 +188,22 @@ public class TransacaoController : ControllerBase
                 IdUsuario = transacaoAntiga.IdUsuario,
                 IdClassificacao = transacaoAntiga.IdClassificacao,
                 IdRecorrencia = transacaoAntiga.IdRecorrencia,
-            });
-            foreach (var x in metaCofrinhoTransacaoLigados)
-            { 
-                db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+            };
+            
+            db.Transacao.Add(novaTransacao);
+            await db.SaveChangesAsync(); // Salva primeiro para gerar o ID
+
+            if (metaCofrinhoTransacaoLigados != null && metaCofrinhoTransacaoLigados.Count > 0)
+                foreach (var x in metaCofrinhoTransacaoLigados)
                 {
-                    IdMeta = x.IdMeta,
-                    IdCofrinho = x.IdCofrinho,
-                    IdTransacao = db.Transacao.Last().IdTransacao
-                });
+                    db.MetaCofrinhoTransacao.Add(new MetaCofrinhoTransacao
+                    {
+                        IdMeta = x.IdMeta,
+                        IdCofrinho = x.IdCofrinho,
+                        IdTransacao = novaTransacao.IdTransacao
+                    });
+                await db.SaveChangesAsync();
             }
-            await db.SaveChangesAsync();
             return true;
         }
         catch
@@ -196,7 +215,7 @@ public class TransacaoController : ControllerBase
         [HttpPatch("transacao/saldo")]
         public async Task<IActionResult> AtualizarSaldo(Transacao transacao, DBMeownagement db)
         {
-            if (transacao.DataFinalizacao == DateTime.Now && transacao.Feita == 'N')
+            if (transacao.DataFinalizacao.Date == DateTime.Now.Date && transacao.Feita == 'N')
         {
             var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
             usuario.Saldo += transacao.QuantiaDinheiro;
