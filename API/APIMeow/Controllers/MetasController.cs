@@ -116,16 +116,16 @@ namespace APIMeow.Controllers
                 {
                     return NotFound("Meta não encontrada.");
                 }
-                if (meta.DataTermino == DateTime.Now && meta.Feita == 'N')
+                if (meta.DataTermino.Date == DateTime.Now.Date && meta.Feita == 'N')
                 {
                     var listTransacaoGastos = await db.Transacao
                     .Where(t => t.IdUsuario.ToString() == usuarioId && t.IdClassificacao == meta.IdClassificacao
-                    && t.Feita == 'S'&& t.DataCriacao >= meta.DataCriacao && t.DataFinalizacao <= meta.DataTermino && t.QuantiaDinheiro < 0
+                    && t.Feita == 'S'&& t.DataCriacao.Date >= meta.DataCriacao.Date && t.DataFinalizacao.Date <= meta.DataTermino.Date && t.QuantiaDinheiro < 0
                     //Busca todas as transacoes relacionadas a meta
                     && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == t.IdTransacao && mct.IdMeta == meta.IdMeta) 
                     )
                     .ToListAsync();
-                    decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro);
+                    decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro*(-1));
                     if (gastoTotal < meta.GastoLimite)
                     {
                         var usuario = await db.Usuario.FindAsync(meta.IdUsuario);
@@ -136,9 +136,9 @@ namespace APIMeow.Controllers
                     }
                     else
                     {
-                        meta.Feita = 'S';
+                        meta.Feita = 'N';
                         await db.SaveChangesAsync();
-                        return Ok("Não foi realizada a meta no tempo determinado.");
+                        return Ok("Gastos excedeu a meta :( sem pontos adicionados.");
                     }
                 }
                 else

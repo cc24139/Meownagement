@@ -1,15 +1,22 @@
-
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class UsuarioGato
 {
-    [ForeignKey("Usuario")]
+    [Key]
+    [Column(Order = 0)]
     public int IdUsuario { get; set; }
-    public Usuario Usuario { get; set; }
-
-    [ForeignKey("Gatos")]
+    
+    [Key]
+    [Column(Order = 1)]
     public int IdGato { get; set; }
-    public Gatos Gato { get; set; }
 
     public int Copias { get; set; }
+
+    // Propriedades de navegação
+    [ForeignKey("IdUsuario")]
+    public virtual Usuario Usuario { get; set; }
+
+    [ForeignKey("IdGato")]
+    public virtual Gatos Gato { get; set; }
 }

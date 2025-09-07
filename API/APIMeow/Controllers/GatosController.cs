@@ -14,7 +14,7 @@ namespace APIMeow.Controllers
     {
         const int precoGacha = 160;
         [Authorize]
-        [HttpGet("listar")]
+        [HttpGet("gatos/listar")]
         public async Task<IActionResult> ListarGatos(DBMeownagement db)
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
@@ -98,7 +98,7 @@ namespace APIMeow.Controllers
             return Ok("Gato adicionado com sucesso.");
         }
 
-        [HttpGet("gatos/paleta")]
+        [HttpGet("gatos/paleta/{id}")]
         public async Task<IActionResult> ObterGatoPorId(int id, DBMeownagement db)
         {
             var gato = await db.Gatos.FindAsync(id);

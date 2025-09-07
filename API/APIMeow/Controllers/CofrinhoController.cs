@@ -20,7 +20,7 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
@@ -46,7 +46,7 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
@@ -72,7 +72,7 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
@@ -101,7 +101,7 @@ namespace APIMeow.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
@@ -137,7 +137,7 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {
@@ -166,15 +166,19 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var user = await db.Usuario.FindAsync(idUser);
                 var cofre = await db.Cofrinho.FindAsync(id);
                 if (user == null || cofre == null || cofre.IdUsuario != user.IdUsuario)
                 {
                     return NotFound();
                 }
+                if (cofre.DataTermino.Date > DateTime.Now.Date)
+                {
+                    return BadRequest("O cofrinho ainda não atingiu a data de término.");
+                }
                 var transacoes = db.Transacao.Where(x => x.IdUsuario == user.IdUsuario && x.IdClassificacao == cofre.IdClassificacao
-                && x.Feita == 'S' && x.DataCriacao >= cofre.DataCriacao && x.DataFinalizacao <= cofre.DataTermino && x.QuantiaDinheiro > 0
+                && x.Feita == 'S' && x.DataCriacao.Date >= cofre.DataCriacao.Date && x.DataFinalizacao.Date <= cofre.DataTermino.Date && x.QuantiaDinheiro > 0
                 && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == x.IdTransacao && mct.IdCofrinho == cofre.IdCofrinho)
                 ).ToList();
                 var economias = transacoes.Sum(x => x.QuantiaDinheiro);

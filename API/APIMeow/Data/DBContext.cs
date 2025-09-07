@@ -38,5 +38,18 @@ public class DBMeownagement : DbContext
         modelBuilder.Entity<UsuarioGato>().HasKey(ug => new { ug.IdUsuario, ug.IdGato });
         modelBuilder.Entity<MetaCofrinhoTransacao>().HasKey(mct => mct.IdRel);
 
+        // Configuração para UsuarioGato
+        modelBuilder.Entity<UsuarioGato>()
+            .HasKey(ug => new { ug.IdUsuario, ug.IdGato });
+
+        modelBuilder.Entity<UsuarioGato>()
+            .HasOne(ug => ug.Usuario)
+            .WithMany()
+            .HasForeignKey(ug => ug.IdUsuario);
+
+        modelBuilder.Entity<UsuarioGato>()
+            .HasOne(ug => ug.Gato)
+            .WithMany()
+            .HasForeignKey(ug => ug.IdGato);
     }
 }

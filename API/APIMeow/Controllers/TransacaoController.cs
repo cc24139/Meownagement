@@ -55,17 +55,29 @@ public class TransacaoController : ControllerBase
     //204
     [Authorize]
     [HttpPatch("transacoes/editar")]
-    public async Task<IActionResult> EditarTransacao(Transacao transacao, DBMeownagement db)
+    public async Task<IActionResult> EditarTransacao(EditTransacaoViewModel transacao, DBMeownagement db)
     {
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (usuarioId != transacao.IdUsuario.ToString())
+        var transacaoExistente = await db.Transacao.FindAsync(transacao.IdTransacao);
+        if (usuarioId != transacaoExistente.IdUsuario.ToString())
         {
             return BadRequest("Usuário não autorizado a editar esta transação.");
         }
-        db.Entry(transacao).State = EntityState.Modified;
+        transacaoExistente.Nome = transacao.Nome;
+        transacaoExistente.QuantiaDinheiro = transacao.QuantiaDinheiro;
+        transacaoExistente.DataCriacao = transacao.DataCriacao;
+        transacaoExistente.Feita = transacao.Feita;
+        transacaoExistente.DataFinalizacao = transacao.DataFinalizacao;
+        transacaoExistente.IdClassificacao = transacao.IdClassificacao;
+        transacaoExistente.IdRecorrencia = transacao.IdRecorrencia;
+        var MetaCofrinhoTransacao = await db.MetaCofrinhoTransacao.Where(m => m.IdTransacao == transacaoExistente.IdTransacao).FirstOrDefaultAsync();
+        if (MetaCofrinhoTransacao != null)
+        {
+            MetaCofrinhoTransacao.IdMeta = transacao.IdMeta;
+            MetaCofrinhoTransacao.IdCofrinho = transacao.IdCofrinho;
+        }
         await db.SaveChangesAsync();
-
-        return NoContent();
+        return Ok("Edição realizada com sucesso");
     }
     //204
     [Authorize]
@@ -82,13 +94,12 @@ public class TransacaoController : ControllerBase
         {
             return BadRequest("Usuário não autorizado a deletar esta transação.");
         }
-        if(transacao.IdRecorrencia != null)
+        var metaCofrinhoTransacao = await db.MetaCofrinhoTransacao.Where(m =>
+        m.IdTransacao == transacao.IdTransacao).ToListAsync();
+        if(metaCofrinhoTransacao != null && metaCofrinhoTransacao.Count > 0)
         {
-            var recorrencia = await db.Recorrencia.Where(r => r.IdRecorrencia == transacao.IdRecorrencia).FirstOrDefaultAsync();
-            if (recorrencia != null)
-            {
-                db.Recorrencia.Remove(recorrencia);
-            }
+            db.MetaCofrinhoTransacao.RemoveRange(metaCofrinhoTransacao);
+            await db.SaveChangesAsync();
         }
         db.Transacao.Remove(transacao);
         await db.SaveChangesAsync();
@@ -212,15 +223,27 @@ public class TransacaoController : ControllerBase
         }
     }
         [Authorize]
-        [HttpPatch("transacao/saldo")]
-        public async Task<IActionResult> AtualizarSaldo(Transacao transacao, DBMeownagement db)
+        [HttpPatch("transacao/saldo/{id}")]
+        public async Task<IActionResult> AtualizarSaldo(int id, DBMeownagement db)
         {
+            var transacao = await db.Transacao.FindAsync(id);
+            if (transacao == null)
+            {
+                return NotFound("Transação não encontrada.");
+            }
+
             if (transacao.DataFinalizacao.Date == DateTime.Now.Date && transacao.Feita == 'N')
-        {
-            var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
-            usuario.Saldo += transacao.QuantiaDinheiro;
-            transacao.Feita = 'S';
-            transacao.SaldoAtual = usuario.Saldo;
+            {
+
+                var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
+                usuario.Saldo += transacao.QuantiaDinheiro;
+                transacao.Feita = 'S';
+                transacao.SaldoAtual = usuario.Saldo;
+            if(transacao.IdRecorrencia != null)
+            {
+                var metaCofrinhoTransacaoLigados = await db.MetaCofrinhoTransacao.Where(x => x.IdTransacao == transacao.IdTransacao).ToListAsync();
+                await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados);
+            }
             await db.SaveChangesAsync();
             return Ok("Saldo Atualizado");
         }
