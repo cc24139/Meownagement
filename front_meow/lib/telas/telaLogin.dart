@@ -8,14 +8,24 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  final TextEditingController txtEmail = TextEditingController();
-  final TextEditingController txtSenha = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtSenha = TextEditingController();
 
   @override
   void dispose() {
     txtEmail.dispose();
     txtSenha.dispose();
     super.dispose();
+  }
+
+  void _fazerLogin() {
+    if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
+      Text("ciacnia");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const TelaLogin()),
+      );
+    }
   }
 
   @override
@@ -65,16 +75,24 @@ class _TelaLoginState extends State<TelaLogin> {
               SizedBox(
                 width: 250,
                 child: TextButton(
-                    onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TelaLogin()
-                            ),
-                        );
-                    },
-                    child: const Text("Esqueci minha senha")
-                )
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TelaLogin(),
+                      ),
+                    );
+                  },
+                  child: const Text("Esqueci minha senha"),
+                ),
+              ),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: _fazerLogin,
+                  child: Text("Entrar"),
+                ),
               ),
             ],
           ),
