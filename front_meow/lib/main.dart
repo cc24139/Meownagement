@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/telas/telaCadastro.dart';
 import 'package:front_meow/telas/telaLogin.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Arial'),
-      home: TelaLogin(),
+      home: TelaCadastro(),
     );
   }
 }
