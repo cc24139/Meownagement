@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:front_meow/telas/telaAlterarPerfil.dart';
-import 'package:front_meow/telas/telaAlterarSenha.dart';
-import 'package:front_meow/telas/telaAmizades.dart';
-import 'package:front_meow/telas/telaCadastro.dart';
-import 'package:front_meow/telas/telaCriarMeta.dart';
-import 'package:front_meow/telas/telaGacha.dart';
-import 'package:front_meow/telas/telaGaleria.dart';
-import 'package:front_meow/telas/telaGato.dart';
-import 'package:front_meow/telas/telaGatoDoUser.dart';
-import 'package:front_meow/telas/telaGaveta.dart';
-import 'package:front_meow/telas/telaLogin.dart';
-import 'package:front_meow/telas/telaInicial.dart';
-import 'package:front_meow/telas/telaPerfil.dart';
-import 'package:front_meow/telas/telaTransacoes.dart';
+import 'package:front_meow/telas/tela_alterar_perfil.dart';
+import 'package:front_meow/telas/tela_alterar_senha.dart';
+import 'package:front_meow/telas/tela_amizades.dart';
+import 'package:front_meow/telas/tela_cadastro.dart';
+import 'package:front_meow/telas/tela_criar_meta.dart';
+import 'package:front_meow/telas/tela_gacha.dart';
+import 'package:front_meow/telas/tela_galeria.dart';
+import 'package:front_meow/telas/tela_gato.dart';
+import 'package:front_meow/telas/tela_gato_do_user.dart';
+import 'package:front_meow/telas/tela_gaveta.dart';
+import 'package:front_meow/telas/tela_login.dart';
+import 'package:front_meow/telas/tela_inicial.dart';
+import 'package:front_meow/telas/tela_perfil.dart';
+import 'package:front_meow/telas/tela_transacoes.dart';
 
 void main() {
   runApp(const MyApp());
