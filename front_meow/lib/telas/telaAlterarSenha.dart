@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/rotas.dart';
 
 class TelaAlterarSenha extends StatefulWidget {
   const TelaAlterarSenha({super.key});
@@ -8,8 +9,8 @@ class TelaAlterarSenha extends StatefulWidget {
 }
 
 class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
-  TextEditingController txtEmail          = TextEditingController();
-  TextEditingController txtNovaSenha      = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtNovaSenha = TextEditingController();
   TextEditingController txtConfirmarSenha = TextEditingController();
 
   @override
@@ -23,7 +24,6 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: const Text(
           "Alterar Senha",
@@ -51,7 +51,7 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
                   ),
                 ),
               ),
-              
+
               SizedBox(
                 width: 250,
                 child: TextField(
@@ -78,6 +78,7 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
               ElevatedButton(
                 onPressed: () {
                   // Lógica para alterar a senha
+                  Navigator.pushReplacementNamed(context, appRotas.login);
                 },
                 child: const Text("Alterar Senha"),
               ),

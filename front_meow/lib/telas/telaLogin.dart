@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/telas/telaAlterarSenha.dart';
 import 'package:front_meow/telas/telaCadastro.dart';
+import 'package:front_meow/telas/telaInicial.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -24,10 +25,7 @@ class _TelaLoginState extends State<TelaLogin> {
   void _fazerLogin() {
     if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
       Text("ciacnia");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TelaLogin()),
-      );
+      Navigator.pushReplacementNamed(context, appRotas.home);
     }
   }
 
@@ -79,7 +77,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 width: 250,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, appRotas.alterarSenha);
+                    Navigator.pushReplacementNamed(context, appRotas.alterarSenha);
                   },
                   child: const Text("Esqueci minha senha"),
                 ),
@@ -94,7 +92,10 @@ class _TelaLoginState extends State<TelaLogin> {
                       width: 250,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, appRotas.cadastro);
+                          Navigator.pushReplacementNamed(
+                            context,
+                            appRotas.cadastro,
+                          );
                         },
                         child: const Text("Cadastre-se"),
                       ),
