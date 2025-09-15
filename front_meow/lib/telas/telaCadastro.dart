@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/rotas.dart';
 import 'package:front_meow/telas/telaLogin.dart';
 
 class TelaCadastro extends StatefulWidget {
@@ -26,10 +27,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
   void _fazerCadastro() {
     if (txtSenha.text == txtConfirmaSenha.text) {
       Text("ciacnia");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TelaLogin()),
-      );
+      Navigator.pushNamed(context, appRotas.home);
     }
   }
 
@@ -110,12 +108,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       width: 250,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const TelaLogin(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, appRotas.home);
                         },
                         child: const Text("Login"),
                       ),
