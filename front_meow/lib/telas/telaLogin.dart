@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/telas/telaAlterarSenha.dart';
+import 'package:front_meow/telas/telaCadastro.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -79,11 +81,34 @@ class _TelaLoginState extends State<TelaLogin> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaLogin(),
+                        builder: (context) => const TelaAlterarSenha(),
                       ),
                     );
                   },
                   child: const Text("Esqueci minha senha"),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Não possui uma conta? "),
+                    SizedBox(
+                      width: 250,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TelaCadastro(),
+                            ),
+                          );
+                        },
+                        child: const Text("Cadastre-se"),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 30),
