@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
-import 'package:front_meow/telas/telaLogin.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});

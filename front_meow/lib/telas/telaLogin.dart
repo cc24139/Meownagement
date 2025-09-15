@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
-import 'package:front_meow/telas/telaAlterarSenha.dart';
-import 'package:front_meow/telas/telaCadastro.dart';
-import 'package:front_meow/telas/telaInicial.dart';
+
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
