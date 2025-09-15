@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/rotas.dart';
 import 'package:front_meow/telas/telaAlterarSenha.dart';
 import 'package:front_meow/telas/telaCadastro.dart';
 
@@ -78,12 +79,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 width: 250,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TelaAlterarSenha(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, appRotas.alterarSenha);
                   },
                   child: const Text("Esqueci minha senha"),
                 ),
@@ -98,12 +94,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       width: 250,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const TelaCadastro(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, appRotas.cadastro);
                         },
                         child: const Text("Cadastre-se"),
                       ),
