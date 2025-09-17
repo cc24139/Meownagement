@@ -11,8 +11,8 @@ widthGrande  = heightGrande  = 400
 widthMedia   = heightMedia   = 300
 widthPequena = heightPequena = 150
 
-path = "./gatosGacha/imagens"
-out  = "./gatosGacha/imagensTamanhos"
+path = "./resources/gatosGacha/imagens"
+out  = "./resources/gatosGacha/imagensTamanhos"
 
 def criaPasta(caminho):
     Path(caminho).mkdir(parents=True, exist_ok=True)
@@ -56,11 +56,18 @@ def processarImagens():
         media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
         grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
 
+
         criaPasta(out + "/" + nome)
 
+        # versões coloridas
         pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
         media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
         grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
+
+        # versões em preto e branco
+        pequena.convert("L").save(out + "/" + nome + "/" + nome + "PequenaPB.jpg")
+        media  .convert("L").save(out + "/" + nome + "/" + nome + "MediaPB.jpg")
+        grande .convert("L").save(out + "/" + nome + "/" + nome + "GrandePB.jpg")
 
 
 if __name__ == "__main__":
