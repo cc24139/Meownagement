@@ -328,3 +328,5 @@ C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\rjims
 C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Npgsql.dll
+C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

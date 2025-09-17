@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<TokenJWTUsuario>(); //Injeção de Depedência
 // Adiciona o contexto do banco de dados
 builder.Services.AddDbContext<DBMeownagement>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Ligando a autorização do token  com base na key
 var keys = Encoding.ASCII.GetBytes(Configuration.PrivateKey);

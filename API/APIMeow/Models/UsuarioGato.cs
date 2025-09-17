@@ -6,7 +6,7 @@ public class UsuarioGato
     [Key]
     [Column(Order = 0)]
     public int IdUsuario { get; set; }
-    
+
     [Key]
     [Column(Order = 1)]
     public int IdGato { get; set; }
@@ -19,4 +19,6 @@ public class UsuarioGato
 
     [ForeignKey("IdGato")]
     public virtual Gatos Gato { get; set; }
+
+    public char Equipado { get; set; }
 }

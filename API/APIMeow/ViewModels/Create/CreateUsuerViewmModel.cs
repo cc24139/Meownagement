@@ -9,6 +9,7 @@ namespace APIMeow.ViewModels
     {
         public string Nome { get; set; }
         public string Email { get; set; }
+        public string? Biografia { get; set; }
         public string Senha { get; set; }
     }
 }

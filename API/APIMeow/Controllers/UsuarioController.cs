@@ -50,6 +50,44 @@ public class UsuarioController : ControllerBase
         return Ok(usuarios.Select(u => new { u.IdUsuario, u.Nome, u.Email, u.Pontos, u.Saldo }));
     }
 
+    [Authorize]
+    [HttpGet("usuarios/pesquisar")]
+    public async Task<IActionResult> PesquisarUsuarios([FromQuery] string nome, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(nome))
+        {
+            return BadRequest("Nome inválido.");
+        }
+        var usuarios = await db.Usuario
+            .AsNoTracking()
+            .Where(u => u.Nome.Contains(nome))
+            .ToListAsync();
+        if (usuarios == null || !usuarios.Any())
+        {
+            return NotFound("Nenhum usuário encontrado.");
+        }
+        return Ok(usuarios.Select(u => new { u.IdUsuario, u.Nome, u.Email, u.Pontos, u.Saldo }));
+    }
+
+    [Authorize]
+    [HttpGet("usuarios/perfil")]
+    public async Task<IActionResult> ObterPerfilUsuario(DBMeownagement db)
+    {
+        var IdUsuario = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var usuario = await db.Usuario
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.IdUsuario == int.Parse(IdUsuario));
+        var gatoEquipado = await db.Gatos.Where(g =>
+        g.IdGato == db.UsuarioGato.Where(ug => ug.IdUsuario == int.Parse(IdUsuario) && ug.Equipado == 'S')
+        .Select(ug => ug.IdGato).FirstOrDefault()).FirstOrDefaultAsync();
+
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        return Ok(new { usuario.IdUsuario, usuario.Nome, usuario.Email, usuario.Biografia, usuario.Pontos, usuario.Saldo, gatoEquipado });
+    }
+
     [HttpPost]
     [Route("usuarios/cadastrar")]
     public async Task<IActionResult> CadastrarUsuario([FromBody] CreateUserViewModel userModel, DBMeownagement db)
@@ -68,11 +106,26 @@ public class UsuarioController : ControllerBase
         {
             Nome = userModel.Nome,
             Email = userModel.Email,
+            Biografia = userModel.Biografia ?? string.Empty,
             Senha = userModel.Senha,
             Pontos = 500,
             Saldo = 0,
         };
+        await db.UsuarioGato.AddAsync(new UsuarioGato
+        {
+            IdUsuario = usuario.IdUsuario,
+            IdGato = 1, //zazu 
+            Copias = 1,
+            Equipado = 'S'
+        });
+        await db.LoginDiario.AddAsync(new LoginDiario
+        {
+            IdUsuario = usuario.IdUsuario,
+            NumSequencia = 1,
+            UltimoLogin = DateTime.Now
+        });
         await senhaHash.RegistrarUsuarioAsync(usuario);
+        await db.SaveChangesAsync();
         return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.IdUsuario }, usuario);
     }
 
@@ -89,13 +142,16 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Usuário não encontrado.");
         }
-        if (!string.IsNullOrEmpty(model.Senha))
+        if (usuarioExistente.Pontos < 467 && !string.IsNullOrEmpty(model.Senha))
         {
-            usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
+            return BadRequest($"Você não tem pontos suficientes para alterar a senha. (falta {467 - usuarioExistente.Pontos} pontos necessários)");
         }
-        if (!string.IsNullOrEmpty(model.Nome))
+        else if (!string.IsNullOrEmpty(model.Senha))
         {
-            usuarioExistente.Nome = model.Nome;
+            usuarioExistente.Pontos -= 467;
+            usuarioExistente.Senha = model.Senha != null ? Hash.HashPassword(usuarioExistente, model.Senha) : usuarioExistente.Senha;
+            usuarioExistente.Biografia = model.Biografia ?? usuarioExistente.Biografia;
+            usuarioExistente.Nome = model.Nome ?? usuarioExistente.Nome;
         }
         await db.SaveChangesAsync();
         return Ok(usuarioExistente);
