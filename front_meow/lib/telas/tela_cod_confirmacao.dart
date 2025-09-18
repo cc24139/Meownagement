@@ -10,6 +10,24 @@ class TelaCodConfirmacao extends StatefulWidget {
 class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Confirmação por Email",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Londrina",
+          ),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            //Fazer
+          ],
+        ),
+      ),
+    );
   }
 }
