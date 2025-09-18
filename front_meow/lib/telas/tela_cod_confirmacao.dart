@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 class TelaCodConfirmacao extends StatefulWidget {
   const TelaCodConfirmacao({super.key});
 
@@ -19,12 +19,33 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
             fontWeight: FontWeight.bold,
             fontFamily: "Londrina",
           ),
+          
         ),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           children: [
             //Fazer
+            OtpTextField(
+                numberOfFields: 5,
+                borderColor: Color(0xFF512DA8),
+                fieldWidth: 30,
+                onCodeChanged: (String code) {
+                  //handle validation or checks here           
+                },
+                onSubmit: (String codigo){
+                    showDialog(
+                        context: context,
+                        builder: (context){
+                        return AlertDialog(
+                            title: Text("Código de Verificação"),
+                            content: Text('O código digitado foi $codigo'),
+                        );
+                        }
+                    );
+                }, // end onSubmit
+            ),
           ],
         ),
       ),
