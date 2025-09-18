@@ -25,7 +25,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   void _fazerCadastro() {
     if (txtSenha.text == txtConfirmaSenha.text) {
-      Navigator.pushReplacementNamed(context, appRotas.login);
+      Navigator.pushReplacementNamed(context, AppRotas.login);
     }
   }
 
@@ -106,7 +106,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       width: 250,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, appRotas.login);
+                          Navigator.pushReplacementNamed(context, AppRotas.login);
                         },
                         child: const Text("Login"),
                       ),

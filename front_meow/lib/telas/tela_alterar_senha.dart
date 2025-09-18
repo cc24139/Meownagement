@@ -78,7 +78,7 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
               ElevatedButton(
                 onPressed: () {
                   // Lógica para alterar a senha
-                  Navigator.pushReplacementNamed(context, appRotas.login);
+                  Navigator.pushReplacementNamed(context, AppRotas.confirmacao);
                 },
                 child: const Text("Alterar Senha"),
               ),

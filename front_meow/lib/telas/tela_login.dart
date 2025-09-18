@@ -23,7 +23,7 @@ class _TelaLoginState extends State<TelaLogin> {
   void _fazerLogin() {
     if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
       Text("ciacnia");
-      Navigator.pushReplacementNamed(context, appRotas.home);
+      Navigator.pushReplacementNamed(context, AppRotas.home);
     }
   }
 
@@ -75,7 +75,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 width: 250,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, appRotas.alterarSenha);
+                    Navigator.pushReplacementNamed(context, AppRotas.alterarSenha);
                   },
                   child: const Text("Esqueci minha senha"),
                 ),
@@ -92,7 +92,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                             context,
-                            appRotas.cadastro,
+                            AppRotas.cadastro,
                           );
                         },
                         child: const Text("Cadastre-se"),
