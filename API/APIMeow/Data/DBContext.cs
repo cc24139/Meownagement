@@ -18,6 +18,8 @@ public class DBMeownagement : DbContext
     public DbSet<Recorrencia> Recorrencia { get; set; }
     public DbSet<UsuarioGato> UsuarioGato { get; set; }
     public DbSet<MetaCofrinhoTransacao> MetaCofrinhoTransacao { get; set; }
+
+    public DbSet<CodeEmail> CodeEmail { get; set; }
     public DbSet<LoginDiario> LoginDiario { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,7 +40,8 @@ public class DBMeownagement : DbContext
         modelBuilder.Entity<Recorrencia>().HasKey(r => r.IdRecorrencia);
         modelBuilder.Entity<UsuarioGato>().HasKey(ug => new { ug.IdUsuario, ug.IdGato });
         modelBuilder.Entity<MetaCofrinhoTransacao>().HasKey(mct => mct.IdRel);
-        modelBuilder.Entity<LoginDiario>().HasKey(ld => ld.IdUsuario);
+        modelBuilder.Entity<LoginDiario>().HasKey(ld => ld.IdLogin);
+        modelBuilder.Entity<CodeEmail>().HasKey(ce => ce.IdCode);
 
         // Configuração para UsuarioGato
         modelBuilder.Entity<UsuarioGato>()

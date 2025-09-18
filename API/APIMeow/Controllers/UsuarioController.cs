@@ -1,8 +1,11 @@
 using System.Security.Claims;
 using APIMeow.Controllers;
+using APIMeow.Email;
 using APIMeow.Hash;
+using APIMeow.Models;
 using APIMeow.Tokens;
 using APIMeow.ViewModels;
+using APIMeow.ViewModels.Verify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -101,16 +104,69 @@ public class UsuarioController : ControllerBase
         {
             return Conflict("Email já está em uso.");
         }
-        var senhaHash = new HashUsuario(db);
+        
+        //caso o usuario já tenha um codigo ativo
+        var codigoExistente = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == userModel.Email);
+        if (codigoExistente != null)
+        {
+            if(codigoExistente.TempoExp > DateTime.Now)
+            {
+                return BadRequest("Já existe um código de verificação ativo para este email. Verifique sua caixa de entrada e spam.");
+            }
+            else
+            {
+                db.CodeEmail.Remove(codigoExistente);
+                await db.SaveChangesAsync();
+            }
+        }
+        var verificaEmail = new EmailVerification(userModel.Email);
+        await verificaEmail.SendEmail();
+        var codeEmail = new CodeEmail
+        {
+            Code = verificaEmail._codeVerify.ToString(),
+            Email = userModel.Email,
+            TempoExp = verificaEmail._codeExpire,
+            Nome = userModel.Nome,
+            Biografia = userModel.Biografia,
+            Senha = userModel.Senha,
+        };
+        await db.CodeEmail.AddAsync(codeEmail);
+        await db.SaveChangesAsync();
+        return Ok("Código de verificação enviado para o email cadastrado. Verifique sua caixa de entrada e spam.");
+    }
+
+    [HttpPost]
+    [Route("usuarios/confirmarEmail")]
+    public async Task<IActionResult> ConfirmarEmail([FromBody] ConfirmarEmailViewModel model, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Code))
+        {
+            return BadRequest("Email ou código inválidos.");
+        }
+        var codeEntry = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == model.Email && c.Code == model.Code);
+        if (codeEntry == null)
+        {
+            return NotFound("Código ou email inválidos.");
+        }
+        if (codeEntry.TempoExp < DateTime.Now )
+        {
+            db.CodeEmail.Remove(codeEntry);
+            await db.SaveChangesAsync();
+            return BadRequest("Código expirado. Solicite um novo código.");
+        }
         var usuario = new Usuario
         {
-            Nome = userModel.Nome,
-            Email = userModel.Email,
-            Biografia = userModel.Biografia ?? string.Empty,
-            Senha = userModel.Senha,
-            Pontos = 500,
-            Saldo = 0,
+            Nome = codeEntry.Nome,
+            Email = codeEntry.Email,
+            Biografia = codeEntry.Biografia,
+            Senha = new PasswordHasher<Usuario>().HashPassword(null, codeEntry.Senha),
+            Pontos = 1000,
+            Saldo = 0
         };
+
+        await db.Usuario.AddAsync(usuario);
+        await db.SaveChangesAsync();
+
         await db.UsuarioGato.AddAsync(new UsuarioGato
         {
             IdUsuario = usuario.IdUsuario,
@@ -124,9 +180,9 @@ public class UsuarioController : ControllerBase
             NumSequencia = 1,
             UltimoLogin = DateTime.Now
         });
-        await senhaHash.RegistrarUsuarioAsync(usuario);
+        db.CodeEmail.Remove(codeEntry);
         await db.SaveChangesAsync();
-        return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.IdUsuario }, usuario);
+        return Ok("Email confirmado com sucesso.");
     }
 
     [Authorize]

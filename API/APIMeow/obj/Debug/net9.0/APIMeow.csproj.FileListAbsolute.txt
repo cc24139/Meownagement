@@ -330,3 +330,5 @@ C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\rjsmc
 C:\Users\u24139\Documents\GitHub\Meownagement\API\APIMeow\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Npgsql.dll
 C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\DotNetEnv.dll
+C:\Users\lf446\OneDrive\Documentos\GitHub\Meownagement\API\APIMeow\bin\Debug\net9.0\Sprache.dll
