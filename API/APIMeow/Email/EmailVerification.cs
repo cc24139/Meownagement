@@ -14,14 +14,16 @@ namespace APIMeow.Email
         private const int CodeExpireMinutes = 10;
 
         public string Email { get; private set; }
+        public string Nome { get; private set; }
 
         public EmailVerification()
         {
-         }
+        }
 
-        public EmailVerification(string usuario)
+        public EmailVerification(string usuario,string nome)
         {
-             Email = usuario;
+            Email = usuario;
+            Nome = nome;
             _codeVerify = new Random().Next(100000, 999999);
             _codeExpire = DateTime.Now.AddMinutes(CodeExpireMinutes);
         }
@@ -34,7 +36,7 @@ namespace APIMeow.Email
                 string remetente = "gurtgigachaduni.zazu@gmail.com";
                 MailMessage msg = new MailMessage(remetente, destinatario);
                 msg.Subject = "Código de Verificação de Email - Meownagement";
-                msg.Body = $"Seu código de verificação é: {_codeVerify}. Ele expira em {CodeExpireMinutes} minutos.";
+                msg.Body = $"Olá {Nome},\n\nSeu código de verificação é: {_codeVerify}\n\nEste código é válido por {CodeExpireMinutes} minutos.\n\nSe você não solicitou este código, por favor ignore este email.\n\nAtenciosamente,\nEquipe Meownagement 🐈‍⬛";
                 SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
                 client.EnableSsl = true;
                 client.Credentials = new System.Net.NetworkCredential(remetente, Environment.GetEnvironmentVariable("Senha"));

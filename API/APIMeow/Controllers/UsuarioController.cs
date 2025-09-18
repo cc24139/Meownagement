@@ -104,12 +104,12 @@ public class UsuarioController : ControllerBase
         {
             return Conflict("Email já está em uso.");
         }
-        
+
         //caso o usuario já tenha um codigo ativo
         var codigoExistente = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == userModel.Email);
         if (codigoExistente != null)
         {
-            if(codigoExistente.TempoExp > DateTime.Now)
+            if (codigoExistente.TempoExp > DateTime.Now)
             {
                 return BadRequest("Já existe um código de verificação ativo para este email. Verifique sua caixa de entrada e spam.");
             }
@@ -119,7 +119,7 @@ public class UsuarioController : ControllerBase
                 await db.SaveChangesAsync();
             }
         }
-        var verificaEmail = new EmailVerification(userModel.Email);
+        var verificaEmail = new EmailVerification(userModel.Email, userModel.Nome);
         await verificaEmail.SendEmail();
         var codeEmail = new CodeEmail
         {
@@ -148,7 +148,7 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Código ou email inválidos.");
         }
-        if (codeEntry.TempoExp < DateTime.Now )
+        if (codeEntry.TempoExp < DateTime.Now)
         {
             db.CodeEmail.Remove(codeEntry);
             await db.SaveChangesAsync();
@@ -222,12 +222,57 @@ public class UsuarioController : ControllerBase
             return BadRequest("Email ou nova senha inválidos.");
         }
         var usuarioExistente = await db.Usuario.FirstOrDefaultAsync(u => u.Email == model.Nome);
-        var Hash = new PasswordHasher<Usuario>();
         if (usuarioExistente == null)
         {
             return NotFound("Usuário não encontrado.");
         }
-        usuarioExistente.Senha = Hash.HashPassword(usuarioExistente, model.Senha);
+        var codeEmail = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == model.Nome);
+        if (codeEmail != null && codeEmail.TempoExp > DateTime.Now)
+        {
+            return BadRequest("Já existe um código de verificação ativo para este email. Verifique sua caixa de entrada e spam.");
+        }
+        var novoCodigo = new EmailVerification(model.Nome, usuarioExistente.Nome);
+        await novoCodigo.SendEmail();
+        db.CodeEmail.Add(new CodeEmail
+        {
+            Email = usuarioExistente.Email,
+            Nome = usuarioExistente.Nome,
+            Senha = model.Senha,
+            Code = novoCodigo._codeVerify.ToString(),
+            TempoExp = novoCodigo._codeExpire
+        });
+        await db.SaveChangesAsync();
+        return Ok("Código de verificação enviado para o email cadastrado. Verifique sua caixa de entrada e spam.");
+    }
+
+    [HttpPatch]
+    [Route("usuarios/confirmarEsquecerSenha")]
+    public async Task<IActionResult> ConfirmarEsquecerSenha([FromBody] ConfirmarEmailViewModel model, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Code))
+        {
+            return BadRequest("Email ou código inválidos.");
+        }
+        var codeEntry = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == model.Email && c.Code == model.Code);
+        if (codeEntry == null)
+        {
+            return NotFound("Código ou email inválidos.");
+        }
+        if (codeEntry.TempoExp < DateTime.Now)
+        {
+            db.CodeEmail.Remove(codeEntry);
+            await db.SaveChangesAsync();
+            return BadRequest("Código expirado. Solicite um novo código.");
+        }
+        var usuario = await db.Usuario.FirstOrDefaultAsync(u => u.Email == model.Email);
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        var Hash = new PasswordHasher<Usuario>();
+        usuario.Senha = Hash.HashPassword(usuario, codeEntry.Senha);
+        db.Usuario.Update(usuario);
+        db.CodeEmail.Remove(codeEntry);
         await db.SaveChangesAsync();
         return Ok("Senha alterada com sucesso.");
     }

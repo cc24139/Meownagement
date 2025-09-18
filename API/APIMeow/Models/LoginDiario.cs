@@ -8,6 +8,6 @@ public class LoginDiario
     [ForeignKey("Usuario")]
     public int IdUsuario { get; set; }
     public int NumSequencia { get; set; }
-    public DateTime UltimoLogin { get; set; }
+    public DateTime UltimoLogin { get; set; }   
     public virtual Usuario Usuario { get; set; }
 }
