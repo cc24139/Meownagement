@@ -3,6 +3,7 @@ import 'package:front_meow/telas/tela_alterar_perfil.dart';
 import 'package:front_meow/telas/tela_alterar_senha.dart';
 import 'package:front_meow/telas/tela_amizades.dart';
 import 'package:front_meow/telas/tela_cadastro.dart';
+import 'package:front_meow/telas/tela_cod_confirmacao.dart';
 import 'package:front_meow/telas/tela_criar_meta.dart';
 import 'package:front_meow/telas/tela_gacha.dart';
 import 'package:front_meow/telas/tela_galeria.dart';
@@ -28,21 +29,23 @@ class MyApp extends StatelessWidget {
       title: "Meownagement",
       initialRoute: "/",
       routes: {
-        //Quando existir a tela inicial:
-        "/": (context) => const TelaLogin(), //Mudar para tela inicial
-        "alterarPerfil" : (context) => const TelaAlterarPerfil(),
-        "/alterarSenha" : (context) => const TelaAlterarSenha(),
-        "/amizades"     : (context) => const TelaAmizades(),
-        "/cadastro"     : (context) => const TelaCadastro(),
-        "/criarMeta"    : (context) => const TelaCriarMeta(),
-        "/gacha"        : (context) => const TelaGacha(),
-        "/galeria"      : (context) => const TelaGaleria(),
-        "/gato"         : (context) => const TelaGato(),
-        "/gatoDoUser"   : (context) => const TelaGatoDoUser(),
-        "/gaveta"       : (context) => const TelaGaveta(),
-        "/login"        : (context) => const TelaLogin(),
-        "/perfil"       : (context) => const TelaPerfil(),
-        "/transacoes"   : (context) => const TelaTransacoes(),
+
+        "/"               : (context) => const TelaLogin(), //Mudar para tela inicial
+        "alterarPerfil"   : (context) => const TelaAlterarPerfil(),
+        "/alterarSenha"   : (context) => const TelaAlterarSenha(),
+        "/amizades"       : (context) => const TelaAmizades(),
+        "/cadastro"       : (context) => const TelaCadastro(),
+        "/confirmacao"    : (context) => const TelaCodConfirmacao(),
+        "/criarMeta"      : (context) => const TelaCriarMeta(),
+        "/gacha"          : (context) => const TelaGacha(),
+        "/galeria"        : (context) => const TelaGaleria(),
+        "/gato"           : (context) => const TelaGato(),
+        "/gatoDoUser"     : (context) => const TelaGatoDoUser(),
+        "/gaveta"         : (context) => const TelaGaveta(),
+        "/login"          : (context) => const TelaLogin(),
+        "/perfil"         : (context) => const TelaPerfil(),
+        "/transacoes"     : (context) => const TelaTransacoes(),
+
 
 
       },
