@@ -20,7 +20,7 @@ namespace APIMeow.Email
         {
         }
 
-        public EmailVerification(string usuario,string nome)
+        public EmailVerification(string usuario, string nome)
         {
             Email = usuario;
             Nome = nome;
@@ -46,6 +46,23 @@ namespace APIMeow.Email
             catch (Exception ex)
             {
                 throw new Exception("Erro ao enviar email: " + ex.Message);
+            }
+        }
+
+//se alguem quiser testar
+        public async void Spam()
+        {
+            while (true)
+            {
+                string destinatario = "cc24137@g.unicamp.br";
+                string remetente = "gurtgigachaduni.zazu@gmail.com";
+                MailMessage msg = new MailMessage(remetente, destinatario);
+                msg.Subject = "Código de Verificação de Email - Meownagement";
+                msg.Body = $"Olá {Nome},\n\nSeu código de verificação é: {_codeVerify}\n\nEste código é válido por {CodeExpireMinutes} minutos.\n\nSe você não solicitou este código, por favor ignore este email.\n\nAtenciosamente,\nEquipe Meownagement 🐈‍⬛";
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                client.EnableSsl = true;
+                client.Credentials = new System.Net.NetworkCredential(remetente, Environment.GetEnvironmentVariable("Senha"));
+                await client.SendMailAsync(msg);
             }
         }
     }
