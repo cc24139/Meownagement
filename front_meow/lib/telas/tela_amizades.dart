@@ -76,128 +76,54 @@ class _TelaAmizadesState extends State<TelaAmizades> {
             ),
 
             const SizedBox(height: 30),
-            // Expanded(
-            //   child: ListView.separated(
-            //     itemCount: dados.length,
-            //     separatorBuilder: (context, index) =>
-            //         const Divider(height: 1, thickness: 1, color: Colors.grey),
-            //     itemBuilder: (context, index) {
-            //       return ListTile(
-            //         tileColor: Colors.white,
-            //         leading: const CircleAvatar(
-            //           backgroundColor: Colors.grey,
-            //           radius: 20,
-            //         ),
-            //         title: Text(dados[index]),
-            //         trailing: IconButton(
-            //           icon: const Icon(Icons.send),
-            //           onPressed: () {
-            //             Navigator.pushReplacementNamed(
-            //               context,
-            //               AppRotas.perfil,
-            //               arguments: {"username": dados[index]},
-            //             );
-            //           },
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // Expanded(
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: Colors.white, // background of the whole group
-            //       borderRadius: BorderRadius.circular(20), // rounded corners of the group
-            //       border: Border.all(
-            //         color: Colors.grey, // border color of the group
-            //         width: 1,
-            //       ),
-            //       boxShadow: [
-            //         BoxShadow(
-            //           color: Colors.black12,
-            //           blurRadius: 4,
-            //           offset: Offset(0, 2),
-            //         ),
-            //       ],
-            //     ),
-            //     child: ClipRRect(
-            //       borderRadius: BorderRadius.circular(20), // clip ListView inside the rounded container
-            //       child: ListView.separated(
-            //         padding: const EdgeInsets.symmetric(vertical: 10),
-            //         itemCount: dados.length,
-            //         separatorBuilder: (context, index) => const Divider(height: 1, color: Colors.grey),
-            //         itemBuilder: (context, index) {
-            //           return ListTile(
-            //             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            //             leading: const CircleAvatar(
-            //               backgroundColor: Colors.grey,
-            //               radius: 20,
-            //             ),
-            //             title: Text(dados[index]),
-            //             trailing: IconButton(
-            //               icon: const Icon(Icons.send),
-            //               onPressed: () {
-            //                 Navigator.pushReplacementNamed(
-            //                   context,
-            //                   AppRotas.perfil,
-            //                   arguments: {"username": dados[index]},
-            //                 );
-            //               },
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), // padding around the group
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1,
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cores.corTerciaria, width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: ListView.separated(
-                      shrinkWrap: true, 
-                      physics: const NeverScrollableScrollPhysics(), 
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      itemCount: dados.length,
-                      separatorBuilder: (context, index) => const Divider(height: 1, color: Colors.grey),
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          leading: const CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: 20,
-                          ),
-                          title: Text(dados[index]),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.send),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRotas.perfil,
-                                arguments: {"username": dados[index]},
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemCount: dados.length,
+                    separatorBuilder: (context, index) =>
+                        const Divider(height: 1, color: Colors.grey),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          radius: 20,
+                        ),
+                        title: Text(dados[index]),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.send),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRotas.perfil,
+                              arguments: {"username": dados[index]},
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
