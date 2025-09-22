@@ -4,7 +4,7 @@ class Usuario {
   final String email;
   final double saldo;
   final int pontos;
-  final String biografia;
+  final String? biografia;
 
   Usuario({
     required this.idUsuario,
@@ -12,7 +12,7 @@ class Usuario {
     required this.email,
     required this.saldo,
     required this.pontos,
-    required this.biografia,
+    this.biografia,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
