@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/rotas.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});
@@ -58,15 +59,12 @@ class _TelaAmizadesState extends State<TelaAmizades> {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             Expanded(
               child: ListView.separated(
                 itemCount: dados.length,
-                separatorBuilder: (context, index) => const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
+                separatorBuilder: (context, index) =>
+                    const Divider(height: 1, thickness: 1, color: Colors.grey),
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: const CircleAvatar(
@@ -77,7 +75,13 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                     trailing: IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: () {
-                        print("Enviar mensagem para ${dados[index]}");
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AppRotas.perfil,
+                          arguments: {
+                            "username" : dados[index]
+                          }
+                        );
                       },
                     ),
                   );

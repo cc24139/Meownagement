@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/services/serv.dart';
 import 'package:front_meow/telas/tela_alterar_perfil.dart';
 import 'package:front_meow/telas/tela_alterar_senha.dart';
 import 'package:front_meow/telas/tela_amizades.dart';
