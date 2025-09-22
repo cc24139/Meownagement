@@ -36,4 +36,15 @@ class Usuario {
       _ => throw Exception('Erro ao carregar usuario'),
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idUsuario': idUsuario,
+      'nome': nome,
+      'email': email,
+      'saldo': saldo,
+      'pontos': pontos,
+      'biografia': biografia,
+    };
+  }
 }

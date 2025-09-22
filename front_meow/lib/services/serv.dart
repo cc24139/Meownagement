@@ -1,21 +1,5 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:front_meow/model/usuario.dart';
-
 class Http {
-  static String url = "http://"; // colocar a url da api
-
-  // exemplo -> dps poem as rotas reias aqui
-  Future<List<Usuario>> fetchUsuarios() async {
-    final response = await http.get(Uri.parse('${url}/usuarios'));
-
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => Usuario.fromJson(data)).toList();
-    } else {
-      throw Exception('Erro ao carregar usuários');
-    }
-  }
+  static String url = "https://cookiebeco.roney.stein.nom.br/v1"; // colocar a url da api
 
   /*
 

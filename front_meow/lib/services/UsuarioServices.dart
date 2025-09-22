@@ -13,9 +13,9 @@ import 'package:localstorage/localstorage.dart';
 class UsuarioServices extends Http {
   static String urlUsuario = "${Http.url}/usuarios";
   static String? token =
-      ""; //Nas outras rotas vai ter que pegar do localStorage
+      ""; // Nas outras rotas vai ter que pegar do localStorage
 
-  //Posts
+  // Posts
 
   Future<String> LoginUsuario(
     UsuarioLoginViewModel usuario,
@@ -32,7 +32,7 @@ class UsuarioServices extends Http {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       token = data['token'];
-      //tem que testar o localsStorage
+      // tem que testar o localsStorage
       storage.setItem('token', token!);
       return ("Login realizado com sucesso");
     } else {
@@ -40,11 +40,47 @@ class UsuarioServices extends Http {
     }
   }
 
-  //Gets
+  Future<String> CadastrarUsuario(Usuario usuario) async {
+    final response = await http.post(
+      Uri.parse("${urlUsuario}/cadastrar"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(usuario.toJson()), 
+    );
+
+    if (response.statusCode == 201) {
+      return ("Usuário cadastrado com sucesso");
+    } else {
+      throw Exception('Failed to create usuario');
+    }
+  }
+
+  Future<String> ConfirmarEmailUsuario(String Email, String Code) async {
+    final response = await http.post(
+      Uri.parse("${urlUsuario}/confirmarEmail"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'Email': Email,
+        'Code': Code,
+      }),
+    );
+    
+    if (response.statusCode == 200) {
+      return ("Email confirmado com sucesso");
+    } else {
+      throw Exception('Código ou Email inválido');
+    }
+  }
+
+  // Gets
+
   Future<UsuarioViewModel> GetUsuarios() async {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
-      //tem que redirecionar para a tela de login
+      // tem que redirecionar para a tela de login
     }
     final response = await http.get(
       Uri.parse("${urlUsuario}/listar"),
@@ -82,6 +118,44 @@ class UsuarioServices extends Http {
       return ("Usuário editado com sucesso");
     } else {
       throw Exception('Failed to edit usuario');
+    }
+  }
+
+  Future<String> EsqueceuSenhaUsuario(String Nome, String Senha) async {
+    final response = await http.patch(
+      Uri.parse("${urlUsuario}/esqueceuSenha"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'Nome': Nome,
+        'Senha': Senha,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return ("Senha alterada com sucesso");
+    } else {
+      throw Exception('Failed to change password usuario');
+    }
+  }
+
+  Future<String> ConfirmarEsquecerSenhaUsuario(String Email, String Code) async {
+    final response = await http.patch(
+      Uri.parse("${urlUsuario}/confirmarEsqueceuSenha"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'Email': Email,
+        'Code': Code,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return ("Código confirmado com sucesso");
+    } else {
+      throw Exception('Código ou Nome inválido');
     }
   }
 }
