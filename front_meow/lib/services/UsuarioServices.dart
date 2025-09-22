@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/model/usuario.dart';
