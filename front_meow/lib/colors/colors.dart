@@ -2,25 +2,29 @@ import 'package:flutter/material.dart';
 
 class CatColors {
   String paleta;
-  late Color primary;
-  late Color secondary;
-  late Color tertiary;
+  late Color primaria;
+  late Color secundaria;
+  late Color tercearia;
+  late Color complementar;
 
   CatColors({required this.paleta}) {
     switch (paleta.toLowerCase()) {
       case '':
-        primary   = Color(0xFF374151);
-        secondary = Color(0xFFF97316);
-        tertiary  = Color(0xFFFACC15);
+        primaria     = Color(0xFF374151);
+        secundaria   = Color(0xFFF97316);
+        tercearia    = Color(0xFFFACC15);
+        complementar = Colors.white;
         break;
       default:
-        primary   = Colors.white;
-        secondary = Colors.white;
-        tertiary  = Colors.white;
+        primaria     = Colors.white;
+        secundaria   = Colors.white;
+        tercearia    = Colors.white;
+        complementar = Colors.black;
     }
   }
 
-  Color get corPrimaria => primary;
-  Color get corSecundaria => secondary;
-  Color get corTerciaria => tertiary;
+  Color get corPrimaria => primaria;
+  Color get corSecundaria => secundaria;
+  Color get corTerciaria => tercearia;
+  Color get corComplementar => complementar;
 }
