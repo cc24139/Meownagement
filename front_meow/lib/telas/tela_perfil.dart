@@ -10,6 +10,11 @@ class TelaPerfil extends StatefulWidget {
 class _TelaPerfilState extends State<TelaPerfil> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    return Scaffold(
+      body: Text(
+        args['username']
+      ),
+    );
   }
 }
