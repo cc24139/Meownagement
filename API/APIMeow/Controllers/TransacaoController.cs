@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class TransacaoController : ControllerBase
 {
+
     //200
     [Authorize]
     [HttpGet("transacoes/listar")]
@@ -21,7 +22,7 @@ public class TransacaoController : ControllerBase
         return Ok(listTransacoes);
     }
     [Authorize]
-    [HttpGet("transacoes/listarRecorrentes")]
+    [HttpGet("transacoes/listar/recorrentes")]
     public async Task<IActionResult> ListarTransacoesRecorrentes(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -30,9 +31,32 @@ public class TransacaoController : ControllerBase
         return Ok(listTransacoes);
     }
 
+    [Authorize]
+    [HttpGet("transacoes/listar{dataEffetiva}")]
+    public async Task<IActionResult> ListarTransacoesPorData(DateTime dataEffetiva, DBMeownagement db)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao
+            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date == dataEffetiva.Date)
+            .ToListAsync();
+        return Ok(listTransacoes);
+    }
+
+    [Authorize]
+    [HttpGet("transacoes/listar/{dataInicio}/{dataFim}")]
+    public async Task<IActionResult> ListarTransacoesPorPeriodo(DateTime dataInicio, DateTime dataFim, DBMeownagement db)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = int.Parse(id);
+        var listTransacoes = await db.Transacao
+            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date >= dataInicio.Date && t.DataFinalizacao.Date <= dataFim.Date)
+            .ToListAsync();
+        return Ok(listTransacoes);
+    }
     //200
     [Authorize]
-    [HttpGet("transacoes/listarPositivo")]
+    [HttpGet("transacoes/listar/positivo")]
     public async Task<IActionResult> ListarTransacoesPositivas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +67,7 @@ public class TransacaoController : ControllerBase
 
     //200
     [Authorize]
-    [HttpGet("transacoes/listarNegativo")]
+    [HttpGet("transacoes/listar/negativo")]
     public async Task<IActionResult> ListarTransacoesNegativas(DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

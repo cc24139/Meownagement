@@ -92,6 +92,31 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
+        [HttpGet("cofrinho/listar/{data}")]
+        public async Task<IActionResult> ListarCofrinhosPorData(DateTime data, DBMeownagement db)
+        {
+            try
+            {
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var user = await db.Usuario.FindAsync(idUser);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var cofrinhos = await db.Cofrinho
+                    .Where(c => c.IdUsuario == user.IdUsuario && c.DataCriacao.Date == data.Date)
+                    .ToListAsync();
+
+                return Ok(cofrinhos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize]
         [HttpPut("cofrinho/criar")]
         public async Task<IActionResult> CriarCofrinho([FromBody] CreateCofrinhoViewModel model, DBMeownagement db)
         {

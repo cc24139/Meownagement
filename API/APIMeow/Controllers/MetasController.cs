@@ -42,6 +42,24 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
+        [HttpGet("metas/listar/{dataEffetivas}")]
+        public async Task<IActionResult> ListarMetasPorData(DateTime dataEffetivas, DBMeownagement db)
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.DataCriacao.Date == dataEffetivas.Date).ToListAsync();
+            return Ok(listMetas);
+        }
+
+        [Authorize]
+        [HttpGet("metas/listar/{dataInicio}/{dataFim}")]
+        public async Task<IActionResult> ListarMetasPorPeriodo(DateTime dataInicio, DateTime dataFim, DBMeownagement db)
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.DataCriacao.Date >= dataInicio.Date && m.DataTermino.Date <= dataFim.Date).ToListAsync();
+            return Ok(listMetas);
+        }
+
+        [Authorize]
         [HttpPost("metas/criar")]
         public async Task<IActionResult> CriarMeta([FromBody] CreateMetasViewModel meta, DBMeownagement db)
         {

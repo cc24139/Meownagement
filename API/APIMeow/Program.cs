@@ -54,4 +54,4 @@ app.UseHttpsRedirection();
 
 
 
-app.Run();
+app.Run("Olá desenvolvedor, a API está rodando! 🐈‍⬛");

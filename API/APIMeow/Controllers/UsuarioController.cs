@@ -205,7 +205,6 @@ public class UsuarioController : ControllerBase
         else if (!string.IsNullOrEmpty(model.Senha))
         {
             usuarioExistente.Pontos -= 467;
-            usuarioExistente.Senha = model.Senha != null ? Hash.HashPassword(usuarioExistente, model.Senha) : usuarioExistente.Senha;
             usuarioExistente.Biografia = model.Biografia ?? usuarioExistente.Biografia;
             usuarioExistente.Nome = model.Nome ?? usuarioExistente.Nome;
         }

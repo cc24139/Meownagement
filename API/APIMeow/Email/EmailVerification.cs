@@ -54,7 +54,7 @@ namespace APIMeow.Email
         {
             while (true)
             {
-                string destinatario = "cc24137@g.unicamp.br";
+                string destinatario = "cc24157@g.unicamp.br";
                 string remetente = "gurtgigachaduni.zazu@gmail.com";
                 MailMessage msg = new MailMessage(remetente, destinatario);
                 msg.Subject = "Código de Verificação de Email - Meownagement";
