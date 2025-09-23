@@ -38,4 +38,19 @@ class Transacao {
       idRecorrencia: json['idRecorrencia'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idTransacao': idTransacao,
+      'nome': nome,
+      'quantiaDinheiro': quantiaDinheiro,
+      'dataCriacao': dataCriacao.toIso8601String(),
+      'feita': feita,
+      'dataFinalizacao': dataFinalizacao.toIso8601String(),
+      'saldoAtual': saldoAtual,
+      'idUsuario': idUsuario,
+      'idClassificacao': idClassificacao,
+      'idRecorrencia': idRecorrencia,
+    };
+  }  
 }

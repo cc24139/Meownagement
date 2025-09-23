@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/services/serv.dart';
 import 'package:front_meow/telas/tela_alterar_perfil.dart';
 import 'package:front_meow/telas/tela_alterar_senha.dart';
 import 'package:front_meow/telas/tela_amizades.dart';
@@ -22,7 +23,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
 
-        "/"               : (context) => const TelaCodConfirmacao(), //Mudar para tela inicial
+        "/"               : (context) => const TelaAmizades(), //Mudar para tela inicial
         "alterarPerfil"   : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),
