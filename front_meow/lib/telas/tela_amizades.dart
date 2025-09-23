@@ -10,6 +10,10 @@ class TelaAmizades extends StatefulWidget {
 class _TelaAmizadesState extends State<TelaAmizades> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Usuários"),
+      ),
+    );
   }
 }

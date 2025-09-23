@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "nAGP49Hmi6hFf+FneOBmTQ7Glxe1uMXPwx/Pc8FnsFU=",
-  "Source": "APIMeow",
-  "BasePath": "_content/APIMeow",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"nAGP49Hmi6hFf+FneOBmTQ7Glxe1uMXPwx/Pc8FnsFU=","Source":"APIMeow","BasePath":"_content/APIMeow","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class TelaCodConfirmacao extends StatefulWidget {
   const TelaCodConfirmacao({super.key});
@@ -6,6 +8,9 @@ class TelaCodConfirmacao extends StatefulWidget {
   @override
   State<TelaCodConfirmacao> createState() => _TelaCodConfirmacaoState();
 }
+
+void _enviarCodigo() {}
+void _verificarCodigo() {}
 
 class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
   @override
@@ -20,11 +25,52 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
             fontFamily: "Londrina",
           ),
         ),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           children: [
-            //Fazer
+            OtpTextField(
+              numberOfFields: 6,
+              borderColor: Color(0xFF512DA8),
+              fieldWidth: 30,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              showFieldAsBox: true,
+              onSubmit: (String codigo) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Código de Verificação"),
+                      content: Text('O código digitado foi $codigo'),
+                    );
+                  },
+                );
+              },
+            ),
+            TextButton(
+              onPressed: () {
+                _enviarCodigo();
+              },
+              child: Text("Reenviar Código"),
+            ),
+            SizedBox(
+              width: 200,
+              child: Text(
+                "Aguarde 30 segundos antes de solicitar o código novamente",
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              width: 100,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () {
+                  _verificarCodigo();
+                },
+                child: Text("Finalizar"),
+              ),
+            ),
           ],
         ),
       ),
