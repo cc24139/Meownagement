@@ -3,6 +3,7 @@ import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/model/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/services/serv.dart';
 
 class TelaAmizades extends StatefulWidget {
@@ -14,7 +15,7 @@ class TelaAmizades extends StatefulWidget {
 
 class _TelaAmizadesState extends State<TelaAmizades> {
   String textoPesquisa = "";
-  late Future<List<Usuario>> todosOsUsuarios;
+  late Future<List<UsuarioViewModel>> todosOsUsuarios;
   CatColors cores = CatColors(paleta: "");
 
   @override
@@ -47,7 +48,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
         backgroundColor: cores.corPrimaria,
         centerTitle: true,
       ),
-      body: FutureBuilder<List<Usuario>>(
+      body: FutureBuilder<List<UsuarioViewModel>>(
         future: todosOsUsuarios,
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,7 +59,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
               return const Center(child: Text("Nenhum usuário encontrado"));
           }
 
-          List<Usuario> dados = snapshot.data!;
+          List<UsuarioViewModel> dados = snapshot.data!;
           if (textoPesquisa.isNotEmpty) {
             dados = dados
                 .where((u) => u.nome.toLowerCase().contains(textoPesquisa.toLowerCase()))

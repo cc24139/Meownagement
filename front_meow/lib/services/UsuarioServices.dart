@@ -11,8 +11,7 @@ import 'package:localstorage/localstorage.dart';
 
 class UsuarioServices extends Http {
   static String urlUsuario = "${Http.url}/usuarios";
-  static String? token =
-      ""; // Nas outras rotas vai ter que pegar do localStorage
+  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxmNDQ2NTRAZ21haWwuY29tIiwibmFtZWlkIjoiNCIsIm5iZiI6MTc1ODgwNzM1MywiZXhwIjoxNzU4ODE0NTUzLCJpYXQiOjE3NTg4MDczNTN9.32SGw3LwCMm0vNEyNGVO6F12YIeHtEC_anIWI2uc4z0"; // Nas outras rotas vai ter que pegar do localStorage
 
   // Posts
 
@@ -40,19 +39,21 @@ class UsuarioServices extends Http {
   }
 
   Future<List<UsuarioViewModel>> ListarUsuarios() async {
+    print(urlUsuario);
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       // tem que redirecionar para a tela de login
     }
     final response = await http.get(
-      Uri.parse("${urlUsuario}/listar"),
+      Uri.parse("https://cookiebeco.roney.stein.nom.br/v1/usuarios/listar"),
       headers: {HttpHeaders.authorizationHeader: token!},
     );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<UsuarioViewModel>.from(
-          data.map((usuario) => UsuarioViewModel.fromJson(usuario)));
+        data.map((usuario) => UsuarioViewModel.fromJson(usuario)),
+      );
     } else {
       throw Exception('Failed to load usuario');
     }
@@ -72,7 +73,8 @@ class UsuarioServices extends Http {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<Usuario>.from(
-          data.map((usuario) => Usuario.fromJson(usuario)));
+        data.map((usuario) => Usuario.fromJson(usuario)),
+      );
     } else {
       throw Exception('Failed to load usuario');
     }
@@ -84,7 +86,7 @@ class UsuarioServices extends Http {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(usuario.toJson()), 
+      body: jsonEncode(usuario.toJson()),
     );
 
     if (response.statusCode == 201) {
@@ -100,19 +102,15 @@ class UsuarioServices extends Http {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'Email': Email,
-        'Code': Code,
-      }),
+      body: jsonEncode(<String, String>{'Email': Email, 'Code': Code}),
     );
-    
+
     if (response.statusCode == 200) {
       return ("Email confirmado com sucesso");
     } else {
       throw Exception('Código ou Email inválido');
     }
   }
-
 
   //Patch
 
@@ -127,10 +125,7 @@ class UsuarioServices extends Http {
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: token!,
       },
-      body: jsonEncode(<String, String>{
-        'Nome': Nome,
-        'Biografia': Biografia,
-      }),
+      body: jsonEncode(<String, String>{'Nome': Nome, 'Biografia': Biografia}),
     );
 
     if (response.statusCode == 200) {
@@ -146,10 +141,7 @@ class UsuarioServices extends Http {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'Nome': Nome,
-        'Senha': Senha,
-      }),
+      body: jsonEncode(<String, String>{'Nome': Nome, 'Senha': Senha}),
     );
 
     if (response.statusCode == 200) {
@@ -159,16 +151,16 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<String> ConfirmarEsquecerSenhaUsuario(String Email, String Code) async {
+  Future<String> ConfirmarEsquecerSenhaUsuario(
+    String Email,
+    String Code,
+  ) async {
     final response = await http.patch(
       Uri.parse("${urlUsuario}/confirmarEsqueceuSenha"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'Email': Email,
-        'Code': Code,
-      }),
+      body: jsonEncode(<String, String>{'Email': Email, 'Code': Code}),
     );
 
     if (response.statusCode == 200) {

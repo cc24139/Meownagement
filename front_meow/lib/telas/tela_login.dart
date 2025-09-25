@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
-
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -13,6 +13,8 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
 
+
+
   @override
   void dispose() {
     txtEmail.dispose();
@@ -22,7 +24,8 @@ class _TelaLoginState extends State<TelaLogin> {
 
   void _fazerLogin() {
     if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
-      Text("ciacnia");
+      // var httpUsuarios = UsuarioServices();
+      // httpUsuarios.LoginUsuario(usuario, storage)
       Navigator.pushReplacementNamed(context, AppRotas.home);
     }
   }
@@ -75,7 +78,10 @@ class _TelaLoginState extends State<TelaLogin> {
                 width: 250,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, AppRotas.alterarSenha);
+                    Navigator.pushReplacementNamed(
+                      context,
+                      AppRotas.alterarSenha,
+                    );
                   },
                   child: const Text("Esqueci minha senha"),
                 ),
