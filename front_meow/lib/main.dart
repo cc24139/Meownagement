@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
 
-        "/"               : (context) => const TelaAmizades(), //Mudar para tela inicial
+        "/"               : (context) => const TelaPerfil(), //Mudar para tela inicial
         "alterarPerfil"   : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),

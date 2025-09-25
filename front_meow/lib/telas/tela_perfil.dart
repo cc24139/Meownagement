@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/model/usuario.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 
@@ -12,12 +14,57 @@ class TelaPerfil extends StatefulWidget {
 class _TelaPerfilState extends State<TelaPerfil> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as UsuarioViewModel;
+    CatColors cores = CatColors(paleta: '');
+
+    //final args = ModalRoute.of(context)!.settings.arguments as UsuarioViewModel;
+    var a = UsuarioViewModel(
+      id: 1,
+      nome: "RonaldoGames",
+      email: "jaoao",
+      pontos: "67",
+      saldo: "212",
+    );
     return Scaffold(
-      body: Text(
-        args.nome
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(
+                    '../assets/images/doudouCat/doudouCatPequena.jpg',
+                  ),
+                  radius: 40,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Row(
+                      children: [
+                        Text(
+                          a.nome,
+                          style: TextStyle(
+                            fontSize: 45,
+                            fontFamily: "Londrina",
+                            decorationColor: cores.complementar,
+                          ),
+                        ),
+                        SvgPicture.asset(
+                          "../assets/icons/vetor_editar.svg",
+                          colorFilter: ColorFilter.mode(Colors.black,BlendMode.clear),
+                        )
+                      ] 
+                    )
+                    
+
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+        ],
       ),
-      
     );
   }
 }

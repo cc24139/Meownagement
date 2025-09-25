@@ -24,8 +24,6 @@ class _TelaLoginState extends State<TelaLogin> {
 
   void _fazerLogin() {
     if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
-      // var httpUsuarios = UsuarioServices();
-      // httpUsuarios.LoginUsuario(usuario, storage)
       Navigator.pushReplacementNamed(context, AppRotas.home);
     }
   }
