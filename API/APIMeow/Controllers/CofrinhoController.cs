@@ -97,7 +97,7 @@ namespace APIMeow.Controllers
         {
             try
             {
-                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
                 var user = await db.Usuario.FindAsync(idUser);
                 if (user == null)
                 {

@@ -198,11 +198,11 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Usuário não encontrado.");
         }
-        if (usuarioExistente.Pontos < 467 && !string.IsNullOrEmpty(model.Senha))
+        else if (usuarioExistente.Pontos < 467)
         {
-            return BadRequest($"Você não tem pontos suficientes para alterar a senha. (falta {467 - usuarioExistente.Pontos} pontos necessários)");
+            return BadRequest("Você não tem pontos suficientes para editar seu perfil. (Custa 467 pontos)");
         }
-        else if (!string.IsNullOrEmpty(model.Senha))
+        else
         {
             usuarioExistente.Pontos -= 467;
             usuarioExistente.Biografia = model.Biografia ?? usuarioExistente.Biografia;
@@ -214,23 +214,23 @@ public class UsuarioController : ControllerBase
 
     [HttpPatch]
     [Route("usuarios/esquecerSenha")]
-    public async Task<IActionResult> EsquecerSenha([FromBody] EditarUsuarioViewModel model, DBMeownagement db)
+    public async Task<IActionResult> EsquecerSenha([FromBody] EditarSenhaUsuarioViewModel model, DBMeownagement db)
     {
-        if (string.IsNullOrEmpty(model.Nome) || string.IsNullOrEmpty(model.Senha))
+        if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Senha))
         {
             return BadRequest("Email ou nova senha inválidos.");
         }
-        var usuarioExistente = await db.Usuario.FirstOrDefaultAsync(u => u.Email == model.Nome);
+        var usuarioExistente = await db.Usuario.FirstOrDefaultAsync(u => u.Email == model.Email);
         if (usuarioExistente == null)
         {
             return NotFound("Usuário não encontrado.");
         }
-        var codeEmail = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == model.Nome);
+        var codeEmail = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == model.Email);
         if (codeEmail != null && codeEmail.TempoExp > DateTime.Now)
         {
             return BadRequest("Já existe um código de verificação ativo para este email. Verifique sua caixa de entrada e spam.");
         }
-        var novoCodigo = new EmailVerification(model.Nome, usuarioExistente.Nome);
+        var novoCodigo = new EmailVerification(model.Email, usuarioExistente.Nome);
         await novoCodigo.SendEmail();
         db.CodeEmail.Add(new CodeEmail
         {

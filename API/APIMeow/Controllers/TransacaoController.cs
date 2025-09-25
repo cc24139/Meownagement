@@ -32,25 +32,29 @@ public class TransacaoController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("transacoes/listar{dataEffetiva}")]
-    public async Task<IActionResult> ListarTransacoesPorData(DateTime dataEffetiva, DBMeownagement db)
+    [HttpGet("transacoes/listar/{dataEffetiva}")]
+    public async Task<IActionResult> ListarTransacoesPorData(string dataEffetiva, DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.Parse(id);
+        dataEffetiva = DateTime.Parse(dataEffetiva).ToString("yyyy-MM-dd");
+        DateTime dataFinal = DateTime.Parse(dataEffetiva);
         var listTransacoes = await db.Transacao
-            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date == dataEffetiva.Date)
+            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date == dataFinal.Date)
             .ToListAsync();
         return Ok(listTransacoes);
     }
 
     [Authorize]
     [HttpGet("transacoes/listar/{dataInicio}/{dataFim}")]
-    public async Task<IActionResult> ListarTransacoesPorPeriodo(DateTime dataInicio, DateTime dataFim, DBMeownagement db)
+    public async Task<IActionResult> ListarTransacoesPorPeriodo(String dataIni, String datafinal, DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.Parse(id);
+        var dataInicio = DateTime.Parse(dataIni).Date;
+        var dataFim = DateTime.Parse(datafinal).Date;
         var listTransacoes = await db.Transacao
-            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date >= dataInicio.Date && t.DataFinalizacao.Date <= dataFim.Date)
+            .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date >= dataInicio && t.DataFinalizacao.Date <= dataFim)
             .ToListAsync();
         return Ok(listTransacoes);
     }

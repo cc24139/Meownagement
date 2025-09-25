@@ -53,5 +53,7 @@ app.UseHttpsRedirection();
 
 
 
+app.MapGet("/", () => "Olá desenvolvedor, a API está rodando! 🐈‍⬛");
 
-app.Run("Olá desenvolvedor, a API está rodando! 🐈‍⬛");
+
+app.Run();

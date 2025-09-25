@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,30 +11,34 @@ import 'package:localstorage/localstorage.dart';
 class TransacaoServices extends Http {
   static String urlTransacao = "${Http.url}/transacoes";
   static String? token = localStorage.getItem('token');
-  
+
   // Posts
-  Future<String> CriarTransacao(String Nome, double QuantiaDinheiro, String DataCriacao, 
-                                String DataFinalizacao, int IdOcorrencia, int IdClassificacao) async {
+  Future<String> CriarTransacao(
+    String Nome,
+    double QuantiaDinheiro,
+    String DataCriacao,
+    String DataFinalizacao,
+    int IdOcorrencia,
+    int IdClassificacao,
+  ) async {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
-    
+
     final response = await http.post(
       Uri.parse("${urlTransacao}/criar"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: token!,
       },
-      body: jsonEncode(
-        {
-          'nome': Nome,
-          'quantiaDinheiro': QuantiaDinheiro,
-          'dataCriacao': DataCriacao,
-          'dataFinalizacao': DataFinalizacao,
-          'idOcorrencia': IdOcorrencia,
-          'idClassificacao': IdClassificacao
-        },
-      ),
+      body: jsonEncode({
+        'nome': Nome,
+        'quantiaDinheiro': QuantiaDinheiro,
+        'dataCriacao': DataCriacao,
+        'dataFinalizacao': DataFinalizacao,
+        'idOcorrencia': IdOcorrencia,
+        'idClassificacao': IdClassificacao,
+      }),
     );
 
     if (response.statusCode == 201) {
@@ -46,6 +49,225 @@ class TransacaoServices extends Http {
   }
 
   // Gets
+  Future<List<Transacao>> ListarTransacoes() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlTransacao}/listar"),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  Future<List<Transacao>> ListarTransacoesRecorrentes() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlTransacao}/listar/recorrentes"),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  //Teste necessario
+  Future<List<Transacao>> ListarPorDate(DateTime date) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlTransacao}/listar/porData/${date.toIso8601String()}"),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  Future<List<Transacao>> ListarPorPeriodo(DateTime start, DateTime end) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse(
+        "${urlTransacao}/listar/porPeriodo/${start.toIso8601String()}/${end.toIso8601String()}",
+      ),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  Future<List<Transacao>> ListarPositivas() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlTransacao}/listar/positivo"),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  Future<List<Transacao>> ListarNegativas() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlTransacao}/listar/negativo"),
+      headers: {HttpHeaders.authorizationHeader: token!},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<Transacao>.from(
+        data.map((transacao) => Transacao.fromJson(transacao)),
+      );
+    } else {
+      throw Exception('Failed to load transacao');
+    }
+  }
+
+  //Patches
+  Future<String> EditarTransacao(
+    int Id,
+    String Nome,
+    double QuantiaDinheiro,
+    String DataCriacao,
+    String DataFinalizacao,
+    int IdOcorrencia,
+    int IdClassificacao,
+    int? idMeta,
+    int? idCofrinho,
+  ) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+
+    final response = await http.patch(
+      Uri.parse("${urlTransacao}/editar/$Id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: token!,
+      },
+      body: jsonEncode({
+        'IdTransacao': Id,
+        'Nome': Nome,
+        'QuantiaDinheiro': QuantiaDinheiro,
+        'DataCriacao': DataCriacao,
+        'DataFinalizacao': DataFinalizacao,
+        'IdClassificacao': IdClassificacao,
+        'IdRecorrencia': IdOcorrencia,
+        'IdMeta': idMeta,
+        'IdCofrinho': idCofrinho,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return ("Transação editada com sucesso");
+    } else {
+      throw Exception('Failed to edit transacao');
+    }
+  }
+
+  Future<String> AtualizarSaldo(int id) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+
+    final response = await http.patch(
+      Uri.parse("${urlTransacao}/atualizar/saldo/$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: token!,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return ("Saldo atualizado com sucesso");
+    } else {
+      throw Exception('Failed to update saldo');
+    }
+  }
+
+  //delete
+  Future<String> DeletarTransacao(int id) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+
+    final response = await http.delete(
+      Uri.parse("${urlTransacao}/deletar/$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: token!,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return ("Transação deletada com sucesso");
+    } else {
+      throw Exception('Failed to delete transacao');
+    }
+  }
 
   
+  Future<String> AtualizarTransaceos(int id) async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+
+    final response = await http.patch(
+      Uri.parse("${urlTransacao}/atualizar"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: token!,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return ("Transações atualizadas com sucesso");
+    } else {
+      throw Exception('Failed to update transacoes');
+    }
+  }
+
 }
