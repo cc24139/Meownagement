@@ -50,7 +50,7 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Nenhum usuário encontrado.");
         }
-        return Ok(usuarios.Select(u => new { u.IdUsuario, u.Nome, u.Email, u.Pontos, u.Saldo }));
+        return Ok(usuarios.Select(u => new { u.IdUsuario, u.Nome, u.Email, u.Biografia, u.Pontos, u.Saldo }));
     }
 
     [Authorize]

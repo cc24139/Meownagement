@@ -9,6 +9,7 @@ class UsuarioViewModel {
     required this.id,
     required this.nome,
     required this.email,
+    biografia,
     required this.pontos,
     required this.saldo,
   });
@@ -18,6 +19,7 @@ class UsuarioViewModel {
       id: json['idUsuario'],
       nome: json['nome'],
       email: json['email'],
+      biografia: json['biografia'],
       pontos: json['pontos'],
       saldo: json['saldo'],
     );

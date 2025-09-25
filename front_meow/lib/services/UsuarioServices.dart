@@ -39,7 +39,7 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<List<Usuario>> ListarUsuarios() async {
+  Future<List<UsuarioViewModel>> ListarUsuarios() async {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       // tem que redirecionar para a tela de login
@@ -51,8 +51,8 @@ class UsuarioServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return List<Usuario>.from(
-          data.map((usuario) => Usuario.fromJson(usuario)));
+      return List<UsuarioViewModel>.from(
+          data.map((usuario) => UsuarioViewModel.fromJson(usuario)));
     } else {
       throw Exception('Failed to load usuario');
     }

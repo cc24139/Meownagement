@@ -45,7 +45,7 @@ namespace APIMeow.Controllers
 
         [Authorize]
         [HttpGet("gatos/listarRaridade")]
-        public async Task<IActionResult> ListarGatosPorRaridade(int raridade, DBMeownagement db)
+        public async Task<IActionResult> ListarGatosPorRaridade([FromQuery] int raridade, DBMeownagement db)
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
             var GatosUsuario = await db.UsuarioGato.Where(ug => ug.IdUsuario == userId).Select(ug => ug.IdGato).ToListAsync();
@@ -62,7 +62,7 @@ namespace APIMeow.Controllers
                 return NotFound("Gato não encontrado.");
             }
             var qtsUsuarios = await db.Usuario.CountAsync();
-            var qtsPossuem = await db.UsuarioGato.CountAsync(ug => ug.IdGato == id)/qtsUsuarios*100; //porcentagem
+            var qtsPossuem = await db.UsuarioGato.CountAsync(ug => ug.IdGato == id) / qtsUsuarios * 100; //porcentagem
             var qtsCopias = await db.UsuarioGato.Where(ug => ug.IdGato == id).SumAsync(ug => ug.Copias);
             return Ok(new { gato, qtsPossuem, qtsCopias });
         }
@@ -102,7 +102,7 @@ namespace APIMeow.Controllers
 
         [Authorize]
         [HttpGet("gatos/equipado")]
-        
+
         public async Task<IActionResult> ObterGatoEquipado(DBMeownagement db)
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
@@ -180,6 +180,17 @@ namespace APIMeow.Controllers
                 return NotFound("Gato não encontrado.");
             }
             return Ok(gato.CodPaleta);
+        }
+        [Authorize]
+        [HttpGet("gatos/paleta/usuario")]
+        public async Task<IActionResult> ObterPaletaUsuario(DBMeownagement db)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var paleta = await db.UsuarioGato
+                .Where(ug => ug.IdUsuario == userId)
+                .Select(ug => ug.Gato.CodPaleta)
+                .ToListAsync();
+            return Ok(paleta);
         }
     }
 }

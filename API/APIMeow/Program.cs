@@ -50,7 +50,12 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
-
+app.UseCors(
+    options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+);
 
 
 app.MapGet("/", () => "Olá desenvolvedor, a API está rodando! 🐈‍⬛");
