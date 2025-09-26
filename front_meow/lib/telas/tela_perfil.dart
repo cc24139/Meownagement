@@ -21,8 +21,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
       id: 1,
       nome: "RonaldoGames",
       email: "jaoao",
-      pontos: "67",
-      saldo: "212",
+      pontos: 67,
+      saldo: 212,
     );
     return Scaffold(
       body: Column(

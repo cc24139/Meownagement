@@ -2,8 +2,8 @@ class UsuarioViewModel {
   final int id;
   final String nome;
   final String email;
-  final String pontos;
-  final String saldo;
+  final int pontos;
+  final double saldo;
 
   UsuarioViewModel({
     required this.id,
