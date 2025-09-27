@@ -1,4 +1,4 @@
-class Meta {
+class Metas {
   int idMeta;
   String nome;
   double gastoLimite;
@@ -9,7 +9,7 @@ class Meta {
   int idUsuario;
   int idClassificacao;
 
-  Meta({
+  Metas({
     required this.idMeta,
     required this.nome,
     required this.gastoLimite,
@@ -21,8 +21,8 @@ class Meta {
     required this.idClassificacao,
   });
 
-  factory Meta.fromJson(Map<String, dynamic> json) {
-    return Meta(
+  factory Metas.fromJson(Map<String, dynamic> json) {
+    return Metas(
       idMeta: json['idMeta'],
       nome: json['nome'],
       gastoLimite: (json['gastoLimite'] as num).toDouble(),
