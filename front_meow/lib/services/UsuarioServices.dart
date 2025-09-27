@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/model/usuario.dart';
@@ -11,7 +9,7 @@ import 'package:localstorage/localstorage.dart';
 
 class UsuarioServices extends Http {
   static String urlUsuario = "${Http.url}/usuarios";
-  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxmNDQ2NTRAZ21haWwuY29tIiwibmFtZWlkIjoiNCIsIm5iZiI6MTc1ODgwNzM1MywiZXhwIjoxNzU4ODE0NTUzLCJpYXQiOjE3NTg4MDczNTN9.32SGw3LwCMm0vNEyNGVO6F12YIeHtEC_anIWI2uc4z0"; // Nas outras rotas vai ter que pegar do localStorage
+  // Token agora é gerenciado pela classe Http
 
   // Posts
 
@@ -29,9 +27,9 @@ class UsuarioServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      token = data['token'];
+      Http.token = data['token'];
       // tem que testar o localsStorage
-      storage.setItem('token', token!);
+      storage.setItem('token', Http.token!);
       return ("Login realizado com sucesso");
     } else {
       throw Exception('Failed to login usuario');
@@ -39,35 +37,36 @@ class UsuarioServices extends Http {
   }
 
   Future<List<UsuarioViewModel>> ListarUsuarios() async {
-    print(urlUsuario);
-    if (token == null) {
+    if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       // tem que redirecionar para a tela de login
     }
     final response = await http.get(
-      Uri.parse("https://cookiebeco.roney.stein.nom.br/v1/usuarios/listar"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      Uri.parse("${urlUsuario}/listar"),
+      headers: Http.headers,
     );
-
+    print(response.request);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<UsuarioViewModel>.from(
         data.map((usuario) => UsuarioViewModel.fromJson(usuario)),
       );
     } else {
-      throw Exception('Failed to load usuario');
+      throw Exception(
+        'Failed to load usuario :' + response.statusCode.toString(),
+      );
     }
   }
 
   Future<List<Usuario>> PesquisarUsuario(String Nome) async {
-    if (token == null) {
+    if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       // tem que redirecionar para a tela de login
     }
 
     final response = await http.get(
       Uri.parse("${urlUsuario}/pesquisar?Nome=$Nome"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -115,16 +114,13 @@ class UsuarioServices extends Http {
   //Patch
 
   Future<String> EditarUsuario(String Nome, String Biografia) async {
-    if (token == null) {
+    if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       //tem que redirecionar para a tela de login
     }
     final response = await http.patch(
       Uri.parse("${urlUsuario}/editar"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers: Http.headers,
       body: jsonEncode(<String, String>{'Nome': Nome, 'Biografia': Biografia}),
     );
 
@@ -171,16 +167,13 @@ class UsuarioServices extends Http {
   }
 
   Future<String> PerfilUsuario() async {
-    if (token == null) {
+    if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       //tem que redirecionar para a tela de login
     }
     final response = await http.get(
       Uri.parse("${urlUsuario}/perfil"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {

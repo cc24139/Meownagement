@@ -10,7 +10,10 @@ import 'package:localstorage/localstorage.dart';
 
 class TransacaoServices extends Http {
   static String urlTransacao = "${Http.url}/transacoes";
-  static String? token = localStorage.getItem('token');
+
+  TransacaoServices() {
+    Http.token = localStorage.getItem('Http.token');
+  }
 
   // Posts
   Future<String> CriarTransacao(
@@ -21,16 +24,13 @@ class TransacaoServices extends Http {
     int IdOcorrencia,
     int IdClassificacao,
   ) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.post(
       Uri.parse("${urlTransacao}/criar"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers: Http.headers,
       body: jsonEncode({
         'nome': Nome,
         'quantiaDinheiro': QuantiaDinheiro,
@@ -50,12 +50,12 @@ class TransacaoServices extends Http {
 
   // Gets
   Future<List<Transacao>> ListarTransacoes() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -69,12 +69,12 @@ class TransacaoServices extends Http {
   }
 
   Future<List<Transacao>> ListarTransacoesRecorrentes() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/recorrentes"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -89,12 +89,12 @@ class TransacaoServices extends Http {
 
   //Teste necessario
   Future<List<Transacao>> ListarPorDate(DateTime date) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/porData/${date.toIso8601String()}"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -108,14 +108,14 @@ class TransacaoServices extends Http {
   }
 
   Future<List<Transacao>> ListarPorPeriodo(DateTime start, DateTime end) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse(
         "${urlTransacao}/listar/porPeriodo/${start.toIso8601String()}/${end.toIso8601String()}",
       ),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -129,12 +129,12 @@ class TransacaoServices extends Http {
   }
 
   Future<List<Transacao>> ListarPositivas() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/positivo"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -148,12 +148,12 @@ class TransacaoServices extends Http {
   }
 
   Future<List<Transacao>> ListarNegativas() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/negativo"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+     headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -178,16 +178,13 @@ class TransacaoServices extends Http {
     int? idMeta,
     int? idCofrinho,
   ) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.patch(
       Uri.parse("${urlTransacao}/editar/$Id"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+     headers:  Http.headers,
       body: jsonEncode({
         'IdTransacao': Id,
         'Nome': Nome,
@@ -209,16 +206,13 @@ class TransacaoServices extends Http {
   }
 
   Future<String> AtualizarSaldo(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.patch(
       Uri.parse("${urlTransacao}/atualizar/saldo/$id"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -230,16 +224,13 @@ class TransacaoServices extends Http {
 
   //delete
   Future<String> DeletarTransacao(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.delete(
       Uri.parse("${urlTransacao}/deletar/$id"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+     headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -251,16 +242,13 @@ class TransacaoServices extends Http {
 
   
   Future<String> AtualizarTransaceos(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.patch(
       Uri.parse("${urlTransacao}/atualizar"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers:  Http.headers,
     );
 
     if (response.statusCode == 200) {

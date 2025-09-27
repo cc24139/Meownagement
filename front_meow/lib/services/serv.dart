@@ -1,5 +1,13 @@
+import 'dart:io';
+
 class Http {
-  static String url = "https://cookiebeco.roney.stein.nom.br/v1"; // colocar a url da api
+  static String url =
+      "https://cookiebeco.roney.stein.nom.br/v1"; // colocar a url da api
+  static String? token = "";
+  static Map<String, String> get headers => {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer $token',
+  };
 
   /*
 

@@ -1,4 +1,4 @@
-class Metas {
+class Meta {
   int idMeta;
   String nome;
   double gastoLimite;
@@ -9,7 +9,7 @@ class Metas {
   int idUsuario;
   int idClassificacao;
 
-  Metas({
+  Meta({
     required this.idMeta,
     required this.nome,
     required this.gastoLimite,
@@ -21,11 +21,11 @@ class Metas {
     required this.idClassificacao,
   });
 
-  factory Metas.fromJson(Map<String, dynamic> json) {
-    return Metas(
+  factory Meta.fromJson(Map<String, dynamic> json) {
+    return Meta(
       idMeta: json['idMeta'],
       nome: json['nome'],
-      gastoLimite: json['gastoLimite'],
+      gastoLimite: (json['gastoLimite'] as num).toDouble(),
       qtsMoedas: json['qtsMoedas'],
       dataCriacao: DateTime.parse(json['dataCriacao']),
       dataTermino: DateTime.parse(json['dataTermino']),
@@ -34,4 +34,16 @@ class Metas {
       idClassificacao: json['idClassificacao'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'idMeta': idMeta,
+    'nome': nome,
+    'gastoLimite': gastoLimite,
+    'qtsMoedas': qtsMoedas,
+    'dataCriacao': dataCriacao.toIso8601String(),
+    'dataTermino': dataTermino.toIso8601String(),
+    'feita': feita,
+    'idUsuario': idUsuario,
+    'idClassificacao': idClassificacao,
+  };
 }

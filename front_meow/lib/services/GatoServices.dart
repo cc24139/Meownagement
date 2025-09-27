@@ -22,7 +22,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listar"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -39,7 +39,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/buscar/$id"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -56,7 +56,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarNome/$nome"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -73,7 +73,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarRaridade?raridade=$raridade"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -90,7 +90,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/estaticas/$id"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -107,7 +107,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarDesbloqueados"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -124,7 +124,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarBloqueados"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -141,7 +141,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/roletarPorcentagem"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -158,7 +158,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/equipado"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -175,7 +175,7 @@ class GatoServices extends Http {
     }
     final response = await http.put(
       Uri.parse("${urlGato}/equipar/$id"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     return response.statusCode == 200;
@@ -187,7 +187,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/$id"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -204,7 +204,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/usuario"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -222,7 +222,7 @@ class GatoServices extends Http {
     }
     final response = await http.post(
       Uri.parse("${urlGato}/adicionar"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       body: jsonEncode({'Nome': nome}),
     );
 
