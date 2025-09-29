@@ -1,4 +1,4 @@
-import 'package:front_meow/model/gato.dart';
+import 'package:front_meow/models/gato.dart';
 
 class GatosEstaticasViewModel {
   final Gato gato;

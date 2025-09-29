@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:front_meow/model/CreateMetasViewModel.dart';
-import 'package:front_meow/model/Meta.dart';
+import 'package:front_meow/models/CreateMetasViewModel.dart';
+import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 

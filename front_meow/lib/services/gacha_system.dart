@@ -2,7 +2,7 @@
 import 'dart:math';
 import 'package:front_meow/services/GatoServices.dart';
 
-import '../model/gato.dart';
+import '../models/gato.dart';
 
 class GachaResult {
   final List<Gato> gatos;
