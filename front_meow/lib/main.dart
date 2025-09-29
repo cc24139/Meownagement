@@ -15,8 +15,10 @@ import 'package:front_meow/telas/tela_login.dart';
 import 'package:front_meow/telas/tela_inicial.dart';
 import 'package:front_meow/telas/tela_perfil.dart';
 import 'package:front_meow/telas/tela_transacoes.dart';
+import 'package:localstorage/localstorage.dart';
 
-void main() {
+void main() async {
+  await initLocalStorage();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -13,8 +15,6 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
 
-
-
   @override
   void dispose() {
     txtEmail.dispose();
@@ -22,9 +22,31 @@ class _TelaLoginState extends State<TelaLogin> {
     super.dispose();
   }
 
-  void _fazerLogin() {
-    if (txtEmail.text == "meow.gmail.com" && txtSenha.text == "meow") {
-      Navigator.pushReplacementNamed(context, AppRotas.home);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _fazerLogin() async{
+
+    if (txtEmail.text.isNotEmpty && txtSenha.text.isNotEmpty) {
+      var httpUsuarios = UsuarioServices();
+      print("Chamando LoginUsuario...");
+      var sucesso = await httpUsuarios.LoginUsuario(
+        UsuarioLoginViewModel(email: txtEmail.text, senha: txtSenha.text),
+        localStorage,
+      );
+      print("Resposta de LoginUsuario: $sucesso");
+
+      if (sucesso.toString() == "Login realizado com sucesso") {
+        Navigator.pushReplacementNamed(context, AppRotas.amizades);
+      } 
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Email ou senha inválidos")),
+        );
+        txtSenha.clear();
+      }
     }
   }
 
@@ -109,7 +131,9 @@ class _TelaLoginState extends State<TelaLogin> {
               SizedBox(
                 width: 250,
                 child: ElevatedButton(
-                  onPressed: _fazerLogin,
+                  onPressed: () {
+                    _fazerLogin();
+                  },
                   child: Text("Entrar"),
                 ),
               ),
