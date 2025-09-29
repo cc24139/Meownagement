@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_meow/Widgets/meowCoin.dart';
+import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 
 class TelaGacha extends StatefulWidget {
