@@ -11,6 +11,7 @@ class AppRotas {
   static const String gato           = '/gato';
   static const String gatoDoUser     = '/gatoDoUser';
   static const String gaveta         = '/gaveta';
+  static const String inicial        = '/inicial';
   static const String login          = '/login';
   static const String perfil         = '/perfil';
   static const String transacoes     = '/transacoes';

@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/gacha",
       routes: {
 
-        "/"               : (context) => const TelaAlterarPerfil(), //Mudar para tela inicial
-        "alterarPerfil"   : (context) => const TelaAlterarPerfil(),
+        "/"               : (context) => const TelaGato(), //Mudar para tela inicial
+        "/alterarPerfil"  : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),
         "/cadastro"       : (context) => const TelaCadastro(),
@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         "/gato"           : (context) => const TelaGato(),
         "/gatoDoUser"     : (context) => const TelaGatoDoUser(),
         "/gaveta"         : (context) => const TelaGaveta(),
+        "/inicial"        : (context) => const TelaInicial(),
         "/login"          : (context) => const TelaLogin(),
         "/perfil"         : (context) => const TelaPerfil(),
         "/transacoes"     : (context) => const TelaTransacoes(),
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
 
       },
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Arial'),
+      theme: ThemeData(fontFamily: 'Lohit-Tamil'),
 
     );
   }

@@ -88,6 +88,9 @@ flutter:
     - family: LondrinaShadow
       fonts:
         - asset: fonts/LondrinaShadow-Regular.ttf
+    - family: Lohit-Tamil
+      fonts:
+        - asset: fonts/Lohit-Tamil.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

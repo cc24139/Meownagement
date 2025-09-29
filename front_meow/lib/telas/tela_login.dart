@@ -59,7 +59,7 @@ class _TelaLoginState extends State<TelaLogin> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontFamily: "Arial",
+            fontFamily: "Lohit-Tamil",
           ),
         ),
         backgroundColor: Colors.white,
