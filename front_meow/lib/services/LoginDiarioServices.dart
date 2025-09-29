@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:front_meow/model/login_diario.dart';
+import 'package:front_meow/models/login_diario.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:front_meow/model/transacao.dart';
+import 'package:front_meow/models/transacao.dart';
 
 import 'package:localstorage/localstorage.dart';
 

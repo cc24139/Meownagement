@@ -1,6 +1,6 @@
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
-import 'package:front_meow/model/usuario.dart';
+import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

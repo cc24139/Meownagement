@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_meow/model/gato.dart';
+import 'package:front_meow/models/gato.dart';
 
 class TelaGaleria extends StatefulWidget {
   const TelaGaleria({super.key});
