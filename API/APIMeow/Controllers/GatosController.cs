@@ -101,6 +101,27 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
+        [HttpGet("gatos/roletar/10")]
+        public async Task<IActionResult> Roletar10BannerMeiMei(DBMeownagement db)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            var usuario = await db.Usuario.FindAsync(userId);
+            if (usuario.Pontos < precoGacha * 10)
+            {
+                return BadRequest("Você não possui pontos suficientes para roletar 10 vezes no banner MeiMei.");
+            }
+            var numerosAleatorios = new List<int>();
+            var random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                numerosAleatorios.Add(random.Next(1, 1000));
+            }
+            usuario.Pontos -= precoGacha * 10;
+            await db.SaveChangesAsync();
+            return Ok(numerosAleatorios);
+        }
+
+        [Authorize]
         [HttpGet("gatos/equipado")]
 
         public async Task<IActionResult> ObterGatoEquipado(DBMeownagement db)

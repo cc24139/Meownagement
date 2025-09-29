@@ -23,7 +23,7 @@ namespace APIMeow.Tokens
             {
                 Subject = GenerateClaim(user),
                 SigningCredentials = credencial,
-                Expires = DateTime.UtcNow.AddHours(2)
+                Expires = DateTime.UtcNow.AddHours(10)
             };
             //Geração do token e sua string para enviar
             var token = _handler.CreateToken(tokenDescriptor);

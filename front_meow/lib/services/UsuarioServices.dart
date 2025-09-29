@@ -13,7 +13,7 @@ class UsuarioServices extends Http {
 
   // Posts
 
-  Future<String> LoginUsuario(
+  Future<bool?> LoginUsuario(
     UsuarioLoginViewModel usuario,
     LocalStorage storage,
   ) async {
@@ -25,13 +25,17 @@ class UsuarioServices extends Http {
       body: jsonEncode(usuario.toJson()),
     );
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      Http.token = data['token'];
-      // tem que testar o localsStorage
-      storage.setItem('token', Http.token!);
-      return ("Login realizado com sucesso");
-    } else {
+    try {
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        String token = data['token'];
+        storage.setItem('token', token);
+        Http.token = token; // Atualiza o token na classe Http
+        return (true);
+      } else if (response.statusCode == 401) {
+        return (false);
+      }
+    } catch (e) {
       throw Exception('Failed to login usuario');
     }
   }
