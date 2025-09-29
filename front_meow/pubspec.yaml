@@ -85,6 +85,9 @@ flutter:
         - asset: fonts/LondrinaSolid-Light.ttf
         - asset: fonts/LondrinaSolid-Regular.ttf
         - asset: fonts/LondrinaSolid-Thin.ttf
+    - family: LondrinaShadow
+      fonts:
+        - asset: assets/fonts/LondrinaShadow-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
