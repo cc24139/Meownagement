@@ -8,20 +8,20 @@ class CatColors {
   late Color complementar;
 
   CatColors({required this.paleta}) {
-    switch (paleta.toLowerCase()) {
-      case 'Da':
+    switch (paleta.toUpperCase()) {
+      case 'DA':
         primaria = Color(0xFFF8EDEB);
         secundaria = Color(0xFFFFB5A7);
         tercearia = Color(0xFFFCD5CE);
         complementar = Colors.white;
-      case 'Ni':
+      case 'NI':
         primaria = Color(0xFFECF0F1);
         secundaria = Color(0xFF2C3E50);
         tercearia = Color(0xFF34495E);
         complementar = Colors.white;
-      case 'El':
+      case 'EL':
         primaria = Color(0xFF166534);
-        secundaria = Color(0xFFF5DEB3);
+        secundaria = Color.fromARGB(255, 223, 140, 140);
         tercearia = Color(0xFFEA580C);
         complementar = Colors.white;
       case '':

@@ -78,16 +78,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Londrina
-      fonts:
-        - asset: fonts/LondrinaSolid-Black.ttf
-        - asset: fonts/LondrinaSolid-Light.ttf
-        - asset: fonts/LondrinaSolid-Regular.ttf
-        - asset: fonts/LondrinaSolid-Thin.ttf
-    - family: LondrinaShadow
-      fonts:
-        - asset: assets/fonts/LondrinaShadow-Regular.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
