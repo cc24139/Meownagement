@@ -107,6 +107,11 @@ class CatAnimations {
     IconData rarityIcon;
 
     switch (highestRarity) {
+      case 6:
+        previewColor = Colors.red;
+        rarityText = 'SECRETO!';
+        rarityIcon = Icons.star;
+        break;
       case 5:
         previewColor = Colors.orange;
         rarityText = 'LENDÁRIO!';
@@ -134,7 +139,7 @@ class CatAnimations {
               width: 300 * controller.value,
               height: 300 * controller.value,
               decoration: BoxDecoration(
-                color: previewColor.withOpacity(0.3 * controller.value),
+                color: previewColor.withValues(alpha: (0.3 * controller.value).clamp(0.0, 1.0)), 
                 shape: BoxShape.circle,
               ),
             ),
