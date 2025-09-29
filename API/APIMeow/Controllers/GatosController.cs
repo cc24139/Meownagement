@@ -17,9 +17,7 @@ namespace APIMeow.Controllers
         [HttpGet("gatos/listar")]
         public async Task<IActionResult> ListarGatos(DBMeownagement db)
         {
-            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-            var GatosUsuario = await db.UsuarioGato.Where(ug => ug.IdUsuario == userId).Select(ug => ug.IdGato).ToListAsync();
-            var gatos = await db.Gatos.Where(g => GatosUsuario.Contains(g.IdGato)).ToListAsync();
+            var gatos = await db.Gatos.ToListAsync().OrderBy(g => g.Raridade).ThenBy(g => g.Nome).ToListAsync();
             return Ok(gatos);
         }
 
