@@ -51,7 +51,7 @@ class GachaSystem {
     }
 
     int raridade = await _rollRaridadeAsync();
-    Gato gato = _getRandomCatByRarity(raridade, banner);
+    Gato gato = await _getRandomCatByRarity(raridade, banner);
 
     return GachaResult(
       gatos: [gato],
@@ -69,11 +69,13 @@ class GachaSystem {
     List<Gato> gatosRolados = [];
     int raridadeMaisAlta = 0;
 
-    for (int i = 0; i < 10; i++) {
-      int raridade = await _rollRaridadeAsync();
-      if (raridade > raridadeMaisAlta) raridadeMaisAlta = raridade;
-      gatosRolados.add(_getRandomCatByRarity(raridade, banner));
-    }
+    // for (int i = 0; i < 10; i++) {
+    //   int raridade = await _rollRaridadeAsync();
+    //   if (raridade > raridadeMaisAlta) raridadeMaisAlta = raridade;
+    //   gatosRolados.add(await _getRandomCatByRarity(raridade, banner));
+    // }
+
+
 
     return GachaResult(
       gatos: gatosRolados,
@@ -105,7 +107,7 @@ class GachaSystem {
       }
 
       if (raridade > raridadeMaisAlta) raridadeMaisAlta = raridade;
-      gatosRolados.add(_getRandomCatByRarity(raridade, banner));
+      gatosRolados.add(await _getRandomCatByRarity(raridade, banner));
     }
 
     return GachaResult(
@@ -155,11 +157,42 @@ class GachaSystem {
     return raridade;
   }
 
-  Gato _getRandomCatByRarity(int raridade, int bannerAtual) {
+  // Future<List<int>> _rollRaridadeAsyncMulti(int numeroDeRolls) async {
+    
+  //   // depois mudar para a rota certa
+    
+  //   List<int> chances = await gatoServices.RoletarPorcentagemMulti();
+
+  //   // -----------------------------------------
+
+  //   List<int> raridades = [];
+  //   for (var chance in chances) {
+  //     int raridade = 3;
+  //     if (chance <= 2) {
+  //       raridade = 6;
+  //     } else if (chance <= 12) {
+  //       raridade = 5;
+  //     } else if (chance <= 112) {
+  //       raridade = 4;
+  //     } else {
+  //       raridade = 3;
+  //     }
+  //     raridades.add(raridade);
+  //   }
+
+  //   return raridades;
+  // }
+
+  Future<Gato> _getRandomCatByRarity(int raridade, int bannerAtual) async {
     if (raridade == 5) {
       // gato 5 estrelas sempre do banner atual
       // bannerAtual = idGato
-      return _allGatos.firstWhere((cat) => cat.idGato == bannerAtual);
+
+      Gato gatobanner = _allGatos.firstWhere((cat) => cat.idGato == bannerAtual);
+
+      await gatoServices.DesbloquearGato(gatobanner.nome);
+
+      return gatobanner;
     }
 
     List<Gato> gatosDaRaridade = _allGatos.where((cat) => cat.raridade == raridade).toList();
@@ -167,6 +200,11 @@ class GachaSystem {
       // Fallback para qualquer gato se não houver da raridade especificada
       return _allGatos[_random.nextInt(_allGatos.length)];
     }
-    return gatosDaRaridade[_random.nextInt(gatosDaRaridade.length)];
+
+    Gato gatoObtido = gatosDaRaridade[_random.nextInt(gatosDaRaridade.length)];
+
+    await gatoServices.DesbloquearGato(gatoObtido.nome);
+
+    return gatoObtido;
   }
 }

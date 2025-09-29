@@ -46,24 +46,55 @@ class _TelaGachaState extends State<TelaGacha> {
                   width: 2,
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Stack(
                 children: [
-                  Image.asset("assets/images/gato1.png"),
-                  const SizedBox(height: 16),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text("Botão 1"),
-                      ),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text("Botão 2"),
+                      Image.asset("assets/images/gato1.png"),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text("Botão 1"),
+                          ),
+                          const SizedBox(width: 16),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text("Botão 2"),
+                          ),
+                        ],
                       ),
                     ],
+                  ),
+                  Positioned(
+                    left: -30,
+                    bottom: 16,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Positioned(
+                    left: 120,
+                    bottom: 16,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Positioned(
+                    right: -30,
+                    bottom: 16,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),

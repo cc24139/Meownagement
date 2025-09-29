@@ -228,4 +228,4 @@ class GatoServices extends Http {
 
     return response.statusCode == 200;
   }
-}
+} 
