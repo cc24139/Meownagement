@@ -85,10 +85,8 @@ class _TelaAmizadesState extends State<TelaAmizades> {
               );
             },
           );
-        }
-        
+        } 
       ),
-      
     );
   }
 }
