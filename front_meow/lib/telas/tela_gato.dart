@@ -1,3 +1,4 @@
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
@@ -59,36 +60,64 @@ class _TelaGatoState extends State<TelaGato> {
                 ),
               ),
               SizedBox(height: 20),
-              Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.asset(
-                      "../../assets/images/doudouCat/doudouCatGrande.jpg",
-                      width: 300,
-                      height: 300,
+              SizedBox(
+                width: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset(
+                        "../../assets/images/doudouCat/doudouCatGrande.jpg",
+                        width: 300,
+                        height: 300,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Center(child: Text("Dados")),
-                  SizedBox(height: 5),
-                  Text("Posse do gato: ${12.3.toString()}%"),
-                  Text("Uso do gato: ${1.23.toString()}%"),
-                  Text("Numero de cópias: ${123.toString()}"),
-                ],
+                    SizedBox(height: 20),
+                    Center(
+                      child: BorderedText(
+                        strokeWidth: 4,
+                        strokeColor: cores.corTerciaria,
+                        child: Text(
+                          "Dados",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 1.5
+                          )
+                        )
+                      )
+                    ),
+                    
+                    SizedBox(height: 5),
+                    Text("Posse do gato: ${12.3.toString()}%", style: TextStyle(color: cores.corTerciaria)),
+                    SizedBox(height: 5),
+                    Text("Uso do gato: ${1.23.toString()}%", style: TextStyle(color: cores.corTerciaria)),
+                    SizedBox(height: 5),
+                    Text("Numero de cópias: ${123.toString()}", style: TextStyle(color: cores.corTerciaria)),
+                  ],
+                ),
               ),
+              
               
               SizedBox(
                 width: 400,
                 child: Divider(color: cores.complementar, thickness: 1),
               ),
-              //Expanded(child: Container(height: 2, color: cores.complementar)),
+              SizedBox(height: 8),
               SizedBox(
                 width: 400,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Paleta de cores: "),
+                    
+                    Text(
+                      "Paleta de cores: ",
+                      style: TextStyle(
+                        color: cores.tercearia,
+                        fontSize: 20
+                      ),
+                    ),
                     SizedBox(width: 5),
                     Container(
                       width: 120,
