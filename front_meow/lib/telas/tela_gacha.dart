@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 
 class TelaGacha extends StatefulWidget {
   const TelaGacha({super.key});
@@ -47,6 +49,7 @@ class _TelaGachaState extends State<TelaGacha> {
                 ),
               ),
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -56,44 +59,59 @@ class _TelaGachaState extends State<TelaGacha> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
+                          ElevatedButtonWidget(
+                            text: "Girar 1X",
                             onPressed: () {},
-                            child: Text("Botão 1"),
+                            size: ButtonSize.muitoPequeno,
+                            catColors: cores,
                           ),
                           const SizedBox(width: 16),
-                          ElevatedButton(
+                          ElevatedButtonWidget(
+                            text: "Girar 10X",
                             onPressed: () {},
-                            child: Text("Botão 2"),
+                            size: ButtonSize.muitoPequeno,
+                            catColors: cores,
                           ),
                         ],
                       ),
                     ],
                   ),
+                  // Containers vazando para baixo
                   Positioned(
-                    left: -30,
-                    bottom: 16,
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Positioned(
-                    left: 120,
-                    bottom: 16,
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Positioned(
-                    right: -30,
-                    bottom: 16,
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey,
+                    left: 0,
+                    right: 0,
+                    bottom: -60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: cores.corTerciaria, width: 2),
+                          ),
+                        ),
+                        Container(
+                          width: 60,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: cores.corTerciaria, width: 2),
+                          ),
+                        ),
+                        Container(
+                          width: 60,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: cores.corTerciaria, width: 1),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -38,6 +38,8 @@ class ElevatedButtonWidget extends StatelessWidget {
   double? _getButtonWidth() {
     print("Entrou no getButtonWidth com size: $size");
     switch (size) {
+      case ButtonSize.muitoPequeno:
+        return 25;
       case ButtonSize.pequeno:
         return 50;
       case ButtonSize.medio:
