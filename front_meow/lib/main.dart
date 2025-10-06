@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
 
       },
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Lohit-Tamil'),
+      theme: ThemeData(fontFamily: 'Nunito'),
 
     );
   }
