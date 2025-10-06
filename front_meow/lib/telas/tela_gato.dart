@@ -75,18 +75,13 @@ class _TelaGatoState extends State<TelaGato> {
                     ),
                     SizedBox(height: 20),
                     Center(
-                      child: BorderedText(
-                        strokeWidth: 4,
-                        strokeColor: cores.corTerciaria,
-                        child: Text(
-                          "Dados",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            letterSpacing: 1.5
-                          )
-                        )
-                      )
+                      child: Text(
+                        "Dados",
+                        style: TextStyle(
+                          color: cores.corTerciaria,
+                          fontSize: 24,
+                        ),
+                      ),
                     ),
                     
                     SizedBox(height: 5),
