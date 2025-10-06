@@ -17,7 +17,7 @@ namespace APIMeow.Controllers
         [HttpGet("gatos/listar")]
         public async Task<IActionResult> ListarGatos(DBMeownagement db)
         {
-            var gatos = await db.Gatos.ToListAsync().OrderBy(g => g.Raridade).ThenBy(g => g.Nome).ToListAsync();
+            var gatos = await db.Gatos.OrderBy(g => g.Raridade).ThenBy(g => g.Nome).ToListAsync();
             return Ok(gatos);
         }
 
@@ -163,10 +163,6 @@ namespace APIMeow.Controllers
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
             var usuario = await db.Usuario.FindAsync(userId);
-            if (usuario.Pontos < 100)
-            {
-                return BadRequest("Você não possui pontos suficientes para adicionar um gato.");
-            }
             var gato = await db.Gatos.FirstOrDefaultAsync(g => g.Nome == Nome);
             if (gato == null)
             {
@@ -176,7 +172,9 @@ namespace APIMeow.Controllers
             if (usuarioGatoExistente != null)
             {
                 usuarioGatoExistente.Copias += 1;
-                return BadRequest("Você já possui esse gato.");
+                db.UsuarioGato.Update(usuarioGatoExistente);
+                await db.SaveChangesAsync();
+                return Ok("Você já possui esse gato. O número de cópias foi incrementado.");
             }
             var usuarioGato = new UsuarioGato
             {
