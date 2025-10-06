@@ -1,7 +1,6 @@
-// lib/services/gacha_system.dart
+// lib/services/gachaSystem.dart
 import 'dart:math';
 import 'package:front_meow/services/GatoServices.dart';
-
 import '../models/gato.dart';
 
 class GachaResult {
@@ -68,14 +67,13 @@ class GachaSystem {
 
     List<Gato> gatosRolados = [];
     int raridadeMaisAlta = 0;
+    List<int> raridades = await _rollRaridadeAsyncMulti(10);
 
-    // for (int i = 0; i < 10; i++) {
-    //   int raridade = await _rollRaridadeAsync();
-    //   if (raridade > raridadeMaisAlta) raridadeMaisAlta = raridade;
-    //   gatosRolados.add(await _getRandomCatByRarity(raridade, banner));
-    // }
-
-
+    for (int i = 0; i < 10; i++) {
+      int raridade = raridades[i];
+      if (raridade > raridadeMaisAlta) raridadeMaisAlta = raridade;
+      gatosRolados.add(await _getRandomCatByRarity(raridade, banner));
+    }
 
     return GachaResult(
       gatos: gatosRolados,
@@ -143,31 +141,31 @@ class GachaSystem {
     return raridade;
   }
 
-  // Future<List<int>> _rollRaridadeAsyncMulti(int numeroDeRolls) async {
+  Future<List<int>> _rollRaridadeAsyncMulti(int numeroDeRolls) async {
     
-  //   // depois mudar para a rota certa
+    // depois mudar para a rota certa
     
-  //   List<int> chances = await gatoServices.RoletarPorcentagemMulti();
+    List<int> chances = await gatoServices.RoletarPorcentagemMulti();
 
-  //   // -----------------------------------------
+    // -----------------------------------------
 
-  //   List<int> raridades = [];
-  //   for (var chance in chances) {
-  //     int raridade = 3;
-  //     if (chance <= 2) {
-  //       raridade = 6;
-  //     } else if (chance <= 12) {
-  //       raridade = 5;
-  //     } else if (chance <= 112) {
-  //       raridade = 4;
-  //     } else {
-  //       raridade = 3;
-  //     }
-  //     raridades.add(raridade);
-  //   }
+    List<int> raridades = [];
+    for (var chance in chances) {
+      int raridade = 3;
+      if (chance <= 2) {
+        raridade = 6;
+      } else if (chance <= 12) {
+        raridade = 5;
+      } else if (chance <= 112) {
+        raridade = 4;
+      } else {
+        raridade = 3;
+      }
+      raridades.add(raridade);
+    }
 
-  //   return raridades;
-  // }
+    return raridades;
+  }
 
   Future<Gato> _getRandomCatByRarity(int raridade, int bannerAtual) async {
     if (raridade == 5) {

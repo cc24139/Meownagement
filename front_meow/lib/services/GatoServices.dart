@@ -1,14 +1,9 @@
 import 'dart:io';
-
 import 'package:front_meow/models/gato.dart';
-import 'package:front_meow/models/login_diario.dart';
 import 'package:front_meow/services/ViewModel/GatosEstaticasViewModel.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:front_meow/models/transacao.dart';
-
 import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
@@ -140,7 +135,7 @@ class GatoServices extends Http {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
-      Uri.parse("${urlGato}/roletarPorcentagem"),
+      Uri.parse("${urlGato}/roletar"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
@@ -157,7 +152,7 @@ class GatoServices extends Http {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
-      Uri.parse("${urlGato}/roletarPorcentagemMulti"),
+      Uri.parse("${urlGato}/roletar/10"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 

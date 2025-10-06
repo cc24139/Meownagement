@@ -1,9 +1,9 @@
 // lib/widgets/cat_widgets.dart
 import 'package:flutter/material.dart';
 import '../models/gato.dart';
-import '../animations/cat_animations.dart';
+import '../animations/gachaAnimations.dart';
 
-class CatWidgets {
+class GatoRollWidget {
   // Widget de imagem de gato único
   static Widget buildCatImage({
     required Gato cat,
@@ -180,7 +180,7 @@ class CatWidgets {
     
     return Column(
       children: [
-        CatAnimations.buildJumpingAnimation(
+        GachaAnimations.buildJumpingAnimation(
           controller: controller,
           child: buildCatImage(cat: cat, size: 200),
         ),
@@ -216,7 +216,7 @@ class CatWidgets {
       return buildMultipleCatImage(cat: cat);
     }).toList();
 
-    return CatAnimations.buildMultipleCatsLayout(
+    return GachaAnimations.buildMultipleCatsLayout(
       catWidgets: catWidgets,
       controller: controller,
       catsPerRow: catsPerRow,
