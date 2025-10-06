@@ -18,6 +18,7 @@ import 'package:front_meow/telas/tela_transacoes.dart';
 import 'package:localstorage/localstorage.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initLocalStorage();
   runApp(const MyApp());
 }
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
 
       },
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Lohit-Tamil'),
+      theme: ThemeData(fontFamily: 'Nunito'),
 
     );
   }
