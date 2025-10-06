@@ -1,7 +1,7 @@
 // lib/animations/cat_animations.dart
 import 'package:flutter/material.dart';
 
-class CatAnimations {
+class GachaAnimations {
   // Animação de salto genérica
   static Widget buildJumpingAnimation({
     required Widget child,
