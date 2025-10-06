@@ -37,6 +37,7 @@ dependencies:
     sdk: flutter
   http: ^1.5.0
   flutter_otp_text_field: ^1.1.0+2
+  phosphor_flutter: ^2.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -97,6 +98,9 @@ flutter:
     - family: Lohit-Tamil
       fonts:
         - asset: fonts/Lohit-Tamil.ttf
+    - family: Nunito
+      fonts:
+        - asset: fonts/Nunito-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
