@@ -54,7 +54,7 @@ class _TelaGachaState extends State<TelaGacha> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/gato1.png"),
+                      Image.asset("assets/images/doudouCat/doudouCatPequena.png"),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

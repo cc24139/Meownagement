@@ -1,14 +1,9 @@
 import 'dart:io';
-
 import 'package:front_meow/models/gato.dart';
-import 'package:front_meow/models/login_diario.dart';
 import 'package:front_meow/services/ViewModel/GatosEstaticasViewModel.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:front_meow/models/transacao.dart';
-
 import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
@@ -135,12 +130,12 @@ class GatoServices extends Http {
     }
   }
 
-  Future<int> RoletarPorcentagem() async {
+  Future<int> RoletarPorcentagemUnica() async {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
-      Uri.parse("${urlGato}/roletarPorcentagem"),
+      Uri.parse("${urlGato}/roletar"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
     );
 
@@ -149,6 +144,23 @@ class GatoServices extends Http {
       return data;
     } else {
       throw Exception('Failed to roletar gato');
+    }
+  }
+
+  Future<List<int>> RoletarPorcentagemMulti() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlGato}/roletar/10"),
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to roletar gatos');
     }
   }
 
