@@ -135,7 +135,7 @@ class GatoServices extends Http {
     }
   }
 
-  Future<int> RoletarPorcentagem() async {
+  Future<int> RoletarPorcentagemUnica() async {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
@@ -149,6 +149,23 @@ class GatoServices extends Http {
       return data;
     } else {
       throw Exception('Failed to roletar gato');
+    }
+  }
+
+  Future<List<int>> RoletarPorcentagemMulti() async {
+    if (token == null) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlGato}/roletarPorcentagemMulti"),
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to roletar gatos');
     }
   }
 

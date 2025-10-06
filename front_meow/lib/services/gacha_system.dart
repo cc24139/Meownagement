@@ -117,24 +117,10 @@ class GachaSystem {
     );
   }
 
-
   // Métodos privados
-  // int _rollRarity() {
-  //   double roll = _random.nextDouble() * 100;
-  //   double cumulative = 0.0;
-    
-  //   for (var entry in _rarityProbabilities.entries) {
-  //     cumulative += entry.value;
-  //     if (roll <= cumulative) {
-  //       return entry.key;
-  //     }
-  //   }
-    
-  //   return 3; // Fallback
-  // }
 
   Future<int> _rollRaridadeAsync() async {
-    int chance = await gatoServices.RoletarPorcentagem();
+    int chance = await gatoServices.RoletarPorcentagemUnica();
     
     int raridade = 3;
 
@@ -203,6 +189,7 @@ class GachaSystem {
 
     Gato gatoObtido = gatosDaRaridade[_random.nextInt(gatosDaRaridade.length)];
 
+    // adiciona o gato a conta do usuário
     await gatoServices.DesbloquearGato(gatoObtido.nome);
 
     return gatoObtido;
