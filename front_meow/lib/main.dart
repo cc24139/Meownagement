@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Meownagement",
-      // initialRoute: "/gacha",
+      initialRoute: "/login",
       routes: {
 
         "/"               : (context) => const TelaGato(), //Mudar para tela inicial
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),
         "/cadastro"       : (context) => const TelaCadastro(),
-        "/confirmacao"    : (context) => const TelaCodConfirmacao(),
+        "/codConfirmacao"    : (context) => const TelaCodConfirmacao(email: "", isCreateCount: true),
         "/criarMeta"      : (context) => const TelaCriarMeta(),
         "/gacha"          : (context) => const TelaGacha(),
         "/galeria"        : (context) => const TelaGaleria(),
@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         "/inicial"        : (context) => const TelaInicial(),
         "/login"          : (context) => const TelaLogin(),
         "/perfil"         : (context) => const TelaPerfil(),
+        "/codConfirmacao"    : (context) => const TelaCodConfirmacao(email: "", isCreateCount: true),
         "/transacoes"     : (context) => const TelaTransacoes(),
 
 

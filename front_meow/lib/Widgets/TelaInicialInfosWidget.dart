@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+/*import 'package:flutter/widgets.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/meta.dart';
@@ -30,8 +30,8 @@ class Telainicialinfoswidget extends StatelessWidget {
     }
   }
 
-   Widget _metas() {
-    var meta = metaServices.listarMetas();
+  // Widget _metas() {
+   // var meta = metaServices.listarMetas();
     return MetasPageView(meta); // Passa as metas para o widget
   }
 
@@ -47,5 +47,5 @@ class Telainicialinfoswidget extends StatelessWidget {
     return Text("Transações Recorrentes");
   }
 
-}
+}*/
 

@@ -99,7 +99,7 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<String> ConfirmarEmailUsuario(String Email, String Code) async {
+  Future<bool> ConfirmarEmailUsuario(String Email, String Code) async {
     final response = await http.post(
       Uri.parse("${urlUsuario}/confirmarEmail"),
       headers: <String, String>{
@@ -109,7 +109,7 @@ class UsuarioServices extends Http {
     );
 
     if (response.statusCode == 200) {
-      return ("Email confirmado com sucesso");
+      return true;
     } else {
       throw Exception('Código ou Email inválido');
     }
@@ -151,7 +151,7 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<String> ConfirmarEsquecerSenhaUsuario(
+  Future<bool> ConfirmarEsquecerSenhaUsuario(
     String Email,
     String Code,
   ) async {
@@ -164,7 +164,7 @@ class UsuarioServices extends Http {
     );
 
     if (response.statusCode == 200) {
-      return ("Código confirmado com sucesso");
+      return true;
     } else {
       throw Exception('Código ou Nome inválido');
     }

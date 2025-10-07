@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:front_meow/models/meta.dart';
 
 
@@ -22,8 +22,8 @@ class MetasPageView extends StatelessWidget {
     );
   }
 
-  Widget _metaCard(Metas meta) {
+ //Widget _metaCard(Metas meta) {
       
 
-  }
-}
+ // }
+}*/
