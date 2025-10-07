@@ -13,8 +13,6 @@ class TelaGato extends StatefulWidget {
   State<TelaGato> createState() => _TelaGatoState();
 }
 
-void _equipar() {}
-
 class _TelaGatoState extends State<TelaGato> {
   CatColors cores = CatColors(paleta: "");
   @override
@@ -136,19 +134,6 @@ class _TelaGatoState extends State<TelaGato> {
               ),
               
               SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButtonWidget(
-                    catColors: cores,
-                    text: "Equipar",
-                    size: ButtonSize.medio,
-                    onPressed: () {
-                      _equipar();
-                    },
-                  ),
-                ],
-              ),
             ],
           ),
         ),
