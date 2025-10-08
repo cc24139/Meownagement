@@ -15,6 +15,12 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
   OpcoesTransacao? _opcoesTransacao = OpcoesTransacao.despesa;
   TextEditingController _dateController = TextEditingController();
 
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -39,49 +45,75 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
           children: [
             Text("Planeje transações"),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset("../../assets/icons/vetor_olho_aberto.svg"),
+                SvgPicture.asset("../../assets/icons/vetor_olho_aberto.svg", width: 20, height: 20,),
                 Text("Saldo")
               ],
             ),
             Text("Tipo de transação / Data da início"),
-            Column(
-              children: <Widget> [
-                RadioListTile<OpcoesTransacao>(
-                  title: const Text('Despesa'), // The label for the radio button
-                  value: OpcoesTransacao.despesa,
-                  groupValue: _opcoesTransacao,
-                  onChanged: (OpcoesTransacao? value) {
-                    setState(() {
-                      _opcoesTransacao = value;
-                    });
-                  },
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: <Widget> [
+                      RadioListTile<OpcoesTransacao>(
+                        title: const Text('Despesa'), // The label for the radio button
+                        value: OpcoesTransacao.despesa,
+                        groupValue: _opcoesTransacao,
+                        onChanged: (OpcoesTransacao? value) {
+                          setState(() {
+                            _opcoesTransacao = value;
+                          });
+                        },
+                      ),
+                      RadioListTile<OpcoesTransacao>(
+                        title: const Text("Receita"),
+                        value: OpcoesTransacao.receita,
+                        groupValue: _opcoesTransacao,
+                        onChanged: (OpcoesTransacao? value) {
+                          setState(() {
+                            _opcoesTransacao = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                RadioListTile<OpcoesTransacao>(
-                  title: const Text("Receita"),
-                  value: OpcoesTransacao.receita,
-                  groupValue: _opcoesTransacao,
-                  onChanged: (OpcoesTransacao? value) {
-                    setState(() {
-                      _opcoesTransacao = value;
-                    });
-                  },
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        controller: _dateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Data da transação',
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        onTap: () => _selectDate(context),
+                      ),
+                    ],
+                  )
                 ),
+                
               ],
             ),
-            TextFormField(
-              controller: _dateController,
-              readOnly: true,
+            
+            TextField(
+              keyboardType: TextInputType.multiline,
+              minLines: 3,
+              maxLines: 3,
+              maxLength: 1000,
               decoration: InputDecoration(
-                labelText: 'Select Date',
-                suffixIcon: Icon(Icons.calendar_today),
+                hintText: "Descrição da transação",
+                border: OutlineInputBorder(),
               ),
-              onTap: () => _selectDate(context),
-            ),
+            )
           ],
         ),
       ),
-      
     );
   }
 }
