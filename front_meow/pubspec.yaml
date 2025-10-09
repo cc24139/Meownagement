@@ -39,7 +39,6 @@ dependencies:
   flutter_otp_text_field: ^1.1.0+2
   phosphor_flutter: ^2.1.0
   bordered_text: ^2.0.0
-  intl: ^0.19.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
