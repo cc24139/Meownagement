@@ -69,7 +69,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    "../../assets/icons/vetor_olho_aberto.svg",
+                    "../../assets/icons/vetor_olho_fechado.svg",
                     width: 20,
                     height: 20,
                   ),
