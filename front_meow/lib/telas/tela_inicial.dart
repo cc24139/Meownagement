@@ -22,10 +22,11 @@ class _TelaInicialState extends State<TelaInicial> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Icon(Icons.menu, color: cores.complementar, size: 40),
                   MeowcoinWidget(saldo: 20),
-                  SizedBox(width: 134),
+                  
                   Icon(Icons.calendar_today, color: cores.complementar, size: 40)
                 ],
               ),
@@ -47,13 +48,22 @@ class _TelaInicialState extends State<TelaInicial> {
                   ),
                 ],
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children : [Text("...", style: TextStyle(color: Colors.amber),)]),
               
-              SizedBox(
+              Container(
+                decoration: BoxDecoration(
+                  color: cores.complementar,
+                  border: Border.all(
+                    color: cores.corTerciaria,
+                    width: 2.0
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Veja suas metas", style: TextStyle(color: cores.complementar),),
-                    Icon(Icons.arrow_right, color: cores.complementar,)
+                    SizedBox(width: 1),
+                    Text("Veja suas metas", style: TextStyle(color: cores.secundaria)),
+                    Icon(Icons.arrow_right_alt, color: cores.corSecundaria, size: 30,)
                   ],
                 )
               )
@@ -63,7 +73,7 @@ class _TelaInicialState extends State<TelaInicial> {
         ),
       ),
       
-      
+      drawer: Drawer(),
       backgroundColor: cores.corPrimaria,
     );
   }
