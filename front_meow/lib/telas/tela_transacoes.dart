@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:intl/intl.dart';
->>>>>>> Stashed changes
+
 
 class TelaTransacoes extends StatefulWidget {
   const TelaTransacoes({super.key});
@@ -16,24 +14,6 @@ class TelaTransacoes extends StatefulWidget {
   State<TelaTransacoes> createState() => _TelaTransacoesState();
 }
 
-<<<<<<< Updated upstream
-class _TelaTransacoesState extends State<TelaTransacoes> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text("Planeje transações"),
-            Row(
-              children: [
-                SvgPicture.asset("../../assets/icons/vetor_olho_aberto.svg"),
-                Text("Saldo")
-              ],
-            ),
-          ],
-=======
 enum OpcoesTransacao { despesa, receita }
 
 final List<String> listaClassificacao = <String>["a", "b", "c", "d"];
@@ -54,7 +34,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
   String dropdownValue = listaClassificacao.first;
   String valorDropdownRecorrencia = listaRecorrencia.first;
-  CatColors cores = CatColors(paleta: "");
+  CatColors cores = CatColors(paleta: 0);
   @override
   void dispose() {
     _dateController.dispose();
@@ -242,10 +222,8 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
               ),
             ],
           ),
->>>>>>> Stashed changes
         ),
-      ),
-      
+      ),    
     );
   }
 }

@@ -16,7 +16,7 @@ class TelaAmizades extends StatefulWidget {
 class _TelaAmizadesState extends State<TelaAmizades> {
   String textoPesquisa = "";
   late Future<List<UsuarioViewModel>> todosOsUsuarios;
-  CatColors cores = CatColors(paleta: "");
+  CatColors cores = CatColors(paleta: 0);
 
   @override
   void initState() {
