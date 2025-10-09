@@ -2,18 +2,7 @@
 import 'dart:math';
 import 'package:front_meow/services/GatoServices.dart';
 import '../models/gato.dart';
-
-class GachaResult {
-  final List<Gato> gatos;
-  final int raridadeMaisAlta;
-  final int rollsTotais;
-
-  GachaResult({
-    required this.gatos,
-    required this.raridadeMaisAlta,
-    required this.rollsTotais,
-  });
-}
+import '../models/gachaResult.dart';
 
 class GachaSystem {
   final Random _random = Random();

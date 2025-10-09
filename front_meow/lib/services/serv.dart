@@ -3,7 +3,7 @@ import 'dart:io';
 class Http {
   static String url =
       "https://cookiebeco.roney.stein.nom.br/v1"; // colocar a url da api
-  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxmNDQ2NTRAZ21haWwuY29tIiwibmFtZWlkIjoiNCIsIm5iZiI6MTc1OTE0NTIxNiwiZXhwIjoxNzU5MTUyNDE2LCJpYXQiOjE3NTkxNDUyMTZ9.ccPVrAcLQaRE1zq5jM1WOpE4X5aNywW35VV0P5dDUU0";
+  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmV5LnN0ZWluQGdtYWlsLmNvbSIsIm5hbWVpZCI6IjExIiwibmJmIjoxNzYwMDExNTY4LCJleHAiOjE3NjAwNDc1NjgsImlhdCI6MTc2MDAxMTU2OH0.Eq4UDg5jBaOYO3Js-i4j5ilStXVtjW-ty-fU5nQekM8";
   static Map<String, String> get headers => {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: 'Bearer $token',

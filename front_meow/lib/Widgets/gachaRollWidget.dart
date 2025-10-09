@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/gato.dart';
 import '../animations/gachaAnimations.dart';
 
-class GatoRollWidget {
+class GachaRollWidget {
   // Widget de imagem de gato único
   static Widget buildCatImage({
     required Gato cat,
