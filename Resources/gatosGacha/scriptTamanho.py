@@ -46,28 +46,28 @@ def processarImagens():
 
         mudaTipo(path + "/" + caminhoImagem, nome)
 
-    for caminhoImagem in os.listdir(path):
-        # abre a imagem
-        nome = nomeImagem(caminhoImagem)
+    # for caminhoImagem in os.listdir(path):
+    #     # abre a imagem
+    #     nome = nomeImagem(caminhoImagem)
 
-        img = Image.open(path + "/" + caminhoImagem)
+    #     img = Image.open(path + "/" + caminhoImagem)
 
-        pequena = img.resize((widthPequena, heightPequena), resample=Image.LANCZOS)
-        media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
-        grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
+        # pequena = img.resize((widthPequena, heightPequena), resample=Image.LANCZOS)
+        # media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
+        # grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
 
 
-        criaPasta(out + "/" + nome)
+        # criaPasta(out + "/" + nome)
 
-        # versões coloridas
-        pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
-        media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
-        grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
+    #     # versões coloridas
+    #     pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
+    #     media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
+    #     grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
 
-        # versões em preto e branco
-        pequena.convert("L").save(out + "/" + nome + "/" + nome + "PequenaPB.jpg")
-        media  .convert("L").save(out + "/" + nome + "/" + nome + "MediaPB.jpg")
-        grande .convert("L").save(out + "/" + nome + "/" + nome + "GrandePB.jpg")
+    #     # versões em preto e branco
+    #     pequena.convert("L").save(out + "/" + nome + "/" + nome + "PequenaPB.jpg")
+    #     media  .convert("L").save(out + "/" + nome + "/" + nome + "MediaPB.jpg")
+    #     grande .convert("L").save(out + "/" + nome + "/" + nome + "GrandePB.jpg")
 
 
 if __name__ == "__main__":
