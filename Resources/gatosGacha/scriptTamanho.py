@@ -27,47 +27,52 @@ def nomeImagem(nomeImg):
     return nome
 
 def mudaTipo(caminho, nomeImagem):
-    if caminho.lower().endswith(".png"):
-        img = Image.open(caminho).convert("RGB")  # Convert to RGB for JPG
-        
-        new_file = nomeImagem + ".jpg"
-        
+    extensao = caminho.lower().split(".")[-1]
+
+    if extensao in ["png", "jpeg", "jpg"]:
+        img = Image.open(caminho).convert("RGB")  # garante formato RGB
+
+        dir_imagem = os.path.dirname(caminho)
+        new_file = os.path.join(dir_imagem, nomeImagem + "Quadrado.jpg")  # padroniza como .jpg
+
         img.save(new_file, "JPEG")
         print(f"Converted: {caminho} -> {new_file}")
 
-        os.remove(caminho)
-        print(f"Deleted: {caminho}")
+        # se o arquivo original não for .jpg, remove ele
+        if not caminho.lower().endswith(".jpg"):
+            os.remove(caminho)
+            print(f"Deleted: {caminho}")
     else:
-        print("File is not a .png")
+        print(f"File format not supported: {caminho}")
 
 def processarImagens():
-    for caminhoImagem in os.listdir(path):
-        nome = nomeImagem(caminhoImagem)
-
-        mudaTipo(path + "/" + caminhoImagem, nome)
-
     # for caminhoImagem in os.listdir(path):
-    #     # abre a imagem
     #     nome = nomeImagem(caminhoImagem)
 
-    #     img = Image.open(path + "/" + caminhoImagem)
+    #     mudaTipo(path + "/" + caminhoImagem, nome)
 
-        # pequena = img.resize((widthPequena, heightPequena), resample=Image.LANCZOS)
-        # media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
-        # grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
+    for caminhoImagem in os.listdir(path):
+        # abre a imagem
+        nome = nomeImagem(caminhoImagem)
+
+        img = Image.open(path + "/" + caminhoImagem)
+
+        pequena = img.resize((widthPequena, heightPequena), resample=Image.LANCZOS)
+        media   = img.resize((widthMedia  , heightMedia  ), resample=Image.LANCZOS)
+        grande  = img.resize((widthGrande , heightGrande ), resample=Image.LANCZOS)
 
 
-        # criaPasta(out + "/" + nome)
+        criaPasta(out + "/" + nome)
 
-    #     # versões coloridas
-    #     pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
-    #     media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
-    #     grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
+        # versões coloridas
+        pequena.save(out + "/" + nome + "/" + nome + "Pequena.jpg")
+        media  .save(out + "/" + nome + "/" + nome + "Media.jpg")
+        grande .save(out + "/" + nome + "/" + nome + "Grande.jpg")
 
-    #     # versões em preto e branco
-    #     pequena.convert("L").save(out + "/" + nome + "/" + nome + "PequenaPB.jpg")
-    #     media  .convert("L").save(out + "/" + nome + "/" + nome + "MediaPB.jpg")
-    #     grande .convert("L").save(out + "/" + nome + "/" + nome + "GrandePB.jpg")
+        # versões em preto e branco
+        pequena.convert("L").save(out + "/" + nome + "/" + nome + "PequenaPB.jpg")
+        media  .convert("L").save(out + "/" + nome + "/" + nome + "MediaPB.jpg")
+        grande .convert("L").save(out + "/" + nome + "/" + nome + "GrandePB.jpg")
 
 
 if __name__ == "__main__":
