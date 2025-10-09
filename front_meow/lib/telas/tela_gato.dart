@@ -14,7 +14,7 @@ class TelaGato extends StatefulWidget {
 }
 
 class _TelaGatoState extends State<TelaGato> {
-  CatColors cores = CatColors(paleta: 0);
+  CatColors cores = CatColors(paleta: 4);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

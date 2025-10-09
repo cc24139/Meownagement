@@ -34,7 +34,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
   String dropdownValue = listaClassificacao.first;
   String valorDropdownRecorrencia = listaRecorrencia.first;
-  CatColors cores = CatColors(paleta: 0);
+  CatColors cores = CatColors(paleta: 4);
   @override
   void dispose() {
     _dateController.dispose();

@@ -11,7 +11,7 @@ void main() {
           child: TitleTelaWidget(
             title: "Hello",
             subtitle: "World",
-            catColors: new CatColors(paleta: 'EL'),
+            catColors: new CatColors(paleta: 2),
           ),
         ),
       ),

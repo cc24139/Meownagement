@@ -16,7 +16,7 @@ class TelaGacha extends StatefulWidget {
 }
 
 class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
-  CatColors cores = CatColors(paleta: 0);
+  CatColors cores = CatColors(paleta: 4);
 
   GachaResult? resultadoGacha;
   int bannerAtual = 1;

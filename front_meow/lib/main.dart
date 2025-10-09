@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Meownagement",
-      initialRoute: "/cadastro",
+      //initialRoute: "/cadastro",
       routes: {
 
-        "/"               : (context) => const TelaGato(), //Mudar para tela inicial
+        "/"               : (context) => const TelaTransacoes(), //Mudar para tela inicial
         "/alterarPerfil"  : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),

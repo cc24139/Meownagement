@@ -14,7 +14,7 @@ class TelaPerfil extends StatefulWidget {
 class _TelaPerfilState extends State<TelaPerfil> {
   @override
   Widget build(BuildContext context) {
-    CatColors cores = CatColors(paleta: 0);
+    CatColors cores = CatColors(paleta: 4);
 
     //final args = ModalRoute.of(context)!.settings.arguments as UsuarioViewModel;
     var a = UsuarioViewModel(

@@ -8,7 +8,7 @@ void main() {
       home: Scaffold(
         body: Center(
           child: BolasTools(
-            catColors: CatColors(paleta: 'EL'),
+            catColors: CatColors(paleta: 2),
             elipse: false,
             size: Bolassize.media,
             textBall: "Economia",

@@ -13,7 +13,7 @@ class TelaGatoDoUser extends StatefulWidget {
 void _equipar() {}
 
 class _TelaGatoDoUserState extends State<TelaGatoDoUser> {
-  CatColors cores = CatColors(paleta: 0);
+  CatColors cores = CatColors(paleta: 4);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
