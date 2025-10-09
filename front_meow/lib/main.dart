@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Meownagement",
-      initialRoute: "/login",
+      initialRoute: "/cadastro",
       routes: {
 
         "/"               : (context) => const TelaGato(), //Mudar para tela inicial
@@ -38,7 +38,13 @@ class MyApp extends StatelessWidget {
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),
         "/cadastro"       : (context) => const TelaCadastro(),
-        "/codConfirmacao"    : (context) => const TelaCodConfirmacao(email: "", isCreateCount: true),
+        "/codConfirmacao" : (context) {
+                                      final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+                                      return TelaCodConfirmacao(
+                                        email: args['email'],
+                                        isCreateCount: args['isCreateCount'],
+                                      );
+                                      },
         "/criarMeta"      : (context) => const TelaCriarMeta(),
         "/gacha"          : (context) => const TelaGacha(),
         "/galeria"        : (context) => const TelaGaleria(),
@@ -48,7 +54,6 @@ class MyApp extends StatelessWidget {
         "/inicial"        : (context) => const TelaInicial(),
         "/login"          : (context) => const TelaLogin(),
         "/perfil"         : (context) => const TelaPerfil(),
-        "/codConfirmacao"    : (context) => const TelaCodConfirmacao(email: "", isCreateCount: true),
         "/transacoes"     : (context) => const TelaTransacoes(),
 
 

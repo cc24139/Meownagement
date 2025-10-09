@@ -83,19 +83,19 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<String> CadastrarUsuario(Usuario usuario) async {
+  Future<bool> CadastrarUsuario(String nome, String email, String senha) async {
     final response = await http.post(
       Uri.parse("${urlUsuario}/cadastrar"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(usuario.toJson()),
+      body: jsonEncode(<String, String>{'Nome': nome, 'Email': email, 'Senha': senha})
     );
 
-    if (response.statusCode == 201) {
-      return ("Usuário cadastrado com sucesso");
+    if (response.statusCode == 200) {
+      return (true);
     } else {
-      throw Exception('Failed to create usuario');
+      throw Exception("Erro no cadastro:  "+ response.body.toString());
     }
   }
 
