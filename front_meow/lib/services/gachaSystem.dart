@@ -135,6 +135,10 @@ class GachaSystem {
     // depois mudar para a rota certa
     
     List<int> chances = await gatoServices.RoletarPorcentagemMulti();
+    print(chances);
+    if (chances.length != numeroDeRolls) {
+      throw Exception('Número de rolls retornados não corresponde ao esperado');
+    }
 
     // -----------------------------------------
 

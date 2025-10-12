@@ -37,7 +37,7 @@ class GachaRollWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: cor.withValues(alpha: 0.5),
+            color: cor.withOpacity(0.5),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -60,7 +60,7 @@ class GachaRollWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: cor.withValues(alpha: 0.9),
+                    color: cor.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -119,7 +119,7 @@ class GachaRollWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: cor.withValues(alpha: 0.3),
+            color: cor.withOpacity(0.3),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -198,7 +198,7 @@ class GachaRollWidget {
           '${cat.raridade} Estrelas',
           style: TextStyle(
             fontSize: 16,
-            color: cor.withValues(alpha: 0.8),
+            color: cor.withOpacity(0.8),
           ),
         ),
       ],

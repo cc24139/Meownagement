@@ -151,6 +151,7 @@ class GatoServices extends Http {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
+    
     final response = await http.get(
       Uri.parse("${urlGato}/roletar/10"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
@@ -158,9 +159,14 @@ class GatoServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data;
-    } else {
-      throw Exception('Failed to roletar gatos');
+      
+      List<int> result = List<int>.from(data);
+      
+      print('Porcentagens recebidas: $result');
+      return result;
+    } 
+    else {
+      throw Exception('Failed to roletar gatos: ${response.statusCode}');
     }
   }
 
