@@ -1,6 +1,7 @@
+// lib/animations/cat_animations.dart
 import 'package:flutter/material.dart';
 
-class GachaAnimations  {
+class GachaAnimations {
   // Animação de salto genérica
   static Widget buildJumpingAnimation({
     required Widget child,
@@ -95,7 +96,7 @@ class GachaAnimations  {
     );
   }
 
-  // Animação de preview de raridade - CORRIGIDA
+  // Animação de preview de raridade
   static Widget buildRarityPreview({
     required AnimationController controller,
     required int highestRarity,
