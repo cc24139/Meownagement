@@ -184,7 +184,11 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset("../../assets/images/doudouCat/doudouCatPequena.jpg"),
+                        Image.asset(
+                        "../../assets/images/doudouCat/doudouCatGrande.jpg",
+                        width: 300,
+                        height: 300,
+                      ),
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
