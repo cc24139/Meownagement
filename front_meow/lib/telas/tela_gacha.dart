@@ -19,7 +19,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   CatColors cores = CatColors(paleta: 4);
 
   GachaResult? resultadoGacha;
-  int bannerAtual = 1;
+  int bannerAtual = 14; // id do banner deve ser o idGato do gato de banner -> 13 14 15
   GachaSystem? gachaSystem;
 
   late AnimationController _previewAnimationController;

@@ -13,13 +13,11 @@ class GachaSystem {
     fetchAndInitializeCats();
   }
 
-  // buscar gatos na api e inicializar o sistema
   Future<void> fetchAndInitializeCats() async {
     List<Gato> gatos = await gatoServices.ListarGatos();
     initializeCats(gatos);
   }
 
-  // Inicializar com lista de gatos
   void initializeCats(List<Gato> gatos) {
     _allGatos = gatos;
   }
@@ -48,90 +46,30 @@ class GachaSystem {
 
     List<int> raridades = await _rollRaridadeAsyncMulti(10);
     
-    // Cria uma lista de Futures para executar em paralelo
+    // DEBUG: Verificar raridades calculadas
+    print('🎯 Raridades calculadas: $raridades');
+    
     List<Future<Gato>> futuresGatos = [];
     
     for (int i = 0; i < 10; i++) {
       int raridade = raridades[i];
-      // Adiciona o Future à lista sem await
       futuresGatos.add(_getRandomCatByRarity(raridade, banner));
     }
 
-    // Executa TODOS os rolls em paralelo e aguarda todos terminarem
     List<Gato> gatosRolados = await Future.wait(futuresGatos);
     
-    // Encontra a raridade mais alta
+    // DEBUG: Verificar gatos obtidos
+    print('🐱 Gatos obtidos:');
+    for (int i = 0; i < gatosRolados.length; i++) {
+      print('  ${i + 1}. ${gatosRolados[i].nome} - ${gatosRolados[i].raridade}★ (esperado: ${raridades[i]}★)');
+    }
+    
     int raridadeMaisAlta = raridades.reduce((a, b) => a > b ? a : b);
 
     return GachaResult(
       gatos: gatosRolados,
       raridadeMaisAlta: raridadeMaisAlta,
       rollsTotais: 10,
-    );
-  }
-
-  Future<GachaResult> rollMultiAlternativo(int banner) async {
-    if (_allGatos.isEmpty) {
-      await fetchAndInitializeCats();
-    }
-
-    List<int> raridades = await _rollRaridadeAsyncMulti(10);
-    
-    // Usando map para criar os Futures de forma mais elegante
-    List<Future<Gato>> futuresGatos = raridades.map((raridade) {
-      return _getRandomCatByRarity(raridade, banner);
-    }).toList();
-
-    // Executa em paralelo
-    List<Gato> gatosRolados = await Future.wait(futuresGatos);
-    
-    int raridadeMaisAlta = raridades.reduce((max, current) => current > max ? current : max);
-
-    return GachaResult(
-      gatos: gatosRolados,
-      raridadeMaisAlta: raridadeMaisAlta,
-      rollsTotais: 10,
-    );
-  }
-
-  // Roll com garantia de raridade mínima
-  Future<GachaResult> rollWithGuarantee(int raridadeMinima, int numeroDeRolls, int banner) async {
-    if (_allGatos.isEmpty) {
-      await fetchAndInitializeCats();
-    }
-
-    List<Future<int>> futuresRaridades = [];
-    bool garantidoAplicado = false;
-
-    // Primeiro, obtém todas as raridades
-    for (int i = 0; i < numeroDeRolls; i++) {
-      if (i == numeroDeRolls - 1 && !garantidoAplicado) {
-        // Último roll com garantia
-        futuresRaridades.add(Future.value(raridadeMinima));
-        garantidoAplicado = true;
-      } else {
-        futuresRaridades.add(_rollRaridadeAsync().then((raridade) {
-          if (raridade >= raridadeMinima) garantidoAplicado = true;
-          return raridade;
-        }));
-      }
-    }
-
-    List<int> raridades = await Future.wait(futuresRaridades);
-    
-    // Agora obtém os gatos em paralelo
-    List<Future<Gato>> futuresGatos = raridades.map((raridade) {
-      return _getRandomCatByRarity(raridade, banner);
-    }).toList();
-
-    List<Gato> gatosRolados = await Future.wait(futuresGatos);
-    
-    int raridadeMaisAlta = raridades.reduce((max, current) => current > max ? current : max);
-
-    return GachaResult(
-      gatos: gatosRolados,
-      raridadeMaisAlta: raridadeMaisAlta,
-      rollsTotais: numeroDeRolls,
     );
   }
 
@@ -151,12 +89,13 @@ class GachaSystem {
       raridade = 3;
     }
     
+    print('🎲 Chance: $chance → Raridade: $raridade★');
     return raridade;
   }
 
   Future<List<int>> _rollRaridadeAsyncMulti(int numeroDeRolls) async {
     List<int> chances = await gatoServices.RoletarPorcentagemMulti();
-    print(chances);
+    print('🎲 Chances da API: $chances');
     
     if (chances.length != numeroDeRolls) {
       throw Exception('Número de rolls retornados não corresponde ao esperado');
@@ -181,22 +120,48 @@ class GachaSystem {
   }
 
   Future<Gato> _getRandomCatByRarity(int raridade, int bannerAtual) async {
+    print('🔍 Buscando gato de $raridade★ estrelas...');
+
     if (raridade == 5) {
       // gato 5 estrelas sempre do banner atual
       Gato gatobanner = _allGatos.firstWhere((cat) => cat.idGato == bannerAtual);
+      print('⭐ Gato do banner: ${gatobanner.nome} - ${gatobanner.raridade}★');
       await gatoServices.DesbloquearGato(gatobanner.nome);
       return gatobanner;
     }
 
     List<Gato> gatosDaRaridade = _allGatos.where((cat) => cat.raridade == raridade).toList();
+    
+    // DEBUG: Verificar gatos disponíveis da raridade
+    print('📊 Gatos disponíveis de $raridade★: ${gatosDaRaridade.length}');
+    for (var gato in gatosDaRaridade) {
+      print('   - ${gato.nome} (ID: ${gato.idGato})');
+    }
+
     if (gatosDaRaridade.isEmpty) {
-      // Fallback para qualquer gato se não houver da raridade especificada
-      return _allGatos[_random.nextInt(_allGatos.length)];
+      print('⚠️  Nenhum gato de $raridade★ encontrado! Buscando alternativa...');
+      
+      // CORREÇÃO: Se não há gatos da raridade, busca gatos de raridade mais baixa
+      // em vez de qualquer gato aleatório
+      List<Gato> gatosRaridadeInferior = _allGatos.where((cat) => cat.raridade < raridade).toList();
+      
+      if (gatosRaridadeInferior.isNotEmpty) {
+        Gato gatoFallback = gatosRaridadeInferior[_random.nextInt(gatosRaridadeInferior.length)];
+        print('🔄 Fallback: ${gatoFallback.nome} - ${gatoFallback.raridade}★ (original: $raridade★)');
+        await gatoServices.DesbloquearGato(gatoFallback.nome);
+        return gatoFallback;
+      } else {
+        // Último recurso: qualquer gato
+        Gato gatoFallback = _allGatos[_random.nextInt(_allGatos.length)];
+        print('🆘 Fallback extremo: ${gatoFallback.nome} - ${gatoFallback.raridade}★ (original: $raridade★)');
+        await gatoServices.DesbloquearGato(gatoFallback.nome);
+        return gatoFallback;
+      }
     }
 
     Gato gatoObtido = gatosDaRaridade[_random.nextInt(gatosDaRaridade.length)];
+    print('✅ Gato obtido: ${gatoObtido.nome} - ${gatoObtido.raridade}★');
     
-    // adiciona o gato a conta do usuário
     await gatoServices.DesbloquearGato(gatoObtido.nome);
 
     return gatoObtido;
