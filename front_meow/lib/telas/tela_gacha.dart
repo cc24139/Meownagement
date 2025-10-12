@@ -20,8 +20,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
   GachaResult? resultadoGacha;
   int bannerAtual = 1;
-
-  final GachaSystem gachaSystem = GachaSystem();
+  GachaSystem? gachaSystem;
 
   // Controladores de animação
   late AnimationController _previewAnimationController;
@@ -35,6 +34,9 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    gachaSystem = GachaSystem();
+
     // Inicializar os controladores de animação
     _previewAnimationController = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -64,7 +66,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _mostrandoGatos = false;
     });
 
-    resultadoGacha = await gachaSystem.rollSingle(bannerAtual);
+    resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
 
     // Executar animação de preview
     await _previewAnimationController.forward(from: 0.0);
@@ -91,7 +93,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _mostrandoGatos = false;
     });
 
-    resultadoGacha = await gachaSystem.rollMulti(bannerAtual);
+    resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
 
     // Executar animação de preview
     await _previewAnimationController.forward(from: 0.0);

@@ -24,7 +24,7 @@ class GachaRollWidget {
       cor = Colors.red;
     }
 
-    String imagePath = 'assets/images/${cat.nomeImagem}/${cat.nomeImagem}Pequena.png';
+    String imagePath = 'assets/images/${cat.nomeImagem}/${cat.nomeImagem}Pequena.jpg';
 
     return Container(
       width: size,
@@ -105,7 +105,7 @@ class GachaRollWidget {
       cor = Colors.red;
     }
 
-    String imagePath = 'assets/images/${cat.nomeImagem}/${cat.nomeImagem}Pequena.png';
+    String imagePath = 'assets/images/${cat.nomeImagem}/${cat.nomeImagem}Pequena.jpg';
 
     return Container(
       width: size,
