@@ -35,7 +35,7 @@ class GachaSystem {
   // Fazer um roll único
   Future<GachaResult> rollSingle(int banner) async {
     if (_allGatos.isEmpty) {
-      throw Exception('GachaSystem não inicializado com gatos');
+      await fetchAndInitializeCats();
     }
 
     int raridade = await _rollRaridadeAsync();
@@ -51,7 +51,7 @@ class GachaSystem {
   // Fazer 10 rolls
   Future<GachaResult> rollMulti(int banner) async {
     if (_allGatos.isEmpty) {
-      throw Exception('GachaSystem não inicializado com gatos');
+      await fetchAndInitializeCats();
     }
 
     List<Gato> gatosRolados = [];

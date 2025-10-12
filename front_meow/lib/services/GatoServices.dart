@@ -234,9 +234,19 @@ class GatoServices extends Http {
     }
     final response = await http.post(
       Uri.parse("${urlGato}/adicionar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
-      body: jsonEncode({'Nome': nome}),
+      headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+      'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: jsonEncode(nome),
     );
+
+    if (response.statusCode == 200) {
+      print('Gato desbloqueado: $nome');
+    }
+    else {
+      print('Failed to desbloquear gato: $nome, Status code: ${response.statusCode}');
+    }
 
     return response.statusCode == 200;
   }
