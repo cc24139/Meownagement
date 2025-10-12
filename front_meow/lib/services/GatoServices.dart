@@ -8,7 +8,7 @@ import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
   static String urlGato = "${Http.url}/gatos";
-  static String? token = localStorage.getItem('token');
+  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmV5LnN0ZWluQGdtYWlsLmNvbSIsIm5hbWVpZCI6IjExIiwibmJmIjoxNzYwMjcxNTE5LCJleHAiOjE3NjAzMDc1MTksImlhdCI6MTc2MDI3MTUxOX0.gmqqHEQw-YevUmiZ81uYzkg3CQB5bJgscDV2ynO0xFM";
 
   // GETS
   Future<List<Gato>> ListarGatos() async {

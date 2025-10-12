@@ -15,6 +15,7 @@ import 'package:front_meow/telas/tela_login.dart';
 import 'package:front_meow/telas/tela_inicial.dart';
 import 'package:front_meow/telas/tela_perfil.dart';
 import 'package:front_meow/telas/tela_transacoes.dart';
+import 'package:front_meow/telas/teste_imagem_page.dart';
 import 'package:localstorage/localstorage.dart';
 
 void main() async {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       //initialRoute: "/cadastro",
       routes: {
 
-        "/"               : (context) => const TelaInicial(), //Mudar para tela inicial
+        "/"               : (context) => const TelaGatoDoUser(), //Mudar para tela inicial
         "/alterarPerfil"  : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),
