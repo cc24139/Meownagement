@@ -22,14 +22,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   int bannerAtual = 1;
   GachaSystem? gachaSystem;
 
-  // Controladores de animação
   late AnimationController _previewAnimationController;
   late AnimationController _gatosAnimationController;
 
-  // Estados para controlar as animações
   bool _mostrandoPreview = false;
   bool _mostrandoGatos = false;
   bool _estaRolando = false;
+  bool _carregandoRoll = false;
 
   @override
   void initState() {
@@ -37,7 +36,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
     gachaSystem = GachaSystem();
 
-    // Inicializar os controladores de animação
     _previewAnimationController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
@@ -56,72 +54,72 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // Funções de rolls com animações - CORRIGIDAS
   void rollUnico() async {
     if (_estaRolando) return;
     
+    _resetarParaNovoRoll();
+    
     setState(() {
       _estaRolando = true;
-      _mostrandoPreview = true;
-      _mostrandoGatos = false;
+      _carregandoRoll = true;
     });
 
     resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
 
-    // DEBUG: Verificar se o resultado chegou
-    print('Roll único - Raridade mais alta: ${resultadoGacha?.raridadeMaisAlta}');
-    print('Roll único - Total de gatos: ${resultadoGacha?.gatos.length}');
+    setState(() {
+      _carregandoRoll = false;
+      _mostrandoPreview = true;
+    });
 
-    // RESETAR E EXECUTAR animação de preview
     _previewAnimationController.reset();
     await _previewAnimationController.forward();
-
-    // Aguardar um pouco antes de mostrar os gatos
-    await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
       _mostrandoPreview = false;
       _mostrandoGatos = true;
     });
 
-    // RESETAR E EXECUTAR animação dos gatos
     _gatosAnimationController.reset();
     _gatosAnimationController.forward();
+    
+    setState(() {
+      _estaRolando = false;
+    });
   }
 
   void rollMulti() async {
     if (_estaRolando) return;
     
+    _resetarParaNovoRoll();
+    
     setState(() {
       _estaRolando = true;
-      _mostrandoPreview = true;
-      _mostrandoGatos = false;
+      _carregandoRoll = true;
     });
 
     resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
 
-    // DEBUG: Verificar se o resultado chegou
-    print('Roll múltiplo - Raridade mais alta: ${resultadoGacha?.raridadeMaisAlta}');
-    print('Roll múltiplo - Total de gatos: ${resultadoGacha?.gatos.length}');
+    setState(() {
+      _carregandoRoll = false;
+      _mostrandoPreview = true;
+    });
 
-    // RESETAR E EXECUTAR animação de preview
     _previewAnimationController.reset();
     await _previewAnimationController.forward();
-
-    // Aguardar um pouco antes de mostrar os gatos
-    await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
       _mostrandoPreview = false;
       _mostrandoGatos = true;
     });
 
-    // RESETAR E EXECUTAR animação dos gatos
     _gatosAnimationController.reset();
     _gatosAnimationController.forward();
+    
+    setState(() {
+      _estaRolando = false;
+    });
   }
 
-  // Função para resetar e voltar ao estado inicial
   void _resetarTela() {
     setState(() {
       _mostrandoPreview = false;
@@ -132,13 +130,23 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     });
   }
 
-  // Widget para overlay dos resultados (aparece por cima)
+  void _resetarParaNovoRoll() {
+    setState(() {
+      _mostrandoPreview = false;
+      _mostrandoGatos = false;
+      _estaRolando = false;
+      _carregandoRoll = false;
+      resultadoGacha = null;
+      _previewAnimationController.reset();
+      _gatosAnimationController.reset();
+    });
+  }
+
   Widget _buildOverlayResultados() {
     if (!_mostrandoGatos || resultadoGacha == null) return const SizedBox();
 
     return Stack(
       children: [
-        // Fundo semi-transparente que fecha ao clicar
         GestureDetector(
           onTap: _resetarTela,
           child: Container(
@@ -148,7 +156,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           ),
         ),
         
-        // Conteúdo centralizado dos resultados
         Center(
           child: Container(
             width: 350,
@@ -166,7 +173,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             ),
             child: Stack(
               children: [
-                // Conteúdo dos gatos
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Center(
@@ -182,7 +188,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                   ),
                 ),
                 
-                // Botão de fechar no canto superior direito
                 Positioned(
                   top: 10,
                   right: 10,
@@ -207,6 +212,68 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildConteudoPrincipal() {
+    if (_carregandoRoll) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: cores.tercearia),
+            const SizedBox(height: 16),
+            Text(
+              'Rolando...',
+              style: TextStyle(
+                fontSize: 16,
+                color: cores.tercearia,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_mostrandoPreview && resultadoGacha != null) {
+      return Center(
+        child: GachaAnimations.buildRarityPreview(
+          controller: _previewAnimationController,
+          highestRarity: resultadoGacha!.raridadeMaisAlta,
+          totalCats: resultadoGacha!.gatos.length,
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          "assets/images/watermelonZazu/watermelonZazuGrande.jpg",
+          width: 200,
+          height: 200,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButtonWidget(
+              text: "Girar 1X",
+              onPressed: () {_estaRolando ? null : rollUnico();},
+              size: ButtonSize.muitoPequeno,
+              catColors: cores,
+            ),
+            const SizedBox(width: 16),
+            ElevatedButtonWidget(
+              text: "Girar 10X",
+              onPressed: () {_estaRolando ? null : rollMulti();},
+              size: ButtonSize.muitoPequeno,
+              catColors: cores,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,7 +285,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       ),
       body: Stack(
         children: [
-          // Conteúdo principal da tela
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -247,49 +313,9 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      // Conteúdo principal que muda baseado no estado
-                      if (_mostrandoPreview && resultadoGacha != null)
-                        Center(
-                          child: GachaAnimations.buildRarityPreview(
-                            controller: _previewAnimationController,
-                            highestRarity: resultadoGacha!.raridadeMaisAlta,
-                            totalCats: resultadoGacha!.gatos.length,
-                          ),
-                        )
-                      else
-                        // Tela inicial com banner e botões (sempre visível)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/images/watermelonZazu/watermelonZazuGrande.jpg",
-                              width: 200,
-                              height: 200,
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButtonWidget(
-                                  text: "Girar 1X",
-                                  onPressed: () {_estaRolando ? null : rollUnico();},
-                                  size: ButtonSize.muitoPequeno,
-                                  catColors: cores,
-                                ),
-                                const SizedBox(width: 16),
-                                ElevatedButtonWidget(
-                                  text: "Girar 10X",
-                                  onPressed: () {_estaRolando ? null : rollMulti();},
-                                  size: ButtonSize.muitoPequeno,
-                                  catColors: cores,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      _buildConteudoPrincipal(),
 
-                      // Containers vazando para baixo (só aparecem na tela inicial)
-                      if (!_mostrandoPreview && !_mostrandoGatos)
+                      if (!_mostrandoPreview && !_mostrandoGatos && !_carregandoRoll)
                         Positioned(
                           left: 0,
                           right: 0,
@@ -334,7 +360,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             ),
           ),
 
-          // Overlay dos resultados (aparece por cima quando necessário)
           _buildOverlayResultados(),
         ],
       ),
