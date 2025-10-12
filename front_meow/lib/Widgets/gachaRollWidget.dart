@@ -89,7 +89,7 @@ class GachaRollWidget {
   // Widget de imagem de gato múltiplo (menor)
   static Widget buildMultipleCatImage({
     required Gato cat,
-    double size = 70,
+    double size = 67,
   }) {
 
     Color cor = Colors.blue;
@@ -209,7 +209,7 @@ class GachaRollWidget {
   static Widget buildMultipleCatsWithAnimation({
     required List<Gato> cats,
     required AnimationController controller,
-    int catsPerRow = 5,
+    int catsPerRow = 2,
   }) {
     // Converte a lista de Cats em lista de Widgets
     List<Widget> catWidgets = cats.map((cat) {
