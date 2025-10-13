@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
@@ -87,6 +88,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
           );
         } 
       ),
+      drawer: Menulateralwidget(),
     );
   }
 }

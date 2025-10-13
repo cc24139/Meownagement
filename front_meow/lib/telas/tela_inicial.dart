@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
-  
 
   @override
   State<TelaInicial> createState() => _TelaInicialState();
@@ -24,10 +24,23 @@ class _TelaInicialState extends State<TelaInicial> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.menu, color: cores.complementar, size: 40),
+                  Builder(
+                    builder: (context) { 
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                      );
+                    },
+                  ),
                   MeowcoinWidget(saldo: 20),
-                  
-                  Icon(Icons.calendar_today, color: cores.complementar, size: 40)
+
+                  Icon(
+                    Icons.calendar_today,
+                    color: cores.complementar,
+                    size: 40,
+                  ),
                 ],
               ),
               Row(
@@ -42,38 +55,44 @@ class _TelaInicialState extends State<TelaInicial> {
                         color: cores.complementar,
                       ),
                       SizedBox(width: 30),
-                      Text("Saldo", style: TextStyle(color: cores.complementar)),
-                      SizedBox(width: 30,)
+                      Text(
+                        "Saldo",
+                        style: TextStyle(color: cores.complementar),
+                      ),
+                      SizedBox(width: 30),
                     ],
                   ),
                 ],
               ),
-              
+
               Container(
                 decoration: BoxDecoration(
                   color: cores.complementar,
-                  border: Border.all(
-                    color: cores.corTerciaria,
-                    width: 2.0
-                  ),
+                  border: Border.all(color: cores.corTerciaria, width: 2.0),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(width: 1),
-                    Text("Veja suas metas", style: TextStyle(color: cores.secundaria)),
-                    Icon(Icons.arrow_right_alt, color: cores.corSecundaria, size: 30,)
+                    Text(
+                      "Veja suas metas",
+                      style: TextStyle(color: cores.secundaria),
+                    ),
+                    Icon(
+                      Icons.arrow_right_alt,
+                      color: cores.corSecundaria,
+                      size: 30,
+                    ),
                   ],
-                )
-              )
-
+                ),
+              ),
             ],
-          )
+          ),
         ),
       ),
-      
-      drawer: Drawer(),
+
+      drawer: Menulateralwidget(),
       backgroundColor: cores.corPrimaria,
     );
   }
