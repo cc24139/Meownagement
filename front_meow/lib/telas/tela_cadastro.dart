@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});
@@ -23,9 +25,44 @@ class _TelaCadastroState extends State<TelaCadastro> {
     super.dispose();
   }
 
-  void _fazerCadastro() {
+  void _CodigoExistente(){
+    if(txtEmail.text != ""){
+      Navigator.pushReplacementNamed(context, AppRotas.confirmacao,
+            arguments: {
+              'email': txtEmail.text,
+              'isCreateCount': true,
+            });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Digite um email válido para ir para a confirmação.')),
+        );
+    }
+  }
+
+  Future<void> _fazerCadastro() async {
+    try {
     if (txtSenha.text == txtConfirmaSenha.text) {
-      Navigator.pushReplacementNamed(context, AppRotas.login);
+      var httpUsuarios = UsuarioServices();
+      var okCad = await httpUsuarios.CadastrarUsuario(
+        txtUsuario.text,
+        txtEmail.text,
+        txtSenha.text,
+      );
+      if (okCad) {
+        Navigator.pushReplacementNamed(context, AppRotas.confirmacao,
+            arguments: {
+              'email': txtEmail.text,
+              'isCreateCount': true,
+            });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao cadastrar. Tente novamente.')),
+        );
+      }
+    }} catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao cadastrar.${e.toString()}')),
+        );
     }
   }
 
@@ -106,7 +143,10 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       width: 250,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, AppRotas.login);
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRotas.login,
+                          );
                         },
                         child: const Text("Login"),
                       ),
@@ -120,13 +160,21 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 width: 250,
                 child: ElevatedButton(
                   onPressed: _fazerCadastro,
-                  child: Text("Entrar"),
+                  child: Text("Cadastrar"),
                 ),
               ),
-            ],
+              const SizedBox(height: 10),
+                SizedBox(
+                  width: 250,
+                  child: ElevatedButton(
+                    onPressed: _CodigoExistente,
+                    child: Text("Já tenho código"),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

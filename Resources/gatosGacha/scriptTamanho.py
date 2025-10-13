@@ -27,18 +27,23 @@ def nomeImagem(nomeImg):
     return nome
 
 def mudaTipo(caminho, nomeImagem):
-    if caminho.lower().endswith(".png"):
-        img = Image.open(caminho).convert("RGB")  # Convert to RGB for JPG
-        
-        new_file = nomeImagem + ".jpg"
-        
+    extensao = caminho.lower().split(".")[-1]
+
+    if extensao in ["png", "jpeg", "jpg"]:
+        img = Image.open(caminho).convert("RGB")  # garante formato RGB
+
+        dir_imagem = os.path.dirname(caminho)
+        new_file = os.path.join(dir_imagem, nomeImagem + "Quadrado.jpg")  # padroniza como .jpg
+
         img.save(new_file, "JPEG")
         print(f"Converted: {caminho} -> {new_file}")
 
-        os.remove(caminho)
-        print(f"Deleted: {caminho}")
+        # se o arquivo original não for .jpg, remove ele
+        if not caminho.lower().endswith(".jpg"):
+            os.remove(caminho)
+            print(f"Deleted: {caminho}")
     else:
-        print("File is not a .png")
+        print(f"File format not supported: {caminho}")
 
 def processarImagens():
     # for caminhoImagem in os.listdir(path):

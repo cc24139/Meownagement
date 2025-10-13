@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MeowcoinWidget extends StatelessWidget {
-  final double saldo;
+  final int saldo;
   final Color corFundo;
   final Color corTexto;
 
@@ -29,7 +29,7 @@ class MeowcoinWidget extends StatelessWidget {
           const Icon(Icons.account_balance_wallet, color: Colors.white, size: 20),
           const SizedBox(width: 6),
           Text(
-            "R\$ ${saldo.toStringAsFixed(2)}",
+            "${saldo} MC",
             style: TextStyle(
               color: corTexto,
               fontWeight: FontWeight.bold,

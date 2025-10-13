@@ -11,7 +11,7 @@ void main() {
             titulo: "Ecnomizar no Seu Miguel",
             subtitulo: "Economia de um pão de queijo por dia",
             todo: 2540,
-            catColors: CatColors(paleta: 'EL'),
+            catColors: CatColors(paleta: 2),
           ),
         ),
       ),

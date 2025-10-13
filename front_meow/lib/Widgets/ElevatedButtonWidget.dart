@@ -13,7 +13,7 @@ void main() {
             text: "Clique aqui",
             onPressed: ronaldo,
             size: ButtonSize.grande,
-            catColors: CatColors(paleta: 'EL'),
+            catColors: CatColors(paleta: 2),
           ),
         ),
       ),

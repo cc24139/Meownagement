@@ -38,7 +38,7 @@ class _TelaLoginState extends State<TelaLogin> {
       );
       print("Resposta de LoginUsuario: $sucesso");
 
-      if (sucesso.toString() == "Login realizado com sucesso") {
+      if (sucesso!) {
         Navigator.pushReplacementNamed(context, AppRotas.amizades);
       } 
       else {
