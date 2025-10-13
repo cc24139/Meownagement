@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/animations/gachaAnimations.dart';
 import 'package:front_meow/colors/colors.dart';
@@ -326,6 +327,16 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
         backgroundColor: cores.primaria,
         centerTitle: true,
         title: MeowcoinWidget(saldo: meowCoins),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+            );
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -408,6 +419,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           _buildOverlayResultados(),
         ],
       ),
+      drawer: Menulateralwidget(),
     );
   }
 }
