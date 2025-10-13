@@ -240,7 +240,7 @@ class GatoServices extends Http {
     final response = await http.post(
       Uri.parse("${urlGato}/adicionar"),
       headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $Http.token',
+      HttpHeaders.authorizationHeader: 'Bearer ${Http.token}',
       'Content-Type': 'application/json; charset=utf-8',
       },
       body: jsonEncode(nome),

@@ -105,7 +105,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _carregandoRoll = true;
     });
 
-    resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
+    try {
+      resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
+    } catch (e) {
+      print("Erro ao realizar roll único: $e");
+    }
+
+    atualizarMeowCoins();
 
     setState(() {
       _carregandoRoll = false;
@@ -138,7 +144,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _carregandoRoll = true;
     });
 
-    resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
+    try {
+      resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
+    } catch (e) {
+      print("Erro ao realizar roll múltiplo: $e");
+    }
+
+    atualizarMeowCoins();
 
     setState(() {
       _carregandoRoll = false;
@@ -287,10 +299,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          imagemBannerAtual(),
-          width: 200,
-          height: 200,
+        Transform.translate(
+          offset: const Offset(0, -41), 
+          child: Image.asset(
+            imagemBannerAtual(),
+            width: 250,
+            height: 250
+          ),
         ),
         const SizedBox(height: 16),
         Row(
@@ -298,17 +313,17 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           children: [
             ElevatedButtonWidget(
               text: "Girar 1X",
-              onPressed: () {_estaRolando ? null : rollUnico();},
+              onPressed: () { _estaRolando ? null : rollUnico(); },
               highSize: ButtonSize.muitoPequeno,
-              weightSize: ButtonSize.pequeno,
+              widthSize: ButtonSize.pequeno,
               catColors: cores,
             ),
             const SizedBox(width: 16),
             ElevatedButtonWidget(
               text: "Girar 10X",
-              onPressed: () {_estaRolando ? null : rollMulti();},
+              onPressed: () { _estaRolando ? null : rollMulti(); },
               highSize: ButtonSize.muitoPequeno,
-              weightSize: ButtonSize.pequeno,
+              widthSize: ButtonSize.pequeno,
               catColors: cores,
             ),
           ],
@@ -318,6 +333,52 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   }
 
   // termina o gacha --------------------------------------------------------------------------
+
+  Widget _buildBannerButton({
+    required int idBanner,
+    required String nomeBanner,
+    required VoidCallback onTap,
+  }) {
+    bool selecionado = bannerAtual == idBanner;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 100,
+        height: 80,
+        decoration: BoxDecoration(
+          color: selecionado ? cores.tercearia.withOpacity(0.8) : Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: selecionado ? cores.complementar : cores.tercearia,
+            width: 2,
+          ),
+          boxShadow: selecionado
+              ? [
+                  BoxShadow(
+                    color: cores.complementar.withOpacity(0.5),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : [],
+        ),
+        child: Center(
+          child: Text(
+            nomeBanner,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: selecionado ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -342,9 +403,12 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
+                const SizedBox(height: 41),
+
                 Text(
                   nomeDoBannerAtual(),
                   style: TextStyle(
@@ -355,8 +419,8 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  width: 420,
-                  height: 400,
+                  width: 380,
+                  height: 541,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -373,42 +437,30 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
                       if (!_mostrandoPreview && !_mostrandoGatos && !_carregandoRoll)
                         Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: -60,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
-                              ),
-                              Container(
-                                width: 120,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
-                              ),
-                              Container(
-                                width: 120,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
-                              ),
-                            ],
-                          ),
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildBannerButton(
+                              idBanner: 13,
+                              nomeBanner: 'MeiMei',
+                              onTap: () => setState(() => bannerAtual = 13),
+                            ),
+                            _buildBannerButton(
+                              idBanner: 14,
+                              nomeBanner: 'Zazu',
+                              onTap: () => setState(() => bannerAtual = 14),
+                            ),
+                            _buildBannerButton(
+                              idBanner: 15,
+                              nomeBanner: 'Meowl',
+                              onTap: () => setState(() => bannerAtual = 15),
+                            ),
+                          ],
                         ),
+                      ),
                     ],
                   ),
                 ),
