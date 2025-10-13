@@ -1,3 +1,4 @@
+import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/models/usuario.dart';
@@ -170,7 +171,7 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<String> PerfilUsuario() async {
+  Future<PerfilViewModel> PerfilUsuario() async {
     if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       //tem que redirecionar para a tela de login
@@ -182,8 +183,9 @@ class UsuarioServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data;
+      return PerfilViewModel.fromJson(data);
     } else {
+      print(response.statusCode);
       throw Exception('Failed to load perfil usuario');
     }
   }

@@ -26,14 +26,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Meownagement",
       //initialRoute: "/cadastro",
       routes: {
 
-        "/"               : (context) => const TelaGacha(), //Mudar para tela inicial
+        "/"               : (context) => const TelaInicial(), //Mudar para tela inicial
         "/alterarPerfil"  : (context) => const TelaAlterarPerfil(),
         "/alterarSenha"   : (context) => const TelaAlterarSenha(),
         "/amizades"       : (context) => const TelaAmizades(),

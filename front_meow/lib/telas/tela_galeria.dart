@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
+import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/gato.dart';
 
 class TelaGaleria extends StatefulWidget {
@@ -11,14 +13,12 @@ class TelaGaleria extends StatefulWidget {
 class CardGato extends StatelessWidget {
   final String nome;
   final String imagem;
-  const CardGato({
-    Key? key,
-    required this.nome,
-    required this.imagem
-  }) : super(key: key);
-  
+  const CardGato({Key? key, required this.nome, required this.imagem})
+    : super(key: key);
+
   @override
   Widget build(BuildContext contect) {
+    CatColors cores = CatColors(paleta: 4);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(16),
@@ -28,8 +28,18 @@ class CardGato extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Builder(
+            //   builder: (context) {
+            //     return IconButton(
+            //       onPressed: () {
+            //         Scaffold.of(context).openDrawer();
+            //       },
+            //       icon: Icon(Icons.menu, color: cores.primaria, size: 40),
+            //     );
+            //   },
+            // ),
             Image.asset(
-              '../assets/images/$imagem/'+imagem+'pequena.jpg',
+              '../assets/images/$imagem/' + imagem + 'pequena.jpg',
               height: 50,
               width: 50,
             ),
@@ -70,6 +80,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
           ],
         ),
       ),
+      drawer: Menulateralwidget(),
     );
   }
 }
