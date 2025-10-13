@@ -164,6 +164,7 @@ public class UsuarioController : ControllerBase
             Saldo = 0
         };
 
+
         await db.Usuario.AddAsync(usuario);
         await db.SaveChangesAsync();
 
@@ -183,6 +184,40 @@ public class UsuarioController : ControllerBase
         db.CodeEmail.Remove(codeEntry);
         await db.SaveChangesAsync();
         return Ok("Email confirmado com sucesso.");
+    }
+
+    [HttpPut("usuarios/reenviarCodigo")]
+    public async Task<IActionResult> ReenviarCodigo([FromBody] string email, DBMeownagement db)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return BadRequest("Email inválido.");
+        }
+        var usuarioExistente = await db.Usuario.AnyAsync(u => u.Email == email);
+        if (usuarioExistente)
+        {
+            return Conflict("Email já está em uso.");
+        }
+        var codigoExistente = await db.CodeEmail.FirstOrDefaultAsync(c => c.Email == email);
+        var gerarCodigo = new EmailVerification(email, codigoExistente != null ? codigoExistente.Nome : "Usuário");
+        if (codigoExistente != null)
+        {
+            var novoCodigo = new CodeEmail();
+            novoCodigo.Email = email;
+            novoCodigo.Code = gerarCodigo._codeVerify.ToString();
+            novoCodigo.TempoExp = gerarCodigo._codeExpire;
+            novoCodigo.Nome = codigoExistente.Nome;
+            novoCodigo.Biografia = codigoExistente.Biografia;
+            novoCodigo.Senha = codigoExistente.Senha;
+            await gerarCodigo.SendEmail();
+            db.CodeEmail.Remove(codigoExistente);
+            await db.SaveChangesAsync();
+            await db.CodeEmail.AddAsync(novoCodigo);
+            await db.SaveChangesAsync();
+        }
+
+        await db.SaveChangesAsync();
+        return Ok("Código de verificação enviado para o email cadastrado. Verifique sua caixa de entrada e spam.");
     }
 
     [Authorize]

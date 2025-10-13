@@ -32,6 +32,7 @@ namespace APIMeow.Controllers
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.Feita == 'S').ToListAsync();
             return Ok(listMetas);
         }
+
         [Authorize]
         [HttpGet("metas/listarNaoConcluidas")]
         public async Task<IActionResult> ListarMetasNaoConcluidas(DBMeownagement db)
@@ -57,6 +58,64 @@ namespace APIMeow.Controllers
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.DataCriacao.Date >= dataInicio.Date && m.DataTermino.Date <= dataFim.Date).ToListAsync();
             return Ok(listMetas);
+        }
+
+        [Authorize]
+        [HttpGet("metas/listarQuantosGastos")]
+        public async Task<IActionResult> ListarQuantosGastos(DBMeownagement db)
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
+            var listMetaView = new List<MetaView>();
+            if (listMetas.Count == 0) return Ok(0);
+            foreach(var meta in listMetas)
+            {
+                var Idtransacoes = await db.MetaCofrinhoTransacao
+                .Where(mct => mct.IdMeta == meta.IdMeta).ToListAsync();
+                if (Idtransacoes.Count == 0) continue;
+                decimal gastoTotal = 0;
+                var listTransacoes = new List<Transacoes>();
+                foreach (var item in Idtransacoes)
+                {
+                    var transacao = await db.Transacao.FindAsync(item.IdTransacao);
+                    if (transacao != null && transacao.Feita == 'S')
+                    {
+                        gastoTotal += transacao.QuantiaDinheiro;
+                        listTransacoes.Add(transacao);
+                    }
+                }
+                listMetaView.Add(new MetaView
+                {
+                    metas = meta,
+                    transacoes = listTransacoes,
+                    totalGasto = gastoTotal
+                });
+            }
+
+            return Ok(listMetaView);
+        }
+
+        [Authorize]
+        [HttpGet("metas/mostrarValorGasto/{id}")]
+        public async Task<IActionResult> ListarMetasPorId(int id, DBMeownagement db)
+        {
+            var meta = await db.Metas.FindAsync(id);
+            if(meta == null) return NotFound("Meta não encontrada.");
+            var Idtransacoes = await db.MetaCofrinhoTransacao
+                .Where(mct => mct.IdMeta == id).ToListAsync();
+
+            if (Idtransacoes.Count == 0) return Ok(0);
+            decimal gastoTotal = 0;
+            foreach (var item in Idtransacoes)
+            {
+                var transacao = await db.Transacao.FindAsync(item.IdTransacao);
+                if (transacao != null && transacao.QuantiaDinheiro < 0 && transacao.Feita == 'S')
+                {
+                    gastoTotal += transacao.QuantiaDinheiro;
+                }
+            }
+
+            return Ok(gastoTotal);
         }
 
         [Authorize]

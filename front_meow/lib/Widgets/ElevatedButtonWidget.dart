@@ -12,7 +12,8 @@ void main() {
           child: ElevatedButtonWidget(
             text: "Clique aqui",
             onPressed: ronaldo,
-            size: ButtonSize.grande,
+            highSize: ButtonSize.grande,
+            weightSize: ButtonSize.medio,
             catColors: CatColors(paleta: 2),
           ),
         ),
@@ -24,20 +25,21 @@ void main() {
 class ElevatedButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final ButtonSize size;
+  final ButtonSize highSize;
+  final ButtonSize weightSize;
   final CatColors catColors;
 
   const ElevatedButtonWidget({
     super.key,
     required this.text,
     required this.onPressed,
-    required this.size,
+    required this.highSize,
+    required this.weightSize,
     required this.catColors,
   });
 
   double? _getButtonWidth() {
-    print("Entrou no getButtonWidth com size: $size");
-    switch (size) {
+    switch (weightSize) {
       case ButtonSize.muitoPequeno:
         return 25;
       case ButtonSize.pequeno:
@@ -48,6 +50,20 @@ class ElevatedButtonWidget extends StatelessWidget {
         return 250;
       default:
         return 150;
+    }
+  }
+  double? _getButtonHeight() {
+    switch (highSize) {
+      case ButtonSize.muitoPequeno:
+        return 25;
+      case ButtonSize.pequeno:
+        return 35;
+      case ButtonSize.medio:
+        return 45;
+      case ButtonSize.grande:
+        return 55;
+      default:
+        return 45;
     }
   }
 
@@ -68,7 +84,7 @@ class ElevatedButtonWidget extends StatelessWidget {
           const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
         ),
         minimumSize: WidgetStateProperty.all(
-          Size(_getButtonWidth() ?? 150, 55),
+          Size(_getButtonWidth() ?? 150, _getButtonHeight() ?? 45),
         ),
       ),
       child: Text(

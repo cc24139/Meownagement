@@ -150,7 +150,7 @@ public class TransacaoController : ControllerBase
             {
                 Nome = model.Nome,
                 QuantiaDinheiro = model.QuantiaDinheiro,
-                DataCriacao = model.DataCriacao,
+                DataCriacao = DateTime.Now,
                 Feita = model.Feita,
                 SaldoAtual = user.Saldo,
                 DataFinalizacao = model.DataFinalizacao,
@@ -190,7 +190,7 @@ public class TransacaoController : ControllerBase
         var usuarioAtual = await db.Usuario.FindAsync(userId);
         var transacoesPendentes = await db.Transacao
             .Where(t => t.IdUsuario == userId && t.Feita=='N' && t.DataFinalizacao.Date == DateTime.Now.Date 
-            && t.IdRecorrencia != null)
+           )
             .ToListAsync();
         foreach (var transacao in transacoesPendentes)
         {
@@ -198,10 +198,11 @@ public class TransacaoController : ControllerBase
             transacao.Feita = 'S';
             transacao.SaldoAtual = transacao.QuantiaDinheiro + usuarioAtual.Saldo;
             usuarioAtual.Saldo += transacao.QuantiaDinheiro;
-            if (await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados))
-                qtsAtualizadas++;
+            if(transacao.IdRecorrencia != null)
+                if (await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados))
+                    qtsAtualizadas++;
         }
-
+        await AtualizarSaldo(userId, db);
         await db.SaveChangesAsync();
         return Ok($"{qtsAtualizadas} transações atualizadas e saldo do usuário ajustado.");
     }
@@ -250,9 +251,7 @@ public class TransacaoController : ControllerBase
             return false;
         }
     }
-        [Authorize]
-        [HttpPatch("transacao/saldo/{id}")]
-        public async Task<IActionResult> AtualizarSaldo(int id, DBMeownagement db)
+        private async Task<IActionResult> AtualizarSaldo(int id, DBMeownagement db)
         {
             var transacao = await db.Transacao.FindAsync(id);
             if (transacao == null)
@@ -264,9 +263,9 @@ public class TransacaoController : ControllerBase
             {
 
                 var usuario = await db.Usuario.FindAsync(transacao.IdUsuario);
+                transacao.SaldoAtual = usuario.Saldo;
                 usuario.Saldo += transacao.QuantiaDinheiro;
                 transacao.Feita = 'S';
-                transacao.SaldoAtual = usuario.Saldo;
             if(transacao.IdRecorrencia != null)
             {
                 var metaCofrinhoTransacaoLigados = await db.MetaCofrinhoTransacao.Where(x => x.IdTransacao == transacao.IdTransacao).ToListAsync();

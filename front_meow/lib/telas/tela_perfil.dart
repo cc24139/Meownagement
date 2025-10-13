@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
@@ -41,6 +42,16 @@ class _TelaPerfilState extends State<TelaPerfil> {
                   child: Center(
                     child: Row(
                       children: [
+                        Builder(
+                          builder: (context) { 
+                            return IconButton(
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                            );
+                          },
+                        ),
                         Text(
                           a.nome,
                           style: TextStyle(
@@ -65,6 +76,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
           
         ],
       ),
+      backgroundColor: cores.primaria,
+      drawer: Menulateralwidget(),
     );
   }
 }

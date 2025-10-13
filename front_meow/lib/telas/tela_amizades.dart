@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
@@ -24,6 +25,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
     var httpUsuarios = UsuarioServices();
     todosOsUsuarios = httpUsuarios.ListarUsuarios();
   }
+
   late List<Usuario> dados;
 
   void onSearchChanged(String value) {
@@ -45,24 +47,38 @@ class _TelaAmizadesState extends State<TelaAmizades> {
             fontFamily: "Londrina",
           ),
         ),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+            );
+          },
+        ),
         backgroundColor: cores.corPrimaria,
         centerTitle: true,
       ),
       body: FutureBuilder<List<UsuarioViewModel>>(
         future: todosOsUsuarios,
-        builder: (context, snapshot){
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-              return Center(child: Text("Erro: ${snapshot.error}"));
+            return Center(child: Text("Erro: ${snapshot.error}"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text("Nenhum usuário encontrado"));
+            return const Center(child: Text("Nenhum usuário encontrado"));
           }
 
           List<UsuarioViewModel> dados = snapshot.data!;
           if (textoPesquisa.isNotEmpty) {
             dados = dados
-                .where((u) => u.nome.toLowerCase().contains(textoPesquisa.toLowerCase()))
+                .where(
+                  (u) => u.nome.toLowerCase().contains(
+                    textoPesquisa.toLowerCase(),
+                  ),
+                )
                 .toList();
           }
 
@@ -85,8 +101,9 @@ class _TelaAmizadesState extends State<TelaAmizades> {
               );
             },
           );
-        } 
+        },
       ),
+      drawer: Menulateralwidget(),
     );
   }
 }

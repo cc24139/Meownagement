@@ -139,7 +139,8 @@ class _TelaGatoDoUserState extends State<TelaGatoDoUser> {
                   ElevatedButtonWidget(
                     catColors: cores,
                     text: "Equipar",
-                    size: ButtonSize.medio,
+                    highSize: ButtonSize.medio,
+                    weightSize: ButtonSize.grande,
                     onPressed: () {
                       _equipar();
                     },

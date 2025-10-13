@@ -8,16 +8,15 @@ import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
   static String urlGato = "${Http.url}/gatos";
-  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmV5LnN0ZWluQGdtYWlsLmNvbSIsIm5hbWVpZCI6IjExIiwibmJmIjoxNzYwMjcxNTE5LCJleHAiOjE3NjAzMDc1MTksImlhdCI6MTc2MDI3MTUxOX0.gmqqHEQw-YevUmiZ81uYzkg3CQB5bJgscDV2ynO0xFM";
-
+  // Token agora é gerenciado pela classe Http
   // GETS
   Future<List<Gato>> ListarGatos() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -29,12 +28,12 @@ class GatoServices extends Http {
   }
 
   Future<Gato> BuscarGatoPorId(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/buscar/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -46,12 +45,12 @@ class GatoServices extends Http {
   }
 
   Future<List<Gato>> BuscarGatosPorNome(String nome) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarNome/$nome"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -63,12 +62,12 @@ class GatoServices extends Http {
   }
 
   Future<List<Gato>> BuscarGatosRaridade(int raridade) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarRaridade?raridade=$raridade"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -80,12 +79,12 @@ class GatoServices extends Http {
   }
 
   Future<GatosEstaticasViewModel> EstaticasGatosId(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/estaticas/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -97,12 +96,12 @@ class GatoServices extends Http {
   }
 
   Future<List<Gato>> ListarDesbloqueados() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarDesbloqueados"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -114,12 +113,12 @@ class GatoServices extends Http {
   }
 
   Future<List<Gato>> ListarBloqueados() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarBloqueados"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -131,12 +130,12 @@ class GatoServices extends Http {
   }
 
   Future<int> RoletarPorcentagemUnica() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/roletar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -148,13 +147,13 @@ class GatoServices extends Http {
   }
 
   Future<List<int>> RoletarPorcentagemMulti() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     
     final response = await http.get(
       Uri.parse("${urlGato}/roletar/10"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -171,12 +170,12 @@ class GatoServices extends Http {
   }
 
   Future<Gato> GatoEquipado() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/equipado"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -188,24 +187,24 @@ class GatoServices extends Http {
   }
 
   Future<bool> EquiparGato(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.put(
       Uri.parse("${urlGato}/equipar/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     return response.statusCode == 200;
   }
 
   Future<int> PaletaId(int id) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -217,12 +216,12 @@ class GatoServices extends Http {
   }
 
   Future<int> PaletaEquipado() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/usuario"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -235,13 +234,13 @@ class GatoServices extends Http {
 
   //Post
   Future<bool> DesbloquearGato(String nome) async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.post(
       Uri.parse("${urlGato}/adicionar"),
       headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
+      HttpHeaders.authorizationHeader: 'Bearer $Http.token',
       'Content-Type': 'application/json; charset=utf-8',
       },
       body: jsonEncode(nome),

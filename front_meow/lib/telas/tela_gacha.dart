@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/animations/gachaAnimations.dart';
 import 'package:front_meow/colors/colors.dart';
@@ -7,6 +8,7 @@ import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/Widgets/gachaRollWidget.dart';
 import 'package:front_meow/services/gachaSystem.dart';
 import 'package:front_meow/models/gachaResult.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaGacha extends StatefulWidget {
   const TelaGacha({super.key});
@@ -34,9 +36,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   bool _estaRolando = false;
   bool _carregandoRoll = false;
 
-  // int meowCoinsAtual() {
-  //   return await // funcao de pegar meowcoins
-  // }
+  void atualizarMeowCoins() {
+     UsuarioServices().PerfilUsuario().then((usuario) {
+      setState(() {
+        meowCoins = usuario.pontos;
+      });
+    });
+  }
 
   String nomeDoBannerAtual() {
     switch (bannerAtual) {
@@ -68,6 +74,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    atualizarMeowCoins();
     gachaSystem = GachaSystem();
 
     _previewAnimationController = AnimationController(
@@ -292,14 +299,16 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             ElevatedButtonWidget(
               text: "Girar 1X",
               onPressed: () {_estaRolando ? null : rollUnico();},
-              size: ButtonSize.muitoPequeno,
+              highSize: ButtonSize.muitoPequeno,
+              weightSize: ButtonSize.pequeno,
               catColors: cores,
             ),
             const SizedBox(width: 16),
             ElevatedButtonWidget(
               text: "Girar 10X",
               onPressed: () {_estaRolando ? null : rollMulti();},
-              size: ButtonSize.muitoPequeno,
+              highSize: ButtonSize.muitoPequeno,
+              weightSize: ButtonSize.pequeno,
               catColors: cores,
             ),
           ],
@@ -318,6 +327,16 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
         backgroundColor: cores.primaria,
         centerTitle: true,
         title: MeowcoinWidget(saldo: meowCoins),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+            );
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -400,6 +419,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           _buildOverlayResultados(),
         ],
       ),
+      drawer: Menulateralwidget(),
     );
   }
 }
