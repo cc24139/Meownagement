@@ -1,19 +1,21 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/meta.dart';
+import 'package:front_meow/models/Meta.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
+
 
 class Telainicialinfoswidget extends StatelessWidget {
   final QualInfo qualInfo; // Transações, Metas etc
   final CatColors cor;
-  final Metaservices metaServices = Metaservices();
+  final Metaservices metaServices;
 
   const Telainicialinfoswidget({
     super.key,
     required this.qualInfo,
     required this.cor,
+    required this.metaServices,
   });
 
   @override
@@ -31,8 +33,20 @@ class Telainicialinfoswidget extends StatelessWidget {
   }
 
    Widget _metas() {
-    var meta = metaServices.listarMetas();
-    return MetasPageView(meta); // Passa as metas para o widget
+    return FutureBuilder<List<Metas>>(
+    future: metaServices.listarMetas(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro ao carregar metas'));
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return Center(child: Text('Nenhuma meta encontrada'));
+      } else {
+        return MetasPageView(metas: snapshot.data!);
+      }
+    },
+  );
   }
 
   Widget _transacoes() {
