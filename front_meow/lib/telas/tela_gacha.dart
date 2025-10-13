@@ -299,10 +299,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          imagemBannerAtual(),
-          width: 200,
-          height: 200,
+        Transform.translate(
+          offset: const Offset(0, -41), 
+          child: Image.asset(
+            imagemBannerAtual(),
+            width: 250,
+            height: 250
+          ),
         ),
         const SizedBox(height: 16),
         Row(
@@ -310,7 +313,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           children: [
             ElevatedButtonWidget(
               text: "Girar 1X",
-              onPressed: () {_estaRolando ? null : rollUnico();},
+              onPressed: () { _estaRolando ? null : rollUnico(); },
               highSize: ButtonSize.muitoPequeno,
               weightSize: ButtonSize.pequeno,
               catColors: cores,
@@ -318,7 +321,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             const SizedBox(width: 16),
             ElevatedButtonWidget(
               text: "Girar 10X",
-              onPressed: () {_estaRolando ? null : rollMulti();},
+              onPressed: () { _estaRolando ? null : rollMulti(); },
               highSize: ButtonSize.muitoPequeno,
               weightSize: ButtonSize.pequeno,
               catColors: cores,
@@ -354,9 +357,12 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
+                const SizedBox(height: 41),
+
                 Text(
                   nomeDoBannerAtual(),
                   style: TextStyle(
@@ -368,7 +374,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 const SizedBox(height: 20),
                 Container(
                   width: 380,
-                  height: 400,
+                  height: 541,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -387,7 +393,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                         Positioned(
                           left: 0,
                           right: 0,
-                          bottom: -60,
+                          bottom: 0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
