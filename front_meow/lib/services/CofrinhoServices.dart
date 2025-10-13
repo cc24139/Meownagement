@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:front_meow/models/CreateCofrinhoViewModel.dart';
+import 'package:front_meow/services/ViewModel/CreateCofrinhoViewModel.dart';
 import 'package:front_meow/models/Cofrinho.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;

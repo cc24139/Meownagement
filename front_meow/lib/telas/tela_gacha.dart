@@ -7,6 +7,7 @@ import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/Widgets/gachaRollWidget.dart';
 import 'package:front_meow/services/gachaSystem.dart';
 import 'package:front_meow/models/gachaResult.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaGacha extends StatefulWidget {
   const TelaGacha({super.key});
@@ -34,9 +35,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   bool _estaRolando = false;
   bool _carregandoRoll = false;
 
-  // int meowCoinsAtual() {
-  //   return await // funcao de pegar meowcoins
-  // }
+  void atualizarMeowCoins() {
+     UsuarioServices().PerfilUsuario().then((usuario) {
+      setState(() {
+        meowCoins = usuario.pontos;
+      });
+    });
+  }
 
   String nomeDoBannerAtual() {
     switch (bannerAtual) {
@@ -68,6 +73,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    atualizarMeowCoins();
     gachaSystem = GachaSystem();
 
     _previewAnimationController = AnimationController(

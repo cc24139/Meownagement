@@ -32,4 +32,13 @@ class Gato {
       _ => throw Exception('Erro ao carregar gato'),
     };
   }
+
+  Map<String, dynamic> toJson() => {
+        'idGato': idGato,
+        'nome': nome,
+        'raridade': raridade,
+        'codPaleta': codPaleta,
+        'nomeImagem': nomeImagem,
+      };
+      
 }
