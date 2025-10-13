@@ -105,7 +105,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _carregandoRoll = true;
     });
 
-    resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
+    try {
+      resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
+    } catch (e) {
+      print("Erro ao realizar roll único: $e");
+    }
+
+    atualizarMeowCoins();
 
     setState(() {
       _carregandoRoll = false;
@@ -138,7 +144,13 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       _carregandoRoll = true;
     });
 
-    resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
+    try {
+      resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
+    } catch (e) {
+      print("Erro ao realizar roll múltiplo: $e");
+    }
+
+    atualizarMeowCoins();
 
     setState(() {
       _carregandoRoll = false;
@@ -355,7 +367,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  width: 420,
+                  width: 380,
                   height: 400,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -380,7 +392,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 120,
+                                width: 100,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -389,7 +401,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                                 ),
                               ),
                               Container(
-                                width: 120,
+                                width: 100,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -398,7 +410,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                                 ),
                               ),
                               Container(
-                                width: 120,
+                                width: 100,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
