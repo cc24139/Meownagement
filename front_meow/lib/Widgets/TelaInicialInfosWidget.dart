@@ -4,6 +4,7 @@ import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/Meta.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
+import 'SemMetasEncontradas.dart';
 
 
 class Telainicialinfoswidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class Telainicialinfoswidget extends StatelessWidget {
       } else if (snapshot.hasError) {
         return Center(child: Text('Erro ao carregar metas'));
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return Center(child: Text('Nenhuma meta encontrada'));
+        return SemMetasEncontradas(cor: cor);
       } else {
         return MetasPageView(metas: snapshot.data!, cor: cor,);
       }

@@ -5,7 +5,7 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 
 class TelaTransacoes extends StatefulWidget {
@@ -52,7 +52,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
     if (pickedDate != null) {
       setState(() {
-        _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+       // _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       });
     }
   }
