@@ -334,6 +334,21 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
   // termina o gacha --------------------------------------------------------------------------
 
+  Widget _buildBannerButton({required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 100,
+        height: 80,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: cores.tercearia, width: 2),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -394,38 +409,22 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                           left: 0,
                           right: 0,
                           bottom: 0,
-                          child: Row(
+                          child: 
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                width: 100,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
+                              _buildBannerButton(
+                                onTap: () => setState(() => bannerAtual = 13),
                               ),
-                              Container(
-                                width: 100,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
+                              _buildBannerButton(
+                                onTap: () => setState(() => bannerAtual = 14),
                               ),
-                              Container(
-                                width: 100,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 2),
-                                ),
+                              _buildBannerButton(
+                                onTap: () => setState(() => bannerAtual = 15),
                               ),
                             ],
                           ),
+
                         ),
                     ],
                   ),
