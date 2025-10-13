@@ -16,8 +16,8 @@ class Gato {
   factory Gato.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
-        'IdGato': int idGato,
-        'Nome': String nome,
+        'idGato': int idGato,
+        'nome': String nome,
         'raridade': int raridade,
         'codPaleta': int codPaleta,
         'nomeImagem': String nomeImagem,

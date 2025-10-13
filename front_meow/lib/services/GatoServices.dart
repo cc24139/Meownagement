@@ -8,7 +8,7 @@ import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
   static String urlGato = "${Http.url}/gatos";
-  static String? token = localStorage.getItem('token');
+  static String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmV5LnN0ZWluQGdtYWlsLmNvbSIsIm5hbWVpZCI6IjExIiwibmJmIjoxNzYwMjcxNTE5LCJleHAiOjE3NjAzMDc1MTksImlhdCI6MTc2MDI3MTUxOX0.gmqqHEQw-YevUmiZ81uYzkg3CQB5bJgscDV2ynO0xFM";
 
   // GETS
   Future<List<Gato>> ListarGatos() async {
@@ -151,6 +151,7 @@ class GatoServices extends Http {
     if (token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
+    
     final response = await http.get(
       Uri.parse("${urlGato}/roletar/10"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
@@ -158,9 +159,14 @@ class GatoServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data;
-    } else {
-      throw Exception('Failed to roletar gatos');
+      
+      List<int> result = List<int>.from(data);
+      
+      print('Porcentagens recebidas: $result');
+      return result;
+    } 
+    else {
+      throw Exception('Failed to roletar gatos: ${response.statusCode}');
     }
   }
 
@@ -234,9 +240,19 @@ class GatoServices extends Http {
     }
     final response = await http.post(
       Uri.parse("${urlGato}/adicionar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
-      body: jsonEncode({'Nome': nome}),
+      headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+      'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: jsonEncode(nome),
     );
+
+    if (response.statusCode == 200) {
+      print('Gato desbloqueado: $nome');
+    }
+    else {
+      print('Failed to desbloquear gato: $nome, Status code: ${response.statusCode}');
+    }
 
     return response.statusCode == 200;
   }

@@ -1,6 +1,7 @@
+// lib/animations/cat_animations.dart
 import 'package:flutter/material.dart';
 
-class GachaAnimations  {
+class GachaAnimations {
   // Animação de salto genérica
   static Widget buildJumpingAnimation({
     required Widget child,
@@ -130,61 +131,65 @@ class GachaAnimations  {
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            // Fundo pulsante
-            Container(
-              width: 300 * controller.value,
-              height: 300 * controller.value,
-              decoration: BoxDecoration(
-                color: previewColor.withValues(alpha: (0.3 * controller.value).clamp(0.0, 1.0)), 
-                shape: BoxShape.circle,
-              ),
-            ),
-            
-            // Conteúdo principal
-            Opacity(
-              opacity: controller.value,
-              child: Transform.scale(
-                scale: 1.0 + 0.5 * controller.value,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      rarityIcon,
-                      size: 80,
-                      color: previewColor,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      rarityText,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: previewColor,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10,
-                            color: previewColor.withOpacity(0.5),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      '$totalCats Gato(s) Obtido(s)',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+        return Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Fundo pulsante - CORRIGIDO
+              Container(
+                width: 200 * controller.value,
+                height: 200 * controller.value,
+                decoration: BoxDecoration(
+                  color: previewColor.withOpacity(0.4 * controller.value), // CORREÇÃO AQUI
+                  shape: BoxShape.circle,
                 ),
               ),
-            ),
-          ],
+              
+              // Conteúdo principal
+              Opacity(
+                opacity: controller.value,
+                child: Transform.scale(
+                  scale: 0.7 + 0.3 * controller.value,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        rarityIcon,
+                        size: 50,
+                        color: previewColor,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        rarityText,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: previewColor,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 6,
+                              color: previewColor.withOpacity(0.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '$totalCats Gato(s) Obtido(s)',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
