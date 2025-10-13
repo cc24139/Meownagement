@@ -104,7 +104,7 @@ class BolasTools extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: color ?? catColors.corPrimaria,
+              color: color ?? catColors.secundaria,
               borderRadius: elipse
                   ? BorderRadius.all(Radius.elliptical(width / 2, height / 2))
                   : BorderRadius.circular(360),
