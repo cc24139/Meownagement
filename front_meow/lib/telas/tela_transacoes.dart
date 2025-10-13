@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
@@ -64,14 +65,30 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              Text("Planeje transações"),
+              Row(
+                children: [
+                  Builder(
+                    builder: (context) { 
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                      );
+                    },
+                  ),
+                  Text("Planeje transações"),
+                ],
+              ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    "../../assets/icons/vetor_olho_fechado.svg",
-                    width: 20,
-                    height: 20,
+                        "../../assets/icons/vetor_olho_fechado.svg",
+                        width: 30,
+                        height: 30,
+                        color: cores.complementar,
                   ),
                   Text("Saldo"),
                 ],
@@ -224,7 +241,9 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
             ],
           ),
         ),
-      ),    
+      ),  
+      backgroundColor: cores.primaria,
+      drawer: Menulateralwidget(),  
     );
   }
 }
