@@ -18,8 +18,12 @@ class TelaGacha extends StatefulWidget {
 class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   CatColors cores = CatColors(paleta: 4);
 
+  // parte do gacha
+
+  int meowCoins = 0;
+
   GachaResult? resultadoGacha;
-  int bannerAtual = 14; // id do banner deve ser o idGato do gato de banner -> 13 14 15
+  int bannerAtual = 15; // id do banner deve ser o idGato do gato de banner -> 13 14 15
   GachaSystem? gachaSystem;
 
   late AnimationController _previewAnimationController;
@@ -29,6 +33,36 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   bool _mostrandoGatos = false;
   bool _estaRolando = false;
   bool _carregandoRoll = false;
+
+  // int meowCoinsAtual() {
+  //   return await // funcao de pegar meowcoins
+  // }
+
+  String nomeDoBannerAtual() {
+    switch (bannerAtual) {
+      case 13:
+        return '"Hello vro" MeiMei';
+      case 14:
+        return "Odisseia melancia do Zazu";
+      case 15:
+        return "I'm a new Meowl";
+      default:
+        return "Banner Desconhecido";
+    }
+  }
+
+  String imagemBannerAtual() {
+    switch (bannerAtual) {
+      case 13:
+        return "assets/images/meimei/meimeiGrande.jpg";
+      case 14:
+        return "assets/images/watermelonZazu/watermelonZazuGrande.jpg";
+      case 15:
+        return "assets/images/meowl/meowlGrande.jpg";
+      default:
+        return "assets/images/ponderingCat/ponderingCatGrande.jpg";
+    }
+  }
 
   @override
   void initState() {
@@ -221,7 +255,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             CircularProgressIndicator(color: cores.tercearia),
             const SizedBox(height: 16),
             Text(
-              'Rolando...',
+              'Roletando...',
               style: TextStyle(
                 fontSize: 16,
                 color: cores.tercearia,
@@ -247,7 +281,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          "assets/images/watermelonZazu/watermelonZazuGrande.jpg",
+          imagemBannerAtual(),
           width: 200,
           height: 200,
         ),
@@ -274,6 +308,8 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     );
   }
 
+  // termina o gacha --------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -281,16 +317,17 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       appBar: AppBar(
         backgroundColor: cores.primaria,
         centerTitle: true,
-        title: MeowcoinWidget(saldo: 350.75),
+        title: MeowcoinWidget(saldo: meowCoins),
       ),
       body: Stack(
         children: [
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              
               children: [
                 Text(
-                  "Nome do Banner",
+                  nomeDoBannerAtual(),
                   style: TextStyle(
                     fontSize: 40,
                     fontFamily: 'LondrinaShadow',
@@ -299,7 +336,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  width: 300,
+                  width: 420,
                   height: 400,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -324,7 +361,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 60,
+                                width: 120,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -333,7 +370,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                                 ),
                               ),
                               Container(
-                                width: 60,
+                                width: 120,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -342,12 +379,12 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                                 ),
                               ),
                               Container(
-                                width: 60,
+                                width: 120,
                                 height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: cores.corTerciaria, width: 1),
+                                  border: Border.all(color: cores.corTerciaria, width: 2),
                                 ),
                               ),
                             ],
