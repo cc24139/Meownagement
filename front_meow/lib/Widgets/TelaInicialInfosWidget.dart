@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
