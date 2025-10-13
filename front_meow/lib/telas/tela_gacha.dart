@@ -18,18 +18,51 @@ class TelaGacha extends StatefulWidget {
 class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   CatColors cores = CatColors(paleta: 4);
 
+  // parte do gacha
+
+  int meowCoins = 0;
+
   GachaResult? resultadoGacha;
-  int bannerAtual = 1;
+  int bannerAtual = 15; // id do banner deve ser o idGato do gato de banner -> 13 14 15
   GachaSystem? gachaSystem;
 
-  // Controladores de animação
   late AnimationController _previewAnimationController;
   late AnimationController _gatosAnimationController;
 
-  // Estados para controlar as animações
   bool _mostrandoPreview = false;
   bool _mostrandoGatos = false;
   bool _estaRolando = false;
+  bool _carregandoRoll = false;
+
+  // int meowCoinsAtual() {
+  //   return await // funcao de pegar meowcoins
+  // }
+
+  String nomeDoBannerAtual() {
+    switch (bannerAtual) {
+      case 13:
+        return '"Hello vro" MeiMei';
+      case 14:
+        return "Odisseia melancia do Zazu";
+      case 15:
+        return "I'm a new Meowl";
+      default:
+        return "Banner Desconhecido";
+    }
+  }
+
+  String imagemBannerAtual() {
+    switch (bannerAtual) {
+      case 13:
+        return "assets/images/meimei/meimeiGrande.jpg";
+      case 14:
+        return "assets/images/watermelonZazu/watermelonZazuGrande.jpg";
+      case 15:
+        return "assets/images/meowl/meowlGrande.jpg";
+      default:
+        return "assets/images/ponderingCat/ponderingCatGrande.jpg";
+    }
+  }
 
   @override
   void initState() {
@@ -37,7 +70,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
     gachaSystem = GachaSystem();
 
-    // Inicializar os controladores de animação
     _previewAnimationController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
@@ -56,28 +88,33 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // Funções de rolls com animações
   void rollUnico() async {
     if (_estaRolando) return;
     
+    _resetarParaNovoRoll();
+    
     setState(() {
       _estaRolando = true;
-      _mostrandoPreview = true;
-      _mostrandoGatos = false;
+      _carregandoRoll = true;
     });
 
     resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
 
-    // Executar animação de preview
-    await _previewAnimationController.forward(from: 0.0);
+    setState(() {
+      _carregandoRoll = false;
+      _mostrandoPreview = true;
+    });
+
+    _previewAnimationController.reset();
+    await _previewAnimationController.forward();
 
     setState(() {
       _mostrandoPreview = false;
       _mostrandoGatos = true;
     });
 
-    // Executar animação dos gatos
-    _gatosAnimationController.forward(from: 0.0);
+    _gatosAnimationController.reset();
+    _gatosAnimationController.forward();
     
     setState(() {
       _estaRolando = false;
@@ -87,39 +124,191 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   void rollMulti() async {
     if (_estaRolando) return;
     
+    _resetarParaNovoRoll();
+    
     setState(() {
       _estaRolando = true;
-      _mostrandoPreview = true;
-      _mostrandoGatos = false;
+      _carregandoRoll = true;
     });
 
     resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
 
-    // Executar animação de preview
-    await _previewAnimationController.forward(from: 0.0);
+    setState(() {
+      _carregandoRoll = false;
+      _mostrandoPreview = true;
+    });
+
+    _previewAnimationController.reset();
+    await _previewAnimationController.forward();
 
     setState(() {
       _mostrandoPreview = false;
       _mostrandoGatos = true;
     });
 
-    // Executar animação dos gatos
-    _gatosAnimationController.forward(from: 0.0);
+    _gatosAnimationController.reset();
+    _gatosAnimationController.forward();
     
     setState(() {
       _estaRolando = false;
     });
   }
 
-  // Função para resetar e voltar ao estado inicial
   void _resetarTela() {
     setState(() {
       _mostrandoPreview = false;
       _mostrandoGatos = false;
+      _estaRolando = false;
       _previewAnimationController.reset();
       _gatosAnimationController.reset();
     });
   }
+
+  void _resetarParaNovoRoll() {
+    setState(() {
+      _mostrandoPreview = false;
+      _mostrandoGatos = false;
+      _estaRolando = false;
+      _carregandoRoll = false;
+      resultadoGacha = null;
+      _previewAnimationController.reset();
+      _gatosAnimationController.reset();
+    });
+  }
+
+  Widget _buildOverlayResultados() {
+    if (!_mostrandoGatos || resultadoGacha == null) return const SizedBox();
+
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: _resetarTela,
+          child: Container(
+            color: Colors.black54,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
+        
+        Center(
+          child: Container(
+            width: 350,
+            height: 450,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: resultadoGacha!.rollsTotais == 1
+                        ? GachaRollWidget.buildSingleCatWithInfo(
+                            cat: resultadoGacha!.gatos[0],
+                            controller: _gatosAnimationController,
+                          )
+                        : GachaRollWidget.buildMultipleCatsWithAnimation(
+                            cats: resultadoGacha!.gatos,
+                            controller: _gatosAnimationController,
+                          ),
+                  ),
+                ),
+                
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: IconButton(
+                    icon: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: cores.primaria,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: cores.tercearia, width: 2),
+                      ),
+                      child: Icon(Icons.close, color: cores.tercearia, size: 20),
+                    ),
+                    onPressed: _resetarTela,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConteudoPrincipal() {
+    if (_carregandoRoll) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: cores.tercearia),
+            const SizedBox(height: 16),
+            Text(
+              'Roletando...',
+              style: TextStyle(
+                fontSize: 16,
+                color: cores.tercearia,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_mostrandoPreview && resultadoGacha != null) {
+      return Center(
+        child: GachaAnimations.buildRarityPreview(
+          controller: _previewAnimationController,
+          highestRarity: resultadoGacha!.raridadeMaisAlta,
+          totalCats: resultadoGacha!.gatos.length,
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          imagemBannerAtual(),
+          width: 200,
+          height: 200,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButtonWidget(
+              text: "Girar 1X",
+              onPressed: () {_estaRolando ? null : rollUnico();},
+              size: ButtonSize.muitoPequeno,
+              catColors: cores,
+            ),
+            const SizedBox(width: 16),
+            ElevatedButtonWidget(
+              text: "Girar 10X",
+              onPressed: () {_estaRolando ? null : rollMulti();},
+              size: ButtonSize.muitoPequeno,
+              catColors: cores,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // termina o gacha --------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -128,143 +317,88 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       appBar: AppBar(
         backgroundColor: cores.primaria,
         centerTitle: true,
-        title: MeowcoinWidget(saldo: 350.75),
+        title: MeowcoinWidget(saldo: meowCoins),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Nome do Banner",
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'LondrinaShadow',
-                color: cores.tercearia,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 300,
-              height: 400,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: cores.tercearia,
-                  width: 2,
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              
+              children: [
+                Text(
+                  nomeDoBannerAtual(),
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontFamily: 'LondrinaShadow',
+                    color: cores.tercearia,
+                  ),
                 ),
-              ),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  // Conteúdo principal que muda baseado no estado
-                  if (_mostrandoPreview && resultadoGacha != null)
-                    Center(
-                      child: GachaAnimations.buildRarityPreview(
-                        controller: _previewAnimationController,
-                        highestRarity: resultadoGacha!.raridadeMaisAlta,
-                        totalCats: resultadoGacha!.gatos.length,
-                      ),
-                    )
-                  else if (_mostrandoGatos && resultadoGacha != null)
-                    Center(
-                      child: resultadoGacha!.rollsTotais == 1
-                          ? GachaRollWidget.buildSingleCatWithInfo(
-                              cat: resultadoGacha!.gatos[0],
-                              controller: _gatosAnimationController,
-                            )
-                          : GachaRollWidget.buildMultipleCatsWithAnimation(
-                              cats: resultadoGacha!.gatos,
-                              controller: _gatosAnimationController,
-                            ),
-                    )
-                  else
-                    // Tela inicial com banner e botões
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                        "assets/images/doudouCat/doudouCatGrande.jpg",
-                        width: 300,
-                        height: 300,
-                      ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButtonWidget(
-                              text: "Girar 1X",
-                              onPressed:() {_estaRolando ? null : rollUnico();},
-                              size: ButtonSize.muitoPequeno,
-                              catColors: cores,
-                            ),
-                            const SizedBox(width: 16),
-                            ElevatedButtonWidget(
-                              text: "Girar 10X",
-                              onPressed: () {_estaRolando ? null : rollMulti();},
-                              size: ButtonSize.muitoPequeno,
-                              catColors: cores,
-                            ),
-                          ],
-                        ),
-                        // Botão para resetar se estiver mostrando resultados
-                        if (_mostrandoGatos) ...[
-                          const SizedBox(height: 16),
-                          ElevatedButtonWidget(
-                            text: "Voltar",
-                            onPressed: _resetarTela,
-                            size: ButtonSize.muitoPequeno,
-                            catColors: cores,
-                          ),
-                        ],
-                      ],
+                const SizedBox(height: 20),
+                Container(
+                  width: 420,
+                  height: 400,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: cores.tercearia,
+                      width: 2,
                     ),
+                  ),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      _buildConteudoPrincipal(),
 
-                  // Containers vazando para baixo (só aparecem na tela inicial)
-                  if (!_mostrandoPreview && !_mostrandoGatos)
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: -60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: cores.corTerciaria, width: 2),
-                            ),
+                      if (!_mostrandoPreview && !_mostrandoGatos && !_carregandoRoll)
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: -60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: cores.corTerciaria, width: 2),
+                                ),
+                              ),
+                              Container(
+                                width: 120,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: cores.corTerciaria, width: 2),
+                                ),
+                              ),
+                              Container(
+                                width: 120,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: cores.corTerciaria, width: 2),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: 60,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: cores.corTerciaria, width: 2),
-                            ),
-                          ),
-                          Container(
-                            width: 60,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: cores.corTerciaria, width: 1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          _buildOverlayResultados(),
+        ],
       ),
     );
   }
