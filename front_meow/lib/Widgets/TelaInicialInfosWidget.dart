@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
@@ -44,7 +43,7 @@ class Telainicialinfoswidget extends StatelessWidget {
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
         return Center(child: Text('Nenhuma meta encontrada'));
       } else {
-        return MetasPageView(metas: snapshot.data!);
+        return MetasPageView(metas: snapshot.data!, cor: cor,);
       }
     },
   );
@@ -62,5 +61,5 @@ class Telainicialinfoswidget extends StatelessWidget {
     return Text("Transações Recorrentes");
   }
 
-}*/
+}
 

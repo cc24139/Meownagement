@@ -8,9 +8,6 @@ void main() {
         body: Center(
           child: GraficoConclusaoWidget(
             porcentagem: 75,
-            titulo: "Ecnomizar no Seu Miguel",
-            subtitulo: "Economia de um pão de queijo por dia",
-            todo: 2540,
             catColors: CatColors(paleta: 2),
           ),
         ),
@@ -21,26 +18,16 @@ void main() {
 
 class GraficoConclusaoWidget extends StatelessWidget {
   final int porcentagem;
-  final String titulo;
-  final String subtitulo;
-  final double todo; //valor de um todo tipo 2540 todo
   final CatColors catColors;
   const GraficoConclusaoWidget({
     super.key,
     required this.porcentagem,
-    required this.titulo,
-    required this.subtitulo,
-    required this.todo,
     required this.catColors,
   });
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          titulo,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
         SizedBox(height: 10),
         Stack(
           //Parte grafica
@@ -62,11 +49,11 @@ class GraficoConclusaoWidget extends StatelessWidget {
               children: [
                 Text(
                   '$porcentagem%',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'de $todo',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                  style: TextStyle(fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'LondrinaSolid',
+                  color: catColors.corSecundaria
+                   ),
                 ),
               ],
             ),
@@ -75,10 +62,6 @@ class GraficoConclusaoWidget extends StatelessWidget {
         Column(
         children: [
           SizedBox(height: 10),
-          Text(
-            subtitulo,
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
           Padding(padding: EdgeInsets.only(top: 10)),
         ],
       

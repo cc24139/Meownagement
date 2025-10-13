@@ -115,6 +115,32 @@ namespace APIMeow.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [Authorize]
+        [HttpGet("cofrinho/listarGanho")]
+        public async Task<IActionResult> ListarCofrinhosGanho(DBMeownagement db)
+        {
+            try
+            {
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var user = await db.Usuario.FindAsync(idUser);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var cofrinhos = await db.Cofrinho
+                    .Where(c => c.IdUsuario == user.IdUsuario && c.Feita == 'S')
+                    .ToListAsync();
+
+                var totalGanho = cofrinhos.Sum(c => c.Economia);
+
+                return Ok(new { cofrinhos, totalGanho });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
         [Authorize]
         [HttpPut("cofrinho/criar")]

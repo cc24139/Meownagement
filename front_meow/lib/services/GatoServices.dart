@@ -16,7 +16,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -33,7 +33,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/buscar/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -50,7 +50,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarNome/$nome"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -67,7 +67,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarRaridade?raridade=$raridade"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -84,7 +84,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/estaticas/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -101,7 +101,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarDesbloqueados"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -118,7 +118,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/listarBloqueados"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -135,7 +135,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/roletar"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -153,7 +153,7 @@ class GatoServices extends Http {
     
     final response = await http.get(
       Uri.parse("${urlGato}/roletar/10"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -175,7 +175,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/equipado"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -192,7 +192,7 @@ class GatoServices extends Http {
     }
     final response = await http.put(
       Uri.parse("${urlGato}/equipar/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     return response.statusCode == 200;
@@ -204,7 +204,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/$id"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {
@@ -221,7 +221,7 @@ class GatoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlGato}/paleta/usuario"),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer $Http.token'},
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 
     if (response.statusCode == 200) {

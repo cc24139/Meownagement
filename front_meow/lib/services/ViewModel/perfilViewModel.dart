@@ -4,7 +4,7 @@ class PerfilViewModel {
   int idUsuario;
   String nome;
   String email;
-  String biografia;
+  String? biografia;
   int pontos;
   double saldo;
   Gato gatoEquipado;
@@ -13,7 +13,7 @@ class PerfilViewModel {
     required this.idUsuario,
     required this.nome,
     required this.email,
-    required this.biografia,
+    this.biografia,
     required this.pontos,
     required this.saldo,
     required this.gatoEquipado,
@@ -43,13 +43,13 @@ class PerfilViewModel {
 
   Map<String, dynamic> fromJson() {
     return {
-      'idUsuario': idUsuario,
-      'nome': nome,
-      'email': email,
-      'biografia': biografia,
-      'pontos': pontos,
-      'saldo': saldo,
-      'gatoEquipado': gatoEquipado.toJson(),
+      'IdUsuario': idUsuario,
+      'Nome': nome,
+      'Email': email,
+      'Biografia': biografia,
+      'Pontos': pontos,
+      'Saldo': saldo,
+      'GatoEquipado': gatoEquipado.toJson(),
     };
   }
 }
