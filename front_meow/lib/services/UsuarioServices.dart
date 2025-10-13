@@ -185,6 +185,7 @@ class UsuarioServices extends Http {
       final data = json.decode(response.body);
       return PerfilViewModel.fromJson(data);
     } else {
+      print(response.statusCode);
       throw Exception('Failed to load perfil usuario');
     }
   }
