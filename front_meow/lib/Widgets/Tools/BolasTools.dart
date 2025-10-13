@@ -20,16 +20,19 @@ void main() {
 }
 
 class BolasTools extends StatelessWidget {
-  final catColors;
-  final elipse;
-  final size;
-  final textBall;
+  final CatColors catColors;
+  final bool elipse;
+  final Bolassize size;
+  final Object? textBall;
+  final Color? color; // opção para sobrescrever a cor da bola
+
   const BolasTools({
     super.key,
     required this.catColors,
     required this.elipse,
     required this.size,
     required this.textBall,
+    this.color,
   });
 
   int getWidth() {
@@ -101,7 +104,7 @@ class BolasTools extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: catColors.corPrimaria,
+              color: color ?? catColors.corPrimaria,
               borderRadius: elipse
                   ? BorderRadius.all(Radius.elliptical(width / 2, height / 2))
                   : BorderRadius.circular(360),
