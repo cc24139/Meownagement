@@ -334,20 +334,51 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
   // termina o gacha --------------------------------------------------------------------------
 
-  Widget _buildBannerButton({required VoidCallback onTap}) {
+  Widget _buildBannerButton({
+    required int idBanner,
+    required String nomeBanner,
+    required VoidCallback onTap,
+  }) {
+    bool selecionado = bannerAtual == idBanner;
+
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         width: 100,
         height: 80,
         decoration: BoxDecoration(
-          color: Colors.grey,
+          color: selecionado ? cores.tercearia.withOpacity(0.8) : Colors.grey,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: cores.tercearia, width: 2),
+          border: Border.all(
+            color: selecionado ? cores.complementar : cores.tercearia,
+            width: 2,
+          ),
+          boxShadow: selecionado
+              ? [
+                  BoxShadow(
+                    color: cores.complementar.withOpacity(0.5),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : [],
+        ),
+        child: Center(
+          child: Text(
+            nomeBanner,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: selecionado ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
         ),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -406,26 +437,30 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
                       if (!_mostrandoPreview && !_mostrandoGatos && !_carregandoRoll)
                         Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildBannerButton(
-                                onTap: () => setState(() => bannerAtual = 13),
-                              ),
-                              _buildBannerButton(
-                                onTap: () => setState(() => bannerAtual = 14),
-                              ),
-                              _buildBannerButton(
-                                onTap: () => setState(() => bannerAtual = 15),
-                              ),
-                            ],
-                          ),
-
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildBannerButton(
+                              idBanner: 13,
+                              nomeBanner: 'MeiMei',
+                              onTap: () => setState(() => bannerAtual = 13),
+                            ),
+                            _buildBannerButton(
+                              idBanner: 14,
+                              nomeBanner: 'Zazu',
+                              onTap: () => setState(() => bannerAtual = 14),
+                            ),
+                            _buildBannerButton(
+                              idBanner: 15,
+                              nomeBanner: 'Meowl',
+                              onTap: () => setState(() => bannerAtual = 15),
+                            ),
+                          ],
                         ),
+                      ),
                     ],
                   ),
                 ),
