@@ -255,7 +255,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                       _salvar(context);
                     },
                     highSize: ButtonSize.grande,
-                    weightSize: ButtonSize.medio,
+                    widthSize: ButtonSize.medio,
                     catColors: cores,
                   ),
                 ],

@@ -13,7 +13,7 @@ void main() {
             text: "Clique aqui",
             onPressed: ronaldo,
             highSize: ButtonSize.grande,
-            weightSize: ButtonSize.medio,
+            widthSize: ButtonSize.medio,
             catColors: CatColors(paleta: 2),
           ),
         ),
@@ -26,7 +26,7 @@ class ElevatedButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final ButtonSize highSize;
-  final ButtonSize weightSize;
+  final ButtonSize widthSize;
   final CatColors catColors;
 
   const ElevatedButtonWidget({
@@ -34,12 +34,12 @@ class ElevatedButtonWidget extends StatelessWidget {
     required this.text,
     required this.onPressed,
     required this.highSize,
-    required this.weightSize,
+    required this.widthSize,
     required this.catColors,
   });
 
   double? _getButtonWidth() {
-    switch (weightSize) {
+    switch (widthSize) {
       case ButtonSize.muitoPequeno:
         return 25;
       case ButtonSize.pequeno:
