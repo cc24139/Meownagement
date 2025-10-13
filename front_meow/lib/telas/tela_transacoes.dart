@@ -203,12 +203,14 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                 
               ),
 
+              Text("Classificação"),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
                 decoration: InputDecoration(
-                  labelText: 'Classificação',
                   border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true
                 ),
                 value: dropdownValue,
                 icon: const Icon(Icons.arrow_drop_down),
@@ -228,7 +230,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   );
                 }).toList(),
               ),
-
+              SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
