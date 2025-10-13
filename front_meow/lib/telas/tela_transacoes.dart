@@ -211,7 +211,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   border: OutlineInputBorder(),
                 ),
                 value: dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_drop_down),
                 onChanged: (String? value) {
                   setState(() {
                     dropdownValue = value!;
@@ -237,7 +237,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   border: OutlineInputBorder(),
                 ),
                 value: valorDropdownRecorrencia,
-                icon: const Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_drop_down),
                 onChanged: (String? value) {
                   setState(() {
                     valorDropdownRecorrencia = value!;
