@@ -292,14 +292,16 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             ElevatedButtonWidget(
               text: "Girar 1X",
               onPressed: () {_estaRolando ? null : rollUnico();},
-              size: ButtonSize.muitoPequeno,
+              highSize: ButtonSize.muitoPequeno,
+              weightSize: ButtonSize.pequeno,
               catColors: cores,
             ),
             const SizedBox(width: 16),
             ElevatedButtonWidget(
               text: "Girar 10X",
               onPressed: () {_estaRolando ? null : rollMulti();},
-              size: ButtonSize.muitoPequeno,
+              highSize: ButtonSize.muitoPequeno,
+              weightSize: ButtonSize.pequeno,
               catColors: cores,
             ),
           ],
