@@ -20,12 +20,10 @@ class TelaGacha extends StatefulWidget {
 class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   CatColors cores = CatColors(paleta: 4);
 
-  // parte do gacha
-
   int meowCoins = 0;
-
   GachaResult? resultadoGacha;
-  int bannerAtual = 15; // id do banner deve ser o idGato do gato de banner -> 13 14 15
+  int bannerAtual = 15;
+
   GachaSystem? gachaSystem;
 
   late AnimationController _previewAnimationController;
@@ -36,8 +34,14 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   bool _estaRolando = false;
   bool _carregandoRoll = false;
 
+  // Controle do pop-up
+  bool _mostrandoPopup = false;
+  String? _tipoRoll;
+  int _precoRoll = 0;
+  String? _mensagemPopup;
+
   void atualizarMeowCoins() {
-     UsuarioServices().PerfilUsuario().then((usuario) {
+    UsuarioServices().PerfilUsuario().then((usuario) {
       setState(() {
         meowCoins = usuario.pontos;
       });
@@ -73,7 +77,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     atualizarMeowCoins();
     gachaSystem = GachaSystem();
 
@@ -81,7 +84,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _gatosAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -95,11 +98,48 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  // -----------------------------------------------------------
+  // Controle do pop-up de confirmação
+  void _mostrarPopupRoll(String tipoRoll) {
+    setState(() {
+      _mostrandoPopup = true;
+      _tipoRoll = tipoRoll;
+      _precoRoll = tipoRoll == '1x' ? 160 : 1600;
+      _mensagemPopup = null;
+    });
+  }
+
+  void _fecharPopup() {
+    setState(() {
+      _mostrandoPopup = false;
+      _mensagemPopup = null;
+    });
+  }
+
+  void _confirmarRoll() {
+    if (meowCoins < _precoRoll) {
+      setState(() {
+        _mensagemPopup = "Você não possui meowcoins suficientes!";
+      });
+      return;
+    }
+
+    // fecha pop-up e executa o roll
+    _fecharPopup();
+
+    if (_tipoRoll == '1x') {
+      rollUnico();
+    } else {
+      rollMulti();
+    }
+  }
+  // -----------------------------------------------------------
+
   void rollUnico() async {
     if (_estaRolando) return;
-    
+
     _resetarParaNovoRoll();
-    
+
     setState(() {
       _estaRolando = true;
       _carregandoRoll = true;
@@ -128,7 +168,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
     _gatosAnimationController.reset();
     _gatosAnimationController.forward();
-    
+
     setState(() {
       _estaRolando = false;
     });
@@ -136,9 +176,9 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
   void rollMulti() async {
     if (_estaRolando) return;
-    
+
     _resetarParaNovoRoll();
-    
+
     setState(() {
       _estaRolando = true;
       _carregandoRoll = true;
@@ -167,7 +207,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
 
     _gatosAnimationController.reset();
     _gatosAnimationController.forward();
-    
+
     setState(() {
       _estaRolando = false;
     });
@@ -208,7 +248,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             height: double.infinity,
           ),
         ),
-        
         Center(
           child: Container(
             width: 350,
@@ -240,7 +279,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                           ),
                   ),
                 ),
-                
                 Positioned(
                   top: 10,
                   right: 10,
@@ -258,6 +296,96 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPopupRoll() {
+    if (!_mostrandoPopup) return const SizedBox();
+
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: _fecharPopup,
+          child: Container(
+            color: Colors.black54,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
+        Center(
+          child: Container(
+            width: 340,
+            height: 260,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: cores.tercearia, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Confirmar Roll ${_tipoRoll ?? ''}",
+                    style: TextStyle(
+                      color: cores.tercearia,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Saldo atual: $meowCoins",
+                    style: TextStyle(
+                      color: cores.tercearia,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    "Custo: $_precoRoll",
+                    style: TextStyle(
+                      color: cores.complementar,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (_mensagemPopup != null)
+                    Text(
+                      _mensagemPopup!,
+                      style: const TextStyle(color: Colors.red, fontSize: 14),
+                    ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _confirmarRoll,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: cores.tercearia,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text(
+                        "Confirmar",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -300,12 +428,8 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Transform.translate(
-          offset: const Offset(0, -41), 
-          child: Image.asset(
-            imagemBannerAtual(),
-            width: 250,
-            height: 250
-          ),
+          offset: const Offset(0, -41),
+          child: Image.asset(imagemBannerAtual(), width: 250, height: 250),
         ),
         const SizedBox(height: 16),
         Row(
@@ -313,7 +437,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           children: [
             ElevatedButtonWidget(
               text: "Girar 1X",
-              onPressed: () { _estaRolando ? null : rollUnico(); },
+              onPressed: () => _mostrarPopupRoll('1x'),
               highSize: ButtonSize.muitoPequeno,
               widthSize: ButtonSize.pequeno,
               catColors: cores,
@@ -321,7 +445,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             const SizedBox(width: 16),
             ElevatedButtonWidget(
               text: "Girar 10X",
-              onPressed: () { _estaRolando ? null : rollMulti(); },
+              onPressed: () => _mostrarPopupRoll('10x'),
               highSize: ButtonSize.muitoPequeno,
               widthSize: ButtonSize.pequeno,
               catColors: cores,
@@ -331,8 +455,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       ],
     );
   }
-
-  // termina o gacha --------------------------------------------------------------------------
 
   Widget _buildBannerButton({
     required int idBanner,
@@ -379,7 +501,6 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,10 +526,8 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
                 const SizedBox(height: 41),
-
                 Text(
                   nomeDoBannerAtual(),
                   style: TextStyle(
@@ -434,41 +553,42 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                     clipBehavior: Clip.none,
                     children: [
                       _buildConteudoPrincipal(),
-
-                      if (!_mostrandoPreview && !_mostrandoGatos && !_carregandoRoll)
+                      if (!_mostrandoPreview &&
+                          !_mostrandoGatos &&
+                          !_carregandoRoll)
                         Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildBannerButton(
-                              idBanner: 13,
-                              nomeBanner: 'MeiMei',
-                              onTap: () => setState(() => bannerAtual = 13),
-                            ),
-                            _buildBannerButton(
-                              idBanner: 14,
-                              nomeBanner: 'Zazu',
-                              onTap: () => setState(() => bannerAtual = 14),
-                            ),
-                            _buildBannerButton(
-                              idBanner: 15,
-                              nomeBanner: 'Meowl',
-                              onTap: () => setState(() => bannerAtual = 15),
-                            ),
-                          ],
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildBannerButton(
+                                idBanner: 13,
+                                nomeBanner: 'MeiMei',
+                                onTap: () => setState(() => bannerAtual = 13),
+                              ),
+                              _buildBannerButton(
+                                idBanner: 14,
+                                nomeBanner: 'Zazu',
+                                onTap: () => setState(() => bannerAtual = 14),
+                              ),
+                              _buildBannerButton(
+                                idBanner: 15,
+                                nomeBanner: 'Meowl',
+                                onTap: () => setState(() => bannerAtual = 15),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-
           _buildOverlayResultados(),
+          _buildPopupRoll(),
         ],
       ),
       drawer: Menulateralwidget(),

@@ -61,7 +61,7 @@ class SemMetasEncontradas extends StatelessWidget {
             ),
             ElevatedButtonWidget(text: "Criar", onPressed: (){
               Navigator.pushReplacementNamed(context, AppRotas.criarMeta);
-              },highSize: ButtonSize.pequeno, weightSize: ButtonSize.medio, catColors: cor)
+              },highSize: ButtonSize.pequeno, widthSize: ButtonSize.medio, catColors: cor)
           ],  
         ),
       );
