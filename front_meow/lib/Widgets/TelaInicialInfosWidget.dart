@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/GavetaPageView.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/Meta.dart';
+import 'package:front_meow/models/Cofrinho.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
 import 'SemMetasEncontradas.dart';
-
+import '../services/cofrinhoServices.dart';
+import 'SemGavetasEncontradas.dart';
 
 class Telainicialinfoswidget extends StatelessWidget {
   final QualInfo qualInfo; // Transações, Metas etc
   final CatColors cor;
   final Metaservices metaServices;
+  final CofrinhoServices cofrinhoServices;
 
   const Telainicialinfoswidget({
     super.key,
     required this.qualInfo,
     required this.cor,
     required this.metaServices,
+    required this.cofrinhoServices,
   });
 
   @override
@@ -55,7 +60,20 @@ class Telainicialinfoswidget extends StatelessWidget {
   }
 
   Widget _gaveta() {
-    return Text("Gaveta");
+    return FutureBuilder<List<Cofrinho>>(
+    future: cofrinhoServices.ListarCofrinhos(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro ao carregar metas'));
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return SemGavetasEncontradas(cor: cor);
+      } else {
+        return GavetaPageView(gaveta: snapshot.data!, cor: cor);
+      }
+    },
+  );
   }
 
   Widget _transacoesRecorrentes() {

@@ -37,8 +37,8 @@ class GavetaPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500, // Tamanho do PageView
-      width: 350, // Largura do PageView
+      height: 475, // Tamanho do PageView
+      width: 325, // Largura do PageView
       child: PageView.builder(
         scrollDirection: Axis.horizontal,
         controller: PageController(
@@ -69,7 +69,7 @@ class GavetaPageView extends StatelessWidget {
               color: cor.corTerciaria.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3), 
             ),
           ],
         ),

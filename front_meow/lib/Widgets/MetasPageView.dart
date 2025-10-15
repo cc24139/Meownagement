@@ -39,8 +39,8 @@ class MetasPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500, // Tamanho do PageView
-      width: 350, // Largura do PageView
+      height: 475, // Tamanho do PageView
+      width: 325, // Largura do PageView
       child: PageView.builder(
         scrollDirection: Axis.horizontal,
         controller: PageController(

@@ -10,7 +10,7 @@ void main() {
     MaterialApp(
       home: Scaffold(
         body: Center(
-          child: SemMetasEncontradas(
+          child: SemGavetasEncontradas(
             cor: CatColors(paleta: 2)
           ),
         ),
@@ -19,10 +19,10 @@ void main() {
   );
 }
 
-class SemMetasEncontradas extends StatelessWidget {
+class SemGavetasEncontradas extends StatelessWidget {
   final CatColors cor;
 
-  const SemMetasEncontradas({super.key, required this.cor});
+  const SemGavetasEncontradas({super.key, required this.cor});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class SemMetasEncontradas extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Nenhuma meta encontrada",
+              "Nenhuma gaveta encontrada",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 34,

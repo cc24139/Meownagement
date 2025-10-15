@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 class Checkboxwidget extends StatefulWidget {
   final String text;
@@ -21,4 +21,4 @@ class Checkboxwidget extends StatefulWidget {
 
  
 }
-
+*/
