@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/GavetaPageView.dart';
+import 'package:front_meow/Widgets/HistoricoTransferencias.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
+import 'package:front_meow/Widgets/TransacoesRecorrentes.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/models/Cofrinho.dart';
+import 'package:front_meow/models/transacao.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
 import 'SemMetasEncontradas.dart';
 import '../services/cofrinhoServices.dart';
 import 'SemGavetasEncontradas.dart';
+import '../services/transacaoServices.dart';
 
 class Telainicialinfoswidget extends StatelessWidget {
   final QualInfo qualInfo; // Transações, Metas etc
   final CatColors cor;
   final Metaservices metaServices;
   final CofrinhoServices cofrinhoServices;
+  final TransacaoServices transacaoServices;
 
   const Telainicialinfoswidget({
     super.key,
@@ -22,6 +27,7 @@ class Telainicialinfoswidget extends StatelessWidget {
     required this.cor,
     required this.metaServices,
     required this.cofrinhoServices,
+    required this.transacaoServices,
   });
 
   @override
@@ -56,7 +62,18 @@ class Telainicialinfoswidget extends StatelessWidget {
   }
 
   Widget _transacoes() {
-    return Text("Transações");
+    return FutureBuilder<List<Transacao>>(
+    future: transacaoServices.ListarTransacoes(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro ao carregar metas'));
+      } else {
+        return HistoricoTransferencias(transacoes: snapshot.data!, cor: cor);
+      }
+    },
+  );
   }
 
   Widget _gaveta() {
@@ -77,8 +94,18 @@ class Telainicialinfoswidget extends StatelessWidget {
   }
 
   Widget _transacoesRecorrentes() {
-    return Text("Transações Recorrentes");
+    return FutureBuilder<List<Transacao>>(
+    future: transacaoServices.ListarTransacoesRecorrentes(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro ao carregar metas'));
+      } else {
+        return TransacoesRecorrentes(transacoes: snapshot.data!, cor: cor);
+      }
+    },
+  );
   }
-
 }
 
