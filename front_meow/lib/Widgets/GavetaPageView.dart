@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/GraficoConclusaoWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Meta.dart';
+import 'package:front_meow/models/Cofrinho.dart';
 
-
-var meta1 = Metas(idMeta: 1, nome: "Viajar para o Japão", gastoLimite: 5000,
-             qtsMoedas: 10,feita: "Não",dataCriacao: DateTime.now(),
-             idUsuario: 1,idClassificacao: 1, dataTermino: DateTime(2025,12,31)
+var gaveta1 = Cofrinho(idCofrinho: 1, nome: "Viagem", economia: 5000.00,
+             dinheiroEconomizado: 1500.00, dataCriacao: DateTime.now(),
+             idUsuario: 1,idClassificacao: 1, feita: "Não", dataTermino: DateTime(2025,12,31), qtsMoedas: 10
+            );
+var gaveta2 = Cofrinho(idCofrinho: 2, nome: "Casa nova", economia: 7000.00,
+             dinheiroEconomizado: 3000.00, dataCriacao: DateTime.now(),
+             idUsuario: 1,idClassificacao: 1, feita: "Não", dataTermino: DateTime(2025,11,28), qtsMoedas: 10
             );
 
-var meta2 = Metas(idMeta: 2, nome: "Sair de casa", gastoLimite: 7000,
-             qtsMoedas: 10,feita: "Não",dataCriacao: DateTime.now(),
-             idUsuario: 1,idClassificacao: 1, dataTermino: DateTime(2025,11,28)
-            );
-
-List<Metas> metasExemplo = [meta1,meta2];
+List<Cofrinho> gavetaExemplo = [gaveta1,gaveta2];
 void main() {
   runApp(
     MaterialApp(
       home: Scaffold(
         body: Center(
-          child: MetasPageView(
-            metas: metasExemplo,
+          child: GavetaPageView(
+            gaveta: gavetaExemplo,
             cor: CatColors(paleta: 2)
           ),
         ),
@@ -30,11 +28,11 @@ void main() {
   );
 }
 
-class MetasPageView extends StatelessWidget {
-  final List<Metas> metas;
+class GavetaPageView extends StatelessWidget {
+  final List<Cofrinho> gaveta;
   final CatColors cor;
 
-  const MetasPageView({super.key, required this.metas, required this.cor});
+  const GavetaPageView({super.key, required this.gaveta, required this.cor});
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +47,16 @@ class MetasPageView extends StatelessWidget {
         ),
         physics: const PageScrollPhysics(), // mantém o scroll padrão de páginas
         pageSnapping: true,
-        itemCount: metas.length,
+        itemCount: gaveta.length,
         itemBuilder: (context, index) {
-          final meta = metas[index];
+          final meta = gaveta[index];
           return _metaCard(meta);
         },
       ),
     );
   }
 
- Widget _metaCard(Metas meta) {
+ Widget _metaCard(Cofrinho gaveta) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         padding: const EdgeInsets.all(5),
@@ -71,7 +69,7 @@ class MetasPageView extends StatelessWidget {
               color: cor.corTerciaria.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3), 
             ),
           ],
         ),
@@ -79,7 +77,7 @@ class MetasPageView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              meta.nome,
+              gaveta.nome,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -88,7 +86,7 @@ class MetasPageView extends StatelessWidget {
             ),
             SizedBox(height: 80),
             Text(
-              'R\$ ${meta.gastoLimite.toStringAsFixed(2)}',
+              'R\$ ${gaveta.economia.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Londrina',
@@ -96,7 +94,7 @@ class MetasPageView extends StatelessWidget {
                 ),
             ),
             Text(
-              'R\$ ${meta.gastoLimite.toStringAsFixed(2)}',
+              'R\$ ${gaveta.dinheiroEconomizado.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 36,
                 fontFamily: 'Londrina',

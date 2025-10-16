@@ -4,9 +4,10 @@ import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
+import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class TelaTransacoes extends StatefulWidget {
   const TelaTransacoes({super.key});
@@ -56,7 +57,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
     if (pickedDate != null) {
       setState(() {
-        _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+       // _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       });
     }
   }
@@ -87,7 +88,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   ),
                   Expanded(
                     child: TitleTelaWidget(
-                      title: "Planeja transações",
+                      title: "Planeje transações",
                       subtitle: "",
                       catColors: cores,
                     ),
@@ -108,64 +109,74 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                       size: 25,
                     ),
                   ),
-                  // SvgPicture.asset(
-                  //       "../../assets/icons/vetor_olho_fechado.svg",
-                  //       width: 25,
-                  //       height: 25,
-                  //       color: cores.complementar,
-                  // ),
-                  Text("Saldo"),
+                  Text("Saldo", style: TextStyle(color: cores.complementar),),
                 ],
               ),
-              Text("Tipo de transação / Data da início"),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Tipo de transação                           Data da início",
+                    style: TextStyle(color: cores.corSecundaria, fontSize: 16),
+                  ),
+                  SizedBox(width: 70)
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        RadioListTile<OpcoesTransacao>(
-                          title: const Text('Despesa'),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Verticalselectwidget<OpcoesTransacao>(
+                          label: 'Despesa',
                           value: OpcoesTransacao.despesa,
                           groupValue: _opcoesTransacao,
-                          onChanged: (OpcoesTransacao? value) {
+                          cores: cores,
+                          onChanged: (value) {
                             setState(() {
                               _opcoesTransacao = value;
                             });
                           },
                         ),
-                        RadioListTile<OpcoesTransacao>(
-                          title: const Text("Receita"),
+                        
+                        Verticalselectwidget<OpcoesTransacao>(
+                          label: 'Receita',
                           value: OpcoesTransacao.receita,
                           groupValue: _opcoesTransacao,
-                          onChanged: (OpcoesTransacao? value) {
+                          cores: cores,
+                          onChanged: (value) {
                             setState(() {
                               _opcoesTransacao = value;
                             });
                           },
                         ),
+                          SizedBox(width: 20),
                       ],
                     ),
                   ),
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextFormField(
-                          controller: _dateController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: 'Data da transação',
-                            suffixIcon: Icon(Icons.calendar_today),
-                          ),
-                          onTap: () => _selectDate(context),
+                    child: TextFormField(
+                      controller: _dateController,
+                      readOnly: true,
+                      style: TextStyle(color: cores.complementar), 
+                      decoration: InputDecoration(
+                        labelText: 'Data da transação',
+                        labelStyle: TextStyle(color: cores.complementar),
+
+                        suffixIcon: Icon(
+                          Icons.calendar_today,
+                          color: cores.complementar,
                         ),
-                      ],
+                      ),
+                      onTap: () => _selectDate(context),
                     ),
                   ),
                 ],
               ),
-
+              SizedBox(height: 20),
               TextField(
                 keyboardType: TextInputType.multiline,
                 minLines: 3,
@@ -173,19 +184,36 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                 maxLength: 150,
                 decoration: InputDecoration(
                   hintText: "Descrição da transação",
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
+                
               ),
 
+              Text("Classificação"),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
                 decoration: InputDecoration(
-                  labelText: 'Classificação',
                   border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true
                 ),
                 value: dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_drop_down),
                 onChanged: (String? value) {
                   setState(() {
                     dropdownValue = value!;
@@ -202,7 +230,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   );
                 }).toList(),
               ),
-
+              SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
@@ -211,7 +239,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   border: OutlineInputBorder(),
                 ),
                 value: valorDropdownRecorrencia,
-                icon: const Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_drop_down),
                 onChanged: (String? value) {
                   setState(() {
                     valorDropdownRecorrencia = value!;
@@ -255,7 +283,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                       _salvar(context);
                     },
                     highSize: ButtonSize.grande,
-                    weightSize: ButtonSize.medio,
+                    widthSize: ButtonSize.medio,
                     catColors: cores,
                   ),
                 ],

@@ -140,7 +140,7 @@ class _TelaGatoDoUserState extends State<TelaGatoDoUser> {
                     catColors: cores,
                     text: "Equipar",
                     highSize: ButtonSize.medio,
-                    weightSize: ButtonSize.grande,
+                    widthSize: ButtonSize.grande,
                     onPressed: () {
                       _equipar();
                     },

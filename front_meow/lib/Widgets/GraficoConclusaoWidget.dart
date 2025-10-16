@@ -34,11 +34,11 @@ class GraficoConclusaoWidget extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 100,
-              height: 100,
+              width: 150,
+              height: 150,
               child: CircularProgressIndicator(
                 value: porcentagem / 100,
-                strokeWidth: 10,
+                strokeWidth: 15,
                 backgroundColor: catColors.corPrimaria,
                 valueColor: AlwaysStoppedAnimation<Color>(catColors.corSecundaria),
               ),
@@ -49,9 +49,9 @@ class GraficoConclusaoWidget extends StatelessWidget {
               children: [
                 Text(
                   '$porcentagem%',
-                  style: TextStyle(fontSize: 24,
+                  style: TextStyle(fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'LondrinaSolid',
+                  fontFamily: 'Londrina',
                   color: catColors.corSecundaria
                    ),
                 ),

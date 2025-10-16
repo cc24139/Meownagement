@@ -1,4 +1,4 @@
-import 'package:bordered_text/bordered_text.dart';
+//import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
