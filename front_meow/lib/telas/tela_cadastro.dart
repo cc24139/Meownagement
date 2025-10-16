@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/BolasLogin.dart';
+import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
@@ -68,20 +70,25 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
+    CatColors cores = CatColors(paleta: 2);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Cadastro",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Arial",
+      backgroundColor: cores.corPrimaria, 
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: ClipPath(
+              clipper: BolasLogin(),
+              child: Container(
+                height: 175,
+                color: cores.corSecundaria.withOpacity(0.9),
+              ),
+            ),
           ),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
+
+      Center(
+        child: 
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Center(
@@ -177,6 +184,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
           ),
         ),
       )
+      ),
+        ],
+      ),
     );
   }
 }

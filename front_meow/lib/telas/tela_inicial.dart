@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
-import 'package:front_meow/Widgets/MetasPageView.dart';
-import 'package:front_meow/Widgets/QualInfoWidget.dart';
+//import 'package:front_meow/Widgets/MetasPageView.dart';
+//import 'package:front_meow/Widgets/QualInfoWidget.dart';
 import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/services/metaServices.dart';
+//import 'package:front_meow/services/metaServices.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
