@@ -7,6 +7,7 @@ import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
+import 'package:intl/intl.dart';
 //import 'package:intl/intl.dart';
 
 class TelaTransacoes extends StatefulWidget {
@@ -57,10 +58,11 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
     if (pickedDate != null) {
       setState(() {
-       // _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+        _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       });
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,8 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                 ],
               ),
 
+              SizedBox(height: 25),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -112,70 +116,84 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   Text("Saldo", style: TextStyle(color: cores.complementar),),
                 ],
               ),
+
+              SizedBox(height: 25),
+
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Tipo de transação                           Data da início",
-                    style: TextStyle(color: cores.corSecundaria, fontSize: 16),
-                  ),
-                  SizedBox(width: 70)
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(
                       children: [
-                        Verticalselectwidget<OpcoesTransacao>(
-                          label: 'Despesa',
-                          value: OpcoesTransacao.despesa,
-                          groupValue: _opcoesTransacao,
-                          cores: cores,
-                          onChanged: (value) {
-                            setState(() {
-                              _opcoesTransacao = value;
-                            });
-                          },
+                        Text(
+                          "Tipo de transação",
+                          style: TextStyle(color: cores.corSecundaria, fontSize: 16),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Verticalselectwidget<OpcoesTransacao>(
+                              label: 'Despesa',
+                              value: OpcoesTransacao.despesa,
+                              groupValue: _opcoesTransacao,
+                              cores: cores,
+                              onChanged: (value) {
+                                setState(() {
+                                  _opcoesTransacao = value;
+                                });
+                              },
+                            ),
+
+                            Verticalselectwidget<OpcoesTransacao>(
+                              label: 'Receita',
+                              value: OpcoesTransacao.receita,
+                              groupValue: _opcoesTransacao,
+                              cores: cores,
+                              onChanged: (value) {
+                                setState(() {
+                                  _opcoesTransacao = value;
+                                });
+                              },
+                            ),
+
+                          ],
+                        )
+                      ],
+                    )
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Data da início",
+                          style: TextStyle(color: cores.corSecundaria, fontSize: 16),
                         ),
                         
-                        Verticalselectwidget<OpcoesTransacao>(
-                          label: 'Receita',
-                          value: OpcoesTransacao.receita,
-                          groupValue: _opcoesTransacao,
-                          cores: cores,
-                          onChanged: (value) {
-                            setState(() {
-                              _opcoesTransacao = value;
-                            });
-                          },
+                        SizedBox(height: 16),
+
+                        TextFormField(
+                          controller: _dateController,
+                          readOnly: true,
+                          style: TextStyle(color: cores.complementar), 
+                          decoration: InputDecoration(
+                            labelText: 'Data da transação',
+                            labelStyle: TextStyle(color: cores.complementar),
+
+                            suffixIcon: Icon(
+                              Icons.calendar_today,
+                              color: cores.complementar,
+                            ),
+                          ),
+                          onTap: () => _selectDate(context),
                         ),
-                          SizedBox(width: 20),
+                      
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _dateController,
-                      readOnly: true,
-                      style: TextStyle(color: cores.complementar), 
-                      decoration: InputDecoration(
-                        labelText: 'Data da transação',
-                        labelStyle: TextStyle(color: cores.complementar),
-
-                        suffixIcon: Icon(
-                          Icons.calendar_today,
-                          color: cores.complementar,
-                        ),
-                      ),
-                      onTap: () => _selectDate(context),
-                    ),
-                  ),
+                  )
                 ],
               ),
+
               SizedBox(height: 20),
               TextField(
                 keyboardType: TextInputType.multiline,
@@ -202,13 +220,31 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                 ),
                 
               ),
-
-              Text("Classificação"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Classificação", style: TextStyle(color: cores.secundaria, fontSize: 16)),
+                ],
+              ),
+              
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
                   fillColor: Colors.white,
                   filled: true
                 ),
@@ -225,18 +261,41 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Center(
-                      child: Text(value, textAlign: TextAlign.center),
+                      child: Text(value, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                     ),
                   );
                 }).toList(),
               ),
+
               SizedBox(height: 20),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Recorrência", style: TextStyle(color: cores.secundaria, fontSize: 16)),
+                ],
+              ),
+
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 alignment: AlignmentDirectional.center,
                 decoration: InputDecoration(
-                  labelText: 'Recorrência',
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: cores.corTerciaria,
+                      width: 2
+                    )
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
                 ),
                 value: valorDropdownRecorrencia,
                 icon: const Icon(Icons.arrow_drop_down),
@@ -251,18 +310,20 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Center(
-                      child: Text(value, textAlign: TextAlign.center),
+                      child: Text(value, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                     ),
                   );
                 }).toList(),
               ),
+
+              SizedBox(height: 90),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(120, 50),
+                      fixedSize: const Size(160, 60),
                       backgroundColor: cores.corTerciaria,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -274,17 +335,32 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                     },
                     child: Text(
                       "Cancelar",
-                      style: TextStyle(color: cores.complementar),
+                      style: TextStyle(
+                        color: cores.complementar,
+                        fontSize: 24
+                      ),
                     ),
                   ),
-                  ElevatedButtonWidget(
-                    text: "Efetuar",
+
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: const Size(260, 60),
+                      backgroundColor: cores.corSecundaria,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+
                     onPressed: () {
                       _salvar(context);
                     },
-                    highSize: ButtonSize.grande,
-                    widthSize: ButtonSize.medio,
-                    catColors: cores,
+                    child: Text(
+                      "Efetuar",
+                      style: TextStyle(
+                        color: cores.complementar,
+                        fontSize: 24
+                      ),
+                    ),
                   ),
                 ],
               ),
