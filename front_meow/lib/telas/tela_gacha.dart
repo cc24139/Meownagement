@@ -342,7 +342,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Confirmar Roll ${_tipoRoll ?? ''}",
+                    "Confirmar Roll ${_tipoRoll ?? ''}  - $_precoRoll MC",
                     style: TextStyle(
                       color: cores.tercearia,
                       fontSize: 22,
@@ -523,10 +523,11 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Center(
+      body: Stack(
+        children: [
+
+          SingleChildScrollView(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -585,13 +586,27 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
+                  
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      "⭐️⭐️⭐️⭐️ 10% | ⭐️⭐️⭐️⭐️⭐️ 1%",
+                      style: TextStyle(
+                        color: cores.tercearia,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            _buildOverlayResultados(),
-            _buildPopupRoll(),
-          ],
-        ),
+          ),
+          
+          _buildOverlayResultados(),
+          _buildPopupRoll(),
+        ],
       ),
       drawer: Menulateralwidget(),
     );
