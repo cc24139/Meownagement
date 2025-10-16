@@ -27,8 +27,7 @@ class _TelaLoginState extends State<TelaLogin> {
     super.initState();
   }
 
-  void _fazerLogin() async{
-
+  void _fazerLogin() async {
     if (txtEmail.text.isNotEmpty && txtSenha.text.isNotEmpty) {
       var httpUsuarios = UsuarioServices();
       print("Chamando LoginUsuario...");
@@ -40,11 +39,10 @@ class _TelaLoginState extends State<TelaLogin> {
 
       if (sucesso!) {
         Navigator.pushReplacementNamed(context, AppRotas.amizades);
-      } 
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Email ou senha inválidos")),
-        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Email ou senha inválidos")));
         txtSenha.clear();
       }
     }
@@ -65,79 +63,81 @@ class _TelaLoginState extends State<TelaLogin> {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtEmail,
-                  decoration: const InputDecoration(
-                    labelText: "Digite seu Email",
-                    hintText: "catlover@meow.com",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtSenha,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Digite sua Senha",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      AppRotas.alterarSenha,
-                    );
-                  },
-                  child: const Text("Esqueci minha senha"),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Não possui uma conta? "),
-                    SizedBox(
-                      width: 250,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRotas.cadastro,
-                          );
-                        },
-                        child: const Text("Cadastre-se"),
-                      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtEmail,
+                    decoration: const InputDecoration(
+                      labelText: "Digite seu Email",
+                      hintText: "catlover@meow.com",
+                      border: OutlineInputBorder(),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _fazerLogin();
-                  },
-                  child: Text("Entrar"),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtSenha,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Digite sua Senha",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        AppRotas.alterarSenha,
+                      );
+                    },
+                    child: const Text("Esqueci minha senha"),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Não possui uma conta? "),
+                      SizedBox(
+                        width: 250,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRotas.cadastro,
+                            );
+                          },
+                          child: const Text("Cadastre-se"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _fazerLogin();
+                    },
+                    child: Text("Entrar"),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
