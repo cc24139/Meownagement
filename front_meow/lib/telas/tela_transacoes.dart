@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
-import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:intl/intl.dart';
-//import 'package:intl/intl.dart';
+import 'package:front_meow/Widgets/textfieldInputDinheiro.dart'; 
 
 class TelaTransacoes extends StatefulWidget {
   const TelaTransacoes({super.key});
@@ -33,19 +30,22 @@ void _salvar(BuildContext context) {
 
 class _TelaTransacoesState extends State<TelaTransacoes> {
   OpcoesTransacao? _opcoesTransacao = OpcoesTransacao.despesa;
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final _valorController = CurrencyInputController(initialValue: 0.0);
 
   String dropdownValue = listaClassificacao.first;
   String valorDropdownRecorrencia = listaRecorrencia.first;
   CatColors cores = CatColors(paleta: 4);
+  
   @override
   void dispose() {
     _dateController.dispose();
+    _valorController.dispose();
     super.dispose();
   }
 
   void _trocar() {
-    //Troar icone e texto
+    //Trocar icone e texto
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -66,334 +66,231 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: Icon(
-                            Icons.menu,
-                            color: cores.complementar,
-                            size: 25,
-                          ),
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: TitleTelaWidget(
-                        title: "Planeje transações",
-                        subtitle: "",
-                        catColors: cores,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 25),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        _trocar();
-                      },
-                      icon: Icon(
-                        Icons.visibility_off,
-                        color: cores.complementar,
-                        size: 25,
-                      ),
-                    ),
-                    Text("Saldo", style: TextStyle(color: cores.complementar)),
-                  ],
-                ),
-
-                SizedBox(height: 25),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Column(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16), 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            "Tipo de transação",
-                            style: TextStyle(
-                              color: cores.corSecundaria,
-                              fontSize: 16,
+                          Builder(
+                            builder: (context) => IconButton(
+                              onPressed: () => Scaffold.of(context).openDrawer(),
+                              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
                             ),
                           ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Verticalselectwidget<OpcoesTransacao>(
-                                label: 'Despesa',
-                                value: OpcoesTransacao.despesa,
-                                groupValue: _opcoesTransacao,
-                                cores: cores,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _opcoesTransacao = value;
-                                  });
-                                },
-                              ),
-
-                              Verticalselectwidget<OpcoesTransacao>(
-                                label: 'Receita',
-                                value: OpcoesTransacao.receita,
-                                groupValue: _opcoesTransacao,
-                                cores: cores,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _opcoesTransacao = value;
-                                  });
-                                },
-                              ),
-                            ],
+                          Expanded(
+                            child: TitleTelaWidget(
+                              title: "Planeje transações",
+                              subtitle: "",
+                              catColors: cores,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Data da início",
-                            style: TextStyle(
-                              color: cores.corSecundaria,
-                              fontSize: 16,
+                          IconButton(
+                            onPressed: _trocar,
+                            icon: Icon(Icons.visibility_off, color: cores.complementar, size: 25),
+                          ),
+                          Text("Saldo", style: TextStyle(color: cores.complementar)),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text("Valor da transação", style: TextStyle(color: cores.secundaria, fontSize: 16)),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _valorController,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: cores.secundaria, fontSize: 24, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 20.0),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: cores.corTerciaria, width: 3.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: cores.corTerciaria, width: 4.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text("Tipo de transação", style: TextStyle(color: cores.corSecundaria, fontSize: 16)),
+                                const SizedBox(height: 16),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Verticalselectwidget<OpcoesTransacao>(
+                                      label: 'Despesa',
+                                      value: OpcoesTransacao.despesa,
+                                      groupValue: _opcoesTransacao,
+                                      cores: cores,
+                                      onChanged: (value) => setState(() => _opcoesTransacao = value),
+                                    ),
+                                    Verticalselectwidget<OpcoesTransacao>(
+                                      label: 'Receita',
+                                      value: OpcoesTransacao.receita,
+                                      groupValue: _opcoesTransacao,
+                                      cores: cores,
+                                      onChanged: (value) => setState(() => _opcoesTransacao = value),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-
-                          SizedBox(height: 16),
-
-                          TextFormField(
-                            controller: _dateController,
-                            readOnly: true,
-                            style: TextStyle(color: cores.complementar),
-                            decoration: InputDecoration(
-                              labelText: 'Data da transação',
-                              labelStyle: TextStyle(color: cores.complementar),
-
-                              suffixIcon: Icon(
-                                Icons.calendar_today,
-                                color: cores.complementar,
-                              ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text("Data de início", style: TextStyle(color: cores.corSecundaria, fontSize: 16)),
+                                const SizedBox(height: 16),
+                                TextFormField(
+                                  controller: _dateController,
+                                  readOnly: true,
+                                  style: TextStyle(color: cores.complementar),
+                                  decoration: InputDecoration(
+                                    labelText: 'Data da transação',
+                                    labelStyle: TextStyle(color: cores.complementar),
+                                    suffixIcon: Icon(Icons.calendar_today, color: cores.complementar),
+                                  ),
+                                  onTap: () => _selectDate(context),
+                                ),
+                              ],
                             ),
-                            onTap: () => _selectDate(context),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 20),
-                TextField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 3,
-                  maxLines: 3,
-                  maxLength: 150,
-                  decoration: InputDecoration(
-                    hintText: "Descrição da transação",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Classificação",
-                      style: TextStyle(color: cores.secundaria, fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  alignment: AlignmentDirectional.center,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                  value: dropdownValue,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onChanged: (String? value) {
-                    setState(() {
-                      dropdownValue = value!;
-                    });
-                  },
-                  items: listaClassificacao.map<DropdownMenuItem<String>>((
-                    String value,
-                  ) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Center(
-                        child: Text(
-                          value,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
+                      const SizedBox(height: 20),
+                      TextField(
+                        keyboardType: TextInputType.multiline,
+                        minLines: 3,
+                        maxLines: 3,
+                        maxLength: 150,
+                        decoration: InputDecoration(
+                          hintText: "Descrição da transação",
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                               width: 2
+                            )
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 4
+                            )
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
                         ),
                       ),
-                    );
-                  }).toList(),
-                ),
-
-                SizedBox(height: 20),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Recorrência",
-                      style: TextStyle(color: cores.secundaria, fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  alignment: AlignmentDirectional.center,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: cores.corTerciaria,
-                        width: 2,
-                      ),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                  value: valorDropdownRecorrencia,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onChanged: (String? value) {
-                    setState(() {
-                      valorDropdownRecorrencia = value!;
-                    });
-                  },
-                  items: listaRecorrencia.map<DropdownMenuItem<String>>((
-                    String value,
-                  ) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Center(
-                        child: Text(
-                          value,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                          ),
+                      const SizedBox(height: 20),
+                      Text("Classificação", style: TextStyle(color: cores.secundaria, fontSize: 16)),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        alignment: AlignmentDirectional.center,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: cores.corTerciaria, width: 2)),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: cores.corTerciaria, width: 2)),
+                          fillColor: Colors.white,
+                          filled: true,
                         ),
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onChanged: (String? value) => setState(() => dropdownValue = value!),
+                        items: listaClassificacao.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Center(child: Text(value, textAlign: TextAlign.center, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
+                          );
+                        }).toList(),
                       ),
-                    );
-                  }).toList(),
+                      const SizedBox(height: 20),
+                      Text("Recorrência", style: TextStyle(color: cores.secundaria, fontSize: 16)),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        alignment: AlignmentDirectional.center,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: cores.corTerciaria, width: 2)),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: cores.corTerciaria, width: 2)),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        value: valorDropdownRecorrencia,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onChanged: (String? value) => setState(() => valorDropdownRecorrencia = value!),
+                        items: listaRecorrencia.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Center(child: Text(value, textAlign: TextAlign.center, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                 ),
-
-                SizedBox(height: 90),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
+              ),
+              const SizedBox(height: 16), 
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(160, 60),
+                        fixedSize: const Size.fromHeight(60),
                         backgroundColor: cores.corTerciaria,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-
-                      onPressed: () {
-                        _cancelar(context);
-                      },
-                      child: Text(
-                        "Cancelar",
-                        style: TextStyle(
-                          color: cores.complementar,
-                          fontSize: 24,
-                        ),
-                      ),
+                      onPressed: () => _cancelar(context),
+                      child: Text("Cancelar", style: TextStyle(color: cores.complementar, fontSize: 18)),
                     ),
-
-                    ElevatedButton(
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 3,
+                    child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(260, 60),
+                        fixedSize: const Size.fromHeight(60),
                         backgroundColor: cores.corSecundaria,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-
-                      onPressed: () {
-                        _salvar(context);
-                      },
-                      child: Text(
-                        "Efetuar",
-                        style: TextStyle(
-                          color: cores.complementar,
-                          fontSize: 24,
-                        ),
-                      ),
+                      onPressed: () => _salvar(context),
+                      child: Text("Efetuar", style: TextStyle(color: cores.complementar, fontSize: 18)),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
-        backgroundColor: cores.primaria,
-        drawer: Menulateralwidget(),
+      backgroundColor: cores.primaria,
+      drawer: Menulateralwidget(),
     );
   }
 }
