@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,33 +17,39 @@ class TransacaoServices extends Http {
   Future<String> CriarTransacao(
     String Nome,
     double QuantiaDinheiro,
-    String DataCriacao,
     String DataFinalizacao,
-    int IdOcorrencia,
+    int? IdRecorrencia,
     int IdClassificacao,
+    int? idMeta,
+    int? idCofrinho,
   ) async {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
+    final body = {
+      'Nome': Nome,
+      'QuantiaDinheiro': QuantiaDinheiro,
+      'Feita': 'N',
+      'DataFinalizacao': DataFinalizacao,
+      'IdRecorrencia': IdRecorrencia,
+      'IdClassificacao': IdClassificacao,
+      'IdMeta': idMeta,
+      'IdCofrinho': idCofrinho,
+    };
+
     final response = await http.post(
       Uri.parse("${urlTransacao}/criar"),
       headers: Http.headers,
-      body: jsonEncode({
-        'nome': Nome,
-        'quantiaDinheiro': QuantiaDinheiro,
-        'dataCriacao': DataCriacao,
-        'dataFinalizacao': DataFinalizacao,
-        'idOcorrencia': IdOcorrencia,
-        'idClassificacao': IdClassificacao,
-      }),
+      body: jsonEncode(body),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return ("Transação criada com sucesso");
-    } else {
-      throw Exception('Failed to create transacao');
     }
+    throw Exception(
+      'Failed to create transacao: ${response.statusCode} ${response.body}',
+    );
   }
 
   // Gets
@@ -74,7 +78,7 @@ class TransacaoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/recorrentes"),
-      headers:  Http.headers,
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -92,9 +96,11 @@ class TransacaoServices extends Http {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
+    // API expects date in yyyy-MM-dd format in route
+    final dateStr = date.toIso8601String().split('T').first;
     final response = await http.get(
-      Uri.parse("${urlTransacao}/listar/porData/${date.toIso8601String()}"),
-      headers:  Http.headers,
+      Uri.parse("${urlTransacao}/listar/$dateStr"),
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -111,11 +117,11 @@ class TransacaoServices extends Http {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
+    final startStr = start.toIso8601String().split('T').first;
+    final endStr = end.toIso8601String().split('T').first;
     final response = await http.get(
-      Uri.parse(
-        "${urlTransacao}/listar/porPeriodo/${start.toIso8601String()}/${end.toIso8601String()}",
-      ),
-      headers:  Http.headers,
+      Uri.parse("${urlTransacao}/listar/$startStr/$endStr"),
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -134,7 +140,7 @@ class TransacaoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/positivo"),
-      headers:  Http.headers,
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -153,7 +159,7 @@ class TransacaoServices extends Http {
     }
     final response = await http.get(
       Uri.parse("${urlTransacao}/listar/negativo"),
-     headers:  Http.headers,
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -171,9 +177,9 @@ class TransacaoServices extends Http {
     int Id,
     String Nome,
     double QuantiaDinheiro,
-    String DataCriacao,
-    String DataFinalizacao,
-    int IdOcorrencia,
+    DateTime DataCriacao,
+    DateTime DataFinalizacao,
+    int? IdRecorrencia,
     int IdClassificacao,
     int? idMeta,
     int? idCofrinho,
@@ -182,27 +188,31 @@ class TransacaoServices extends Http {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
+    final body = {
+      'IdTransacao': Id,
+      'Nome': Nome,
+      'QuantiaDinheiro': QuantiaDinheiro,
+      'DataCriacao': DataCriacao.toIso8601String(),
+      'Feita': 'N',
+      'DataFinalizacao': DataFinalizacao.toIso8601String(),
+      'IdClassificacao': IdClassificacao,
+      'IdRecorrencia': IdRecorrencia,
+      'IdMeta': idMeta,
+      'IdCofrinho': idCofrinho,
+    };
+
     final response = await http.patch(
-      Uri.parse("${urlTransacao}/editar/$Id"),
-     headers:  Http.headers,
-      body: jsonEncode({
-        'IdTransacao': Id,
-        'Nome': Nome,
-        'QuantiaDinheiro': QuantiaDinheiro,
-        'DataCriacao': DataCriacao,
-        'DataFinalizacao': DataFinalizacao,
-        'IdClassificacao': IdClassificacao,
-        'IdRecorrencia': IdOcorrencia,
-        'IdMeta': idMeta,
-        'IdCofrinho': idCofrinho,
-      }),
+      Uri.parse("${urlTransacao}/editar"),
+      headers: Http.headers,
+      body: jsonEncode(body),
     );
 
     if (response.statusCode == 200) {
       return ("Transação editada com sucesso");
-    } else {
-      throw Exception('Failed to edit transacao');
     }
+    throw Exception(
+      'Failed to edit transacao: ${response.statusCode} ${response.body}',
+    );
   }
 
   Future<String> AtualizarSaldo(int id) async {
@@ -212,7 +222,7 @@ class TransacaoServices extends Http {
 
     final response = await http.patch(
       Uri.parse("${urlTransacao}/atualizar/saldo/$id"),
-      headers:  Http.headers,
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
@@ -230,32 +240,34 @@ class TransacaoServices extends Http {
 
     final response = await http.delete(
       Uri.parse("${urlTransacao}/deletar/$id"),
-     headers:  Http.headers,
+      headers: Http.headers,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204 || response.statusCode == 200) {
       return ("Transação deletada com sucesso");
-    } else {
-      throw Exception('Failed to delete transacao');
     }
+    throw Exception(
+      'Failed to delete transacao: ${response.statusCode} ${response.body}',
+    );
   }
 
-  
   Future<String> AtualizarTransaceos(int id) async {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
-    final response = await http.patch(
-      Uri.parse("${urlTransacao}/atualizar"),
-      headers:  Http.headers,
+    final response = await http.get(
+      Uri.parse(
+        "${Http.url.replaceAll('/transacoes', '')}/transacao/atualizar",
+      ),
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
       return ("Transações atualizadas com sucesso");
-    } else {
-      throw Exception('Failed to update transacoes');
     }
+    throw Exception(
+      'Failed to update transacoes: ${response.statusCode} ${response.body}',
+    );
   }
-
 }

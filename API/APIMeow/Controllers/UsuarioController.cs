@@ -235,7 +235,7 @@ public class UsuarioController : ControllerBase
         }
         else if (usuarioExistente.Pontos < 467)
         {
-            return BadRequest("Você não tem pontos suficientes para editar seu perfil. (Custa 467 pontos)");
+            return Conflict("Você não tem pontos suficientes para editar seu perfil. (Custa 467 pontos)");
         }
         else
         {

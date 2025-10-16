@@ -46,13 +46,13 @@ public class TransacaoController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("transacoes/listar/{dataInicio}/{dataFim}")]
-    public async Task<IActionResult> ListarTransacoesPorPeriodo(String dataIni, String datafinal, DBMeownagement db)
+    [HttpGet("transacoes/listar/{dataInicioStr}/{dataFimStr}")]
+    public async Task<IActionResult> ListarTransacoesPorPeriodo(string dataInicioStr, string dataFimStr, DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.Parse(id);
-        var dataInicio = DateTime.Parse(dataIni).Date;
-        var dataFim = DateTime.Parse(datafinal).Date;
+        var dataInicio = DateTime.Parse(dataInicioStr).Date;
+        var dataFim = DateTime.Parse(dataFimStr).Date;
         var listTransacoes = await db.Transacao
             .Where(t => t.IdUsuario == userId && t.DataFinalizacao.Date >= dataInicio && t.DataFinalizacao.Date <= dataFim)
             .ToListAsync();
@@ -189,7 +189,7 @@ public class TransacaoController : ControllerBase
         var userId = int.Parse(usuarioId);
         var usuarioAtual = await db.Usuario.FindAsync(userId);
         var transacoesPendentes = await db.Transacao
-            .Where(t => t.IdUsuario == userId && t.Feita=='N' && t.DataFinalizacao.Date == DateTime.Now.Date 
+            .Where(t => t.IdUsuario == userId && t.Feita=='N' && t.DataFinalizacao.Date <= DateTime.Now.Date 
            )
             .ToListAsync();
         foreach (var transacao in transacoesPendentes)

@@ -14,31 +14,32 @@ class Gato {
   });
 
   factory Gato.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'idGato': int idGato,
-        'nome': String nome,
-        'raridade': int raridade,
-        'codPaleta': int codPaleta,
-        'nomeImagem': String nomeImagem,
-      } =>
-        Gato(
-          idGato: idGato,
-          nome: nome,
-          raridade: raridade,
-          codPaleta: codPaleta,
-          nomeImagem: nomeImagem,
-        ),
-      _ => throw Exception('Erro ao carregar gato'),
-    };
+    final id = json['IdGato'] ?? json['idGato'];
+    final nome = json['Nome'] ?? json['nome'];
+    final raridade = json['Raridade'] ?? json['raridade'];
+    final codPaleta = json['CodPaleta'] ?? json['codPaleta'];
+    final nomeImagem = json['NomeImagem'] ?? json['nomeImagem'];
+    if (id is int &&
+        nome is String &&
+        raridade is int &&
+        codPaleta is int &&
+        nomeImagem is String) {
+      return Gato(
+        idGato: id,
+        nome: nome,
+        raridade: raridade,
+        codPaleta: codPaleta,
+        nomeImagem: nomeImagem,
+      );
+    }
+    throw Exception('Erro ao carregar gato');
   }
 
   Map<String, dynamic> toJson() => {
-        'idGato': idGato,
-        'nome': nome,
-        'raridade': raridade,
-        'codPaleta': codPaleta,
-        'nomeImagem': nomeImagem,
-      };
-      
+    'idGato': idGato,
+    'nome': nome,
+    'raridade': raridade,
+    'codPaleta': codPaleta,
+    'nomeImagem': nomeImagem,
+  };
 }

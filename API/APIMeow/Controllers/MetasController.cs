@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using APIMeow.ViewModels;
+using APIMeow.ViewModels.Visualization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -74,7 +75,7 @@ namespace APIMeow.Controllers
                 .Where(mct => mct.IdMeta == meta.IdMeta).ToListAsync();
                 if (Idtransacoes.Count == 0) continue;
                 decimal gastoTotal = 0;
-                var listTransacoes = new List<Transacoes>();
+                var listTransacoes = new List<Transacao>();
                 foreach (var item in Idtransacoes)
                 {
                     var transacao = await db.Transacao.FindAsync(item.IdTransacao);
