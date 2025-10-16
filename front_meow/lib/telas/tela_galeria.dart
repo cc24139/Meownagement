@@ -58,27 +58,29 @@ class _TelaGaleriaState extends State<TelaGaleria> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Galeria")),
-      body: Center(
-        child: Wrap(
-          children: [
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-            CardGato(nome: "miauauau", imagem: "doudouCat"),
-          ],
-        ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Wrap(
+            children: [
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+              CardGato(nome: "miauauau", imagem: "doudouCat"),
+            ],
+          ),
+        ),  
       ),
       drawer: Menulateralwidget(),
     );

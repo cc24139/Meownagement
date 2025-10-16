@@ -32,42 +32,46 @@ class _TelaAlterarPerfilState extends State<TelaAlterarPerfil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Perfil")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: txtNome,
-              decoration: const InputDecoration(
-                labelText: "Nome do perfil",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: txtBio,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              maxLength: 250,
-              decoration: const InputDecoration(
-                labelText: "Bio",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _cancelar,
-                  child: const Text("Cancelar"),
+      body: SingleChildScrollView(
+
+        
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: txtNome,
+                decoration: const InputDecoration(
+                  labelText: "Nome do perfil",
+                  border: OutlineInputBorder(),
                 ),
-                ElevatedButton(onPressed: _salvar, child: const Text("Salvar")),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: txtBio,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                maxLength: 250,
+                decoration: const InputDecoration(
+                  labelText: "Bio",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _cancelar,
+                    child: const Text("Cancelar"),
+                  ),
+                  ElevatedButton(onPressed: _salvar, child: const Text("Salvar")),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }

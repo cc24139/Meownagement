@@ -14,26 +14,28 @@ class _TelaGavetaState extends State<TelaGaveta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Builder(
-                builder: (context) {
-                  return IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    icon: Icon(Icons.menu, color: cores.complementar, size: 25),
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-      drawer: Menulateralwidget(),
-      backgroundColor: cores.corPrimaria,
+        drawer: Menulateralwidget(),
+        backgroundColor: cores.corPrimaria,
     );
   }
 }
