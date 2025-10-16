@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
+import 'package:front_meow/Widgets/MetasPageView.dart';
+import 'package:front_meow/Widgets/QualInfoWidget.dart';
+import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
+import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/services/metaServices.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -12,6 +17,7 @@ class TelaInicial extends StatefulWidget {
 }
 
 class _TelaInicialState extends State<TelaInicial> {
+  QualInfo infoAtual = QualInfo.metas;
   CatColors cores = CatColors(paleta: 4);
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,6 @@ class _TelaInicialState extends State<TelaInicial> {
                   ),
                 ],
               ),
-
               Container(
                 decoration: BoxDecoration(
                   color: cores.complementar,
@@ -87,6 +92,8 @@ class _TelaInicialState extends State<TelaInicial> {
                   ],
                 ),
               ),
+              SizedBox(height: 20),
+              Telainicialinfoswidget(qualInfo: infoAtual, cor: cores)
             ],
           ),
         ),

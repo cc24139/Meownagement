@@ -13,21 +13,20 @@ import 'SemMetasEncontradas.dart';
 import '../services/cofrinhoServices.dart';
 import 'SemGavetasEncontradas.dart';
 import '../services/transacaoServices.dart';
+import '../locator.dart';
 
 class Telainicialinfoswidget extends StatelessWidget {
   final QualInfo qualInfo; // Transações, Metas etc
   final CatColors cor;
-  final Metaservices metaServices;
-  final CofrinhoServices cofrinhoServices;
-  final TransacaoServices transacaoServices;
 
-  const Telainicialinfoswidget({
+  final Metaservices metaServices = locator<Metaservices>();
+  final CofrinhoServices cofrinhoServices = locator<CofrinhoServices>();
+  final TransacaoServices transacaoServices = locator<TransacaoServices>();
+
+  Telainicialinfoswidget({
     super.key,
     required this.qualInfo,
     required this.cor,
-    required this.metaServices,
-    required this.cofrinhoServices,
-    required this.transacaoServices,
   });
 
   @override
