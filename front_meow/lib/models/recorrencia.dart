@@ -13,10 +13,10 @@ class Recorrencia {
 
   factory Recorrencia.fromJson(Map<String, dynamic> json) {
     return Recorrencia(
-      idRecorrencia: json['idRecorrencia'],
-      qtosDias: json['qtosDias'],
-      qtosMeses: json['qtosMeses'],
-      qtosAnos: json['qtosAnos'],
+      idRecorrencia: json['IdRecorrencia'] ?? json['idRecorrencia'],
+      qtosDias: json['QtsDias'] ?? json['qtosDias'] ?? json['qtosDias'],
+      qtosMeses: json['QtsMeses'] ?? json['qtosMeses'] ?? json['qtosMeses'],
+      qtosAnos: json['QtsAnos'] ?? json['qtosAnos'] ?? json['qtosAnos'],
     );
   }
 }

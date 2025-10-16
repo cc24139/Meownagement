@@ -1,5 +1,4 @@
 class Transacao {
-
   int idTransacao;
   String nome;
   double quantiaDinheiro;
@@ -26,16 +25,23 @@ class Transacao {
 
   factory Transacao.fromJson(Map<String, dynamic> json) {
     return Transacao(
-      idTransacao: json['idTransacao'],
-      nome: json['nome'],
-      quantiaDinheiro: json['quantiaDinheiro'],
-      dataCriacao: DateTime.parse(json['dataCriacao']),
-      feita: json['feita'],
-      dataFinalizacao: DateTime.parse(json['dataFinalizacao']),
-      saldoAtual: json['saldoAtual'],
-      idUsuario: json['idUsuario'],
-      idClassificacao: json['idClassificacao'],
-      idRecorrencia: json['idRecorrencia'],
+      idTransacao: json['IdTransacao'] ?? json['idTransacao'],
+      nome: json['Nome'] ?? json['nome'],
+      quantiaDinheiro:
+          (json['QuantiaDinheiro'] ?? json['quantiaDinheiro']) is num
+          ? (json['QuantiaDinheiro'] ?? json['quantiaDinheiro']).toDouble()
+          : 0.0,
+      dataCriacao: DateTime.parse(json['DataCriacao'] ?? json['dataCriacao']),
+      feita: (json['Feita'] ?? json['feita']).toString(),
+      dataFinalizacao: DateTime.parse(
+        json['DataFinalizacao'] ?? json['dataFinalizacao'],
+      ),
+      saldoAtual: (json['SaldoAtual'] ?? json['saldoAtual']) is num
+          ? (json['SaldoAtual'] ?? json['saldoAtual']).toDouble()
+          : 0.0,
+      idUsuario: json['IdUsuario'] ?? json['idUsuario'],
+      idClassificacao: json['IdClassificacao'] ?? json['idClassificacao'],
+      idRecorrencia: json['IdRecorrencia'] ?? json['idRecorrencia'],
     );
   }
 
@@ -52,5 +58,5 @@ class Transacao {
       'idClassificacao': idClassificacao,
       'idRecorrencia': idRecorrencia,
     };
-  }  
+  }
 }

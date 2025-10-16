@@ -60,7 +60,11 @@ namespace APIMeow.Controllers
                 return NotFound("Gato não encontrado.");
             }
             var qtsUsuarios = await db.Usuario.CountAsync();
-            var qtsPossuem = await db.UsuarioGato.CountAsync(ug => ug.IdGato == id) / qtsUsuarios * 100; //porcentagem
+            var qtsPossuemCount = await db.UsuarioGato.CountAsync(ug => ug.IdGato == id);
+            // Evitar divisão inteira e divisão por zero; calcular porcentagem corretamente
+            double qtsPossuem = qtsUsuarios == 0
+                ? 0.0
+                : (double)qtsPossuemCount / (double)qtsUsuarios * 100.0;
             var qtsCopias = await db.UsuarioGato.Where(ug => ug.IdGato == id).SumAsync(ug => ug.Copias);
             return Ok(new { gato, qtsPossuem, qtsCopias });
         }

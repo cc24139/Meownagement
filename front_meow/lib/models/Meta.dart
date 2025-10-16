@@ -23,15 +23,17 @@ class Metas {
 
   factory Metas.fromJson(Map<String, dynamic> json) {
     return Metas(
-      idMeta: json['idMeta'],
-      nome: json['nome'],
-      gastoLimite: (json['gastoLimite'] as num).toDouble(),
-      qtsMoedas: json['qtsMoedas'],
-      dataCriacao: DateTime.parse(json['dataCriacao']),
-      dataTermino: DateTime.parse(json['dataTermino']),
-      feita: json['feita'],
-      idUsuario: json['idUsuario'],
-      idClassificacao: json['idClassificacao'],
+      idMeta: json['IdMeta'] ?? json['idMeta'],
+      nome: json['Nome'] ?? json['nome'],
+      gastoLimite: (json['GastoLimite'] ?? json['gastoLimite']) is num
+          ? (json['GastoLimite'] ?? json['gastoLimite']).toDouble()
+          : 0.0,
+      qtsMoedas: json['QtsMoedas'] ?? json['qtsMoedas'],
+      dataCriacao: DateTime.parse(json['DataCriacao'] ?? json['dataCriacao']),
+      dataTermino: DateTime.parse(json['DataTermino'] ?? json['dataTermino']),
+      feita: (json['Feita'] ?? json['feita']).toString(),
+      idUsuario: json['IdUsuario'] ?? json['idUsuario'],
+      idClassificacao: json['IdClassificacao'] ?? json['idClassificacao'],
     );
   }
 

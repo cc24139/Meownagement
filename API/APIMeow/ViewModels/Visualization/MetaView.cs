@@ -9,7 +9,7 @@ namespace APIMeow.ViewModels.Visualization
     public class MetaView
     {
         public Metas metas { get; set; }
-        public List<Transacoes> transacoes { get; set; }
+        public List<Transacao> transacoes { get; set; }
         public decimal totalGasto { get; set; }
     }
 }

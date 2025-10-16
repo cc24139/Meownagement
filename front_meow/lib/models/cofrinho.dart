@@ -25,16 +25,22 @@ class Cofrinho {
 
   factory Cofrinho.fromJson(Map<String, dynamic> json) {
     return Cofrinho(
-      idCofrinho: json['idCofrinho'],
-      economia: json['economia'].toDouble(),
-      qtsMoedas: json['qtsMoedas'],
-      dinheiroEconomizado: json['dinheiroEconomizado'].toDouble(),
-      dataCriacao: DateTime.parse(json['dataCriacao']),
-      dataTermino: DateTime.parse(json['dataTermino']),
-      feita: json['feita'],
-      nome: json['nome'],
-      idUsuario: json['idUsuario'],
-      idClassificacao: json['idClassificacao'],
+      idCofrinho: json['IdCofrinho'] ?? json['idCofrinho'],
+      economia: (json['Economia'] ?? json['economia']) is num
+          ? (json['Economia'] ?? json['economia']).toDouble()
+          : 0.0,
+      qtsMoedas: json['QtsMoedas'] ?? json['qtsMoedas'],
+      dinheiroEconomizado:
+          (json['DinheiroEconomizado'] ?? json['dinheiroEconomizado']) is num
+          ? (json['DinheiroEconomizado'] ?? json['dinheiroEconomizado'])
+                .toDouble()
+          : 0.0,
+      dataCriacao: DateTime.parse(json['DataCriacao'] ?? json['dataCriacao']),
+      dataTermino: DateTime.parse(json['DataTermino'] ?? json['dataTermino']),
+      feita: (json['Feita'] ?? json['feita']).toString(),
+      nome: json['Nome'] ?? json['nome'],
+      idUsuario: json['IdUsuario'] ?? json['idUsuario'],
+      idClassificacao: json['IdClassificacao'] ?? json['idClassificacao'],
     );
   }
 
