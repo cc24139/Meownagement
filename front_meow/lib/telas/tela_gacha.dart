@@ -584,12 +584,11 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SizedBox(height: 15),
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Center(
+                const SizedBox(height: 15),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
                     child: Text(
                       "⭐️⭐️⭐️⭐️ 10% | ⭐️⭐️⭐️⭐️⭐️ 1%",
                       style: TextStyle(
