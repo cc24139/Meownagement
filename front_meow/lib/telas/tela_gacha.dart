@@ -338,7 +338,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Confirmar Roll ${_tipoRoll ?? ''}",
+                    "Confirmar Roll ${_tipoRoll ?? ''}  - $_precoRoll MC",
                     style: TextStyle(
                       color: cores.tercearia,
                       fontSize: 22,
@@ -582,6 +582,22 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                           ),
                         ),
                     ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                Positioned(
+                  bottom: 20,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Text(
+                      "⭐️⭐️⭐️⭐️ 10% | ⭐️⭐️⭐️⭐️⭐️ 1%",
+                      style: TextStyle(
+                        color: cores.tercearia,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],

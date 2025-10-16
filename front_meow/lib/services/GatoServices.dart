@@ -4,7 +4,6 @@ import 'package:front_meow/services/ViewModel/GatosEstaticasViewModel.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:localstorage/localstorage.dart';
 
 class GatoServices extends Http {
   static String urlGato = "${Http.url}/gatos";

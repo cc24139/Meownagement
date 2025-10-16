@@ -14,7 +14,7 @@ class GachaSystem {
   }
 
   Future<void> fetchAndInitializeCats() async {
-    List<Gato> gatos = await gatoServices.ListarGatos();
+    List<Gato> gatos = await gatoServices.ListarGatos();  
     initializeCats(gatos);
   }
 
