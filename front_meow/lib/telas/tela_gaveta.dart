@@ -1,55 +1,12 @@
-// import 'package:flutter/material.dart';
-// import 'package:front_meow/Widgets/MenuLateralWidget.dart';
-// import 'package:front_meow/colors/colors.dart';
-
-// class TelaGaveta extends StatefulWidget {
-//   const TelaGaveta({super.key});
-
-//   @override
-//   State<TelaGaveta> createState() => _TelaGavetaState();
-// }
-
-// class _TelaGavetaState extends State<TelaGaveta> {
-//   CatColors cores = CatColors(paleta: 4);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             Row(
-//               children: [
-//                 Builder(
-//                   builder: (context) {
-//                     return IconButton(
-//                       onPressed: () {
-//                         Scaffold.of(context).openDrawer();
-//                       },
-//                       icon: Icon(Icons.menu, color: cores.complementar, size: 25),
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//         drawer: Menulateralwidget(),
-//         backgroundColor: cores.corPrimaria,
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:flutter/services.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
-import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:intl/intl.dart';
-
+import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 
 class TelaGaveta extends StatefulWidget {
   const TelaGaveta({super.key});
@@ -58,10 +15,7 @@ class TelaGaveta extends StatefulWidget {
   State<TelaGaveta> createState() => _TelaGavetaState();
 }
 
-enum OpcoesTransacao { despesa, receita }
-
-final List<String> listaClassificacao = <String>["a", "b", "c", "d"];
-final List<String> listaRecorrencia = <String>["aaaa", "Bbbb", "cccc", "dddd"];
+enum OpcoesRecorrencia { semanal, mensal, anual }
 
 void _cancelar(BuildContext context) {
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
@@ -73,150 +27,289 @@ void _salvar(BuildContext context) {
 }
 
 class _TelaGavetaState extends State<TelaGaveta> {
-  OpcoesTransacao? _opcoesTransacao = OpcoesTransacao.despesa;
+  OpcoesRecorrencia? _opcoesRecorrencia = OpcoesRecorrencia.semanal;
+  final _valorMeta = CurrencyInputController(initialValue: 0.0);
+  final _nomeMeta = TextEditingController();
+  final _duracaoMeta = TextEditingController();
 
-  String dropdownValue = listaClassificacao.first;
   CatColors cores = CatColors(paleta: 4);
+
   @override
   void dispose() {
+    _valorMeta.dispose();
+    _nomeMeta.dispose();
+    _duracaoMeta.dispose();
     super.dispose();
   }
 
   void _trocar() {
-    //Troar icone e texto
+    //Trocar icone e texto
   }
-
 
   @override
   Widget build(BuildContext context) {
+    String _getSuffixText() {
+      switch (_opcoesRecorrencia) {
+        case OpcoesRecorrencia.semanal:
+          return ' Semanas: ';
+        case OpcoesRecorrencia.mensal:
+          return ' Meses: ';
+        case OpcoesRecorrencia.anual:
+          return ' Anos: ';
+        default:
+          return ' Semanas: ';
+      }
+    }
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: Icon(
-                            Icons.menu,
-                            color: cores.complementar,
-                            size: 25,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Builder(
+                            builder: (context) => IconButton(
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer(),
+                              icon: Icon(
+                                Icons.menu,
+                                color: cores.complementar,
+                                size: 25,
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: TitleTelaWidget(
-                        title: "Guarde na Gaveta",
-                        subtitle: "",
-                        catColors: cores,
+                          Expanded(
+                            child: TitleTelaWidget(
+                              title: "Guarde na Gaveta",
+                              subtitle: "",
+                              catColors: cores,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 70),
+                      Text(
+                        "Nome da meta",
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                      ),
+                      TextField(
+                        controller: _nomeMeta,
+                        style: TextStyle(color: cores.secundaria, fontSize: 16),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 20.0,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 3.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 3.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Valor para economizar",
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _valorMeta,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: cores.secundaria,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 20.0,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 3.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 4.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Tipo de transação",
+                                  style: TextStyle(
+                                    color: cores.corSecundaria,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Verticalselectwidget<OpcoesRecorrencia>(
+                                      label: 'Semanal',
+                                      value: OpcoesRecorrencia.semanal,
+                                      groupValue: _opcoesRecorrencia,
+                                      cores: cores,
+                                      onChanged: (value) => setState(
+                                        () => _opcoesRecorrencia = value,
+                                      ),
+                                    ),
+                                    Verticalselectwidget<OpcoesRecorrencia>(
+                                      label: 'Mensal',
+                                      value: OpcoesRecorrencia.mensal,
+                                      groupValue: _opcoesRecorrencia,
+                                      cores: cores,
+                                      onChanged: (value) => setState(
+                                        () => _opcoesRecorrencia = value,
+                                      ),
+                                    ),
+                                    Verticalselectwidget<OpcoesRecorrencia>(
+                                      label: 'Anual',
+                                      value: OpcoesRecorrencia.anual,
+                                      groupValue: _opcoesRecorrencia,
+                                      cores: cores,
+                                      onChanged: (value) => setState(
+                                        () => _opcoesRecorrencia = value,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Duração",
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _duracaoMeta,
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                        decoration: InputDecoration(
+                          prefix: Text(
+                            _getSuffixText(),
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 20,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 3.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 3.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-
-                SizedBox(height: 25),
-                
-                Row(
-                  children: [
-                    Verticalselectwidget<OpcoesTransacao>(
-                      label: 'Semanal',
-                      value: OpcoesTransacao.despesa,
-                      groupValue: _opcoesTransacao,
-                      cores: cores,
-                      onChanged: (value) {
-                        setState(() {
-                          _opcoesTransacao = value;
-                        });
-                      },
-                    ),
-
-                    Verticalselectwidget<OpcoesTransacao>(
-                      label: 'Mensal',
-                      value: OpcoesTransacao.despesa,
-                      groupValue: _opcoesTransacao,
-                      cores: cores,
-                      onChanged: (value) {
-                        setState(() {
-                          _opcoesTransacao = value;
-                        });
-                      },
-                    ),
-
-                    Verticalselectwidget<OpcoesTransacao>(
-                      label: 'Anual',
-                      value: OpcoesTransacao.despesa,
-                      groupValue: _opcoesTransacao,
-                      cores: cores,
-                      onChanged: (value) {
-                        setState(() {
-                          _opcoesTransacao = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(160, 60),
+                        fixedSize: const Size.fromHeight(60),
                         backgroundColor: cores.corTerciaria,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-
-                      onPressed: () {
-                        _cancelar(context);
-                      },
+                      onPressed: () => _cancelar(context),
                       child: Text(
                         "Cancelar",
                         style: TextStyle(
                           color: cores.complementar,
-                          fontSize: 24,
+                          fontSize: 18,
                         ),
                       ),
                     ),
-
-                    ElevatedButton(
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 3,
+                    child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(260, 60),
+                        fixedSize: const Size.fromHeight(60),
                         backgroundColor: cores.corSecundaria,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-
-                      onPressed: () {
-                        _salvar(context);
-                      },
+                      onPressed: () => _salvar(context),
                       child: Text(
-                        "Efetuar",
+                        "Criar",
                         style: TextStyle(
                           color: cores.complementar,
-                          fontSize: 24,
+                          fontSize: 18,
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
-        backgroundColor: cores.primaria,
-        drawer: Menulateralwidget(),
+      backgroundColor: cores.primaria,
+      drawer: Menulateralwidget(),
     );
   }
 }
