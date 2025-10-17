@@ -42,9 +42,6 @@ class _TelaGavetaState extends State<TelaGaveta> {
     super.dispose();
   }
 
-  void _trocar() {
-    //Trocar icone e texto
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +99,7 @@ class _TelaGavetaState extends State<TelaGaveta> {
                       ),
                       TextField(
                         controller: _nomeMeta,
+                        textAlign: TextAlign.center,
                         style: TextStyle(color: cores.secundaria, fontSize: 16),
                         decoration: InputDecoration(
                           fillColor: Colors.white,
