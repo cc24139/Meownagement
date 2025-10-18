@@ -290,7 +290,11 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                         shape: BoxShape.circle,
                         border: Border.all(color: cores.tercearia, width: 2),
                       ),
-                      child: Icon(Icons.close, color: cores.tercearia, size: 20),
+                      child: Icon(
+                        Icons.close,
+                        color: cores.tercearia,
+                        size: 20,
+                      ),
                     ),
                     onPressed: _resetarTela,
                   ),
@@ -338,7 +342,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Confirmar Roll ${_tipoRoll ?? ''}",
+                    "Confirmar Roll ${_tipoRoll ?? ''}  - $_precoRoll MC",
                     style: TextStyle(
                       color: cores.tercearia,
                       fontSize: 22,
@@ -348,10 +352,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                   const SizedBox(height: 10),
                   Text(
                     "Saldo atual: $meowCoins",
-                    style: TextStyle(
-                      color: cores.tercearia,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(color: cores.tercearia, fontSize: 18),
                   ),
                   Text(
                     "Custo: $_precoRoll",
@@ -376,8 +377,10 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
                       ),
                     ),
                     child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       child: Text(
                         "Confirmar",
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -522,71 +525,85 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
       ),
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 41),
-                Text(
-                  nomeDoBannerAtual(),
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontFamily: 'LondrinaShadow',
-                    color: cores.tercearia,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: 380,
-                  height: 541,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
+
+          SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 41),
+                  Text(
+                    nomeDoBannerAtual(),
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontFamily: 'LondrinaShadow',
                       color: cores.tercearia,
-                      width: 2,
                     ),
                   ),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      _buildConteudoPrincipal(),
-                      if (!_mostrandoPreview &&
-                          !_mostrandoGatos &&
-                          !_carregandoRoll)
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildBannerButton(
-                                idBanner: 13,
-                                nomeBanner: 'MeiMei',
-                                onTap: () => setState(() => bannerAtual = 13),
-                              ),
-                              _buildBannerButton(
-                                idBanner: 14,
-                                nomeBanner: 'Zazu',
-                                onTap: () => setState(() => bannerAtual = 14),
-                              ),
-                              _buildBannerButton(
-                                idBanner: 15,
-                                nomeBanner: 'Meowl',
-                                onTap: () => setState(() => bannerAtual = 15),
-                              ),
-                            ],
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 380,
+                    height: 541,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: cores.tercearia, width: 2),
+                    ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _buildConteudoPrincipal(),
+                        if (!_mostrandoPreview &&
+                            !_mostrandoGatos &&
+                            !_carregandoRoll)
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildBannerButton(
+                                  idBanner: 13,
+                                  nomeBanner: 'MeiMei',
+                                  onTap: () => setState(() => bannerAtual = 13),
+                                ),
+                                _buildBannerButton(
+                                  idBanner: 14,
+                                  nomeBanner: 'Zazu',
+                                  onTap: () => setState(() => bannerAtual = 14),
+                                ),
+                                _buildBannerButton(
+                                  idBanner: 15,
+                                  nomeBanner: 'Meowl',
+                                  onTap: () => setState(() => bannerAtual = 15),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      "⭐️⭐️⭐️⭐️ 10% | ⭐️⭐️⭐️⭐️⭐️ 1%",
+                      style: TextStyle(
+                        color: cores.tercearia,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
+          
           _buildOverlayResultados(),
           _buildPopupRoll(),
         ],

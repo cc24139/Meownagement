@@ -183,6 +183,8 @@ class UsuarioServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print(data);
+      print(Http.token);
       return PerfilViewModel.fromJson(data);
     } else {
       print(response.statusCode);

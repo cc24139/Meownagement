@@ -26,55 +26,61 @@ class _TelaPerfilState extends State<TelaPerfil> {
       saldo: 212,
     );
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage(
-                    '../assets/images/doudouCat/doudouCatPequena.jpg',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage(
+                      '../assets/images/doudouCat/doudouCatPequena.jpg',
+                    ),
+                    radius: 40,
                   ),
-                  radius: 40,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Row(
-                      children: [
-                        Builder(
-                          builder: (context) { 
-                            return IconButton(
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              icon: Icon(Icons.menu, color: cores.complementar, size: 25),
-                            );
-                          },
-                        ),
-                        Text(
-                          a.nome,
-                          style: TextStyle(
-                            fontSize: 45,
-                            fontFamily: "Londrina",
-                            decorationColor: cores.complementar,
+                  Expanded(
+                    child: Center(
+                      child: Row(
+                        children: [
+                          Builder(
+                            builder: (context) {
+                              return IconButton(
+                                onPressed: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                icon: Icon(
+                                  Icons.menu,
+                                  color: cores.complementar,
+                                  size: 25,
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                        SvgPicture.asset(
-                          "../assets/icons/vetor_editar.svg",
-                          colorFilter: ColorFilter.mode(Colors.black,BlendMode.clear),
-                        )
-                      ] 
-                    )
-                    
-
+                          Text(
+                            a.nome,
+                            style: TextStyle(
+                              fontSize: 45,
+                              fontFamily: "Londrina",
+                              decorationColor: cores.complementar,
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            "../assets/icons/vetor_editar.svg",
+                            colorFilter: ColorFilter.mode(
+                              Colors.black,
+                              BlendMode.clear,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          
-        ],
+          ],
+        ),
       ),
       backgroundColor: cores.primaria,
       drawer: Menulateralwidget(),

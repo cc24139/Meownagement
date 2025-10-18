@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/Widgets/BolasLogin.dart';
+import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
@@ -68,113 +70,123 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
+    CatColors cores = CatColors(paleta: 2);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Cadastro",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Arial",
+      backgroundColor: cores.corPrimaria, 
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: ClipPath(
+              clipper: BolasLogin(),
+              child: Container(
+                height: 175,
+                color: cores.corSecundaria.withOpacity(0.9),
+              ),
+            ),
           ),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtUsuario,
-                  decoration: const InputDecoration(
-                    labelText: "Digite seu nome de usuario",
-                    hintText: "Ronaldo123",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtEmail,
-                  decoration: const InputDecoration(
-                    labelText: "Digite seu Email",
-                    hintText: "catlover@meow.com",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtSenha,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Digite sua senha",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtConfirmaSenha,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Confirme sua senha",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Já possui uma conta? "),
-                    SizedBox(
-                      width: 250,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRotas.login,
-                          );
-                        },
-                        child: const Text("Login"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 250,
-                child: ElevatedButton(
-                  onPressed: _fazerCadastro,
-                  child: Text("Cadastrar"),
+      Center(
+        child: 
+      SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtUsuario,
+                    decoration: const InputDecoration(
+                      labelText: "Digite seu nome de usuario",
+                      hintText: "Ronaldo123",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtEmail,
+                    decoration: const InputDecoration(
+                      labelText: "Digite seu Email",
+                      hintText: "catlover@meow.com",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtSenha,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Digite sua senha",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtConfirmaSenha,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Confirme sua senha",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Já possui uma conta? "),
+                      SizedBox(
+                        width: 250,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRotas.login,
+                            );
+                          },
+                          child: const Text("Login"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 30),
                 SizedBox(
                   width: 250,
                   child: ElevatedButton(
-                    onPressed: _CodigoExistente,
-                    child: Text("Já tenho código"),
+                    onPressed: _fazerCadastro,
+                    child: Text("Cadastrar"),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                  SizedBox(
+                    width: 250,
+                    child: ElevatedButton(
+                      onPressed: _CodigoExistente,
+                      child: Text("Já tenho código"),
                   ),
                 ),
               ],
             ),
           ),
         ),
+      )
+      ),
+        ],
+      ),
     );
   }
 }

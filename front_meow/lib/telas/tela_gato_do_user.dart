@@ -43,111 +43,113 @@ class _TelaGatoDoUserState extends State<TelaGatoDoUser> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  4,
-                  (_) => Icon(Icons.pets, size: 50, color: cores.complementar),
-                ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 300,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset(
-                        "assets/images/watermelonZazu/watermelonZazuGrande.jpg",
-                        width: 300,
-                        height: 300,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: Text(
-                        "Dados",
-                        style: TextStyle(
-                          color: cores.corTerciaria,
-                          fontSize: 24,
-                        ),
-                      ),
-                    ),
-                    
-                    SizedBox(height: 5),
-                    Text("Posse do gato: ${12.3.toString()}%", style: TextStyle(color: cores.corTerciaria)),
-                    SizedBox(height: 5),
-                    Text("Uso do gato: ${1.23.toString()}%", style: TextStyle(color: cores.corTerciaria)),
-                    SizedBox(height: 5),
-                    Text("Numero de cópias: ${123.toString()}", style: TextStyle(color: cores.corTerciaria)),
-                  ],
-                ),
-              ),
-              
-              
-              SizedBox(
-                width: 400,
-                child: Divider(color: cores.complementar, thickness: 1),
-              ),
-              SizedBox(height: 8),
-              SizedBox(
-                width: 400,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    
-                    Text(
-                      "Paleta de cores: ",
-                      style: TextStyle(
-                        color: cores.tercearia,
-                        fontSize: 20
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Container(
-                      width: 120,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: cores.complementar, width: 2),
-                        gradient: LinearGradient(
-                          begin: AlignmentGeometry.centerLeft,
-                          end: AlignmentGeometry.centerRight,
-                          colors: [
-                            cores.tercearia,
-                            cores.secundaria,
-                            cores.primaria,
-                          ],
-                          stops: [0.0, 0.5, 1.0],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButtonWidget(
-                    catColors: cores,
-                    text: "Equipar",
-                    highSize: ButtonSize.medio,
-                    widthSize: ButtonSize.grande,
-                    onPressed: () {
-                      _equipar();
-                    },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    4,
+                    (_) => Icon(Icons.pets, size: 50, color: cores.complementar),
                   ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: 300,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.asset(
+                          "assets/images/watermelonZazu/watermelonZazuGrande.jpg",
+                          width: 300,
+                          height: 300,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Center(
+                        child: Text(
+                          "Dados",
+                          style: TextStyle(
+                            color: cores.corTerciaria,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ),
+                      
+                      SizedBox(height: 5),
+                      Text("Posse do gato: ${12.3.toString()}%", style: TextStyle(color: cores.corTerciaria)),
+                      SizedBox(height: 5),
+                      Text("Uso do gato: ${1.23.toString()}%", style: TextStyle(color: cores.corTerciaria)),
+                      SizedBox(height: 5),
+                      Text("Numero de cópias: ${123.toString()}", style: TextStyle(color: cores.corTerciaria)),
+                    ],
+                  ),
+                ),
+                
+                
+                SizedBox(
+                  width: 400,
+                  child: Divider(color: cores.complementar, thickness: 1),
+                ),
+                SizedBox(height: 8),
+                SizedBox(
+                  width: 400,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      
+                      Text(
+                        "Paleta de cores: ",
+                        style: TextStyle(
+                          color: cores.tercearia,
+                          fontSize: 20
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Container(
+                        width: 120,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: cores.complementar, width: 2),
+                          gradient: LinearGradient(
+                            begin: AlignmentGeometry.centerLeft,
+                            end: AlignmentGeometry.centerRight,
+                            colors: [
+                              cores.tercearia,
+                              cores.secundaria,
+                              cores.primaria,
+                            ],
+                            stops: [0.0, 0.5, 1.0],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButtonWidget(
+                      catColors: cores,
+                      text: "Equipar",
+                      highSize: ButtonSize.medio,
+                      widthSize: ButtonSize.grande,
+                      onPressed: () {
+                        _equipar();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

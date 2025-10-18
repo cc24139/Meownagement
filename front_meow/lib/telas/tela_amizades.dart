@@ -60,48 +60,52 @@ class _TelaAmizadesState extends State<TelaAmizades> {
         backgroundColor: cores.corPrimaria,
         centerTitle: true,
       ),
-      body: FutureBuilder<List<UsuarioViewModel>>(
-        future: todosOsUsuarios,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Erro: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Nenhum usuário encontrado"));
-          }
+      body: SingleChildScrollView(
 
-          List<UsuarioViewModel> dados = snapshot.data!;
-          if (textoPesquisa.isNotEmpty) {
-            dados = dados
-                .where(
-                  (u) => u.nome.toLowerCase().contains(
-                    textoPesquisa.toLowerCase(),
+      
+        child: FutureBuilder<List<UsuarioViewModel>>(
+          future: todosOsUsuarios,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Erro: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("Nenhum usuário encontrado"));
+            }
+
+            List<UsuarioViewModel> dados = snapshot.data!;
+            if (textoPesquisa.isNotEmpty) {
+              dados = dados
+                  .where(
+                    (u) => u.nome.toLowerCase().contains(
+                      textoPesquisa.toLowerCase(),
+                    ),
+                  )
+                  .toList();
+            }
+
+            return ListView.separated(
+              itemCount: dados.length,
+              separatorBuilder: (_, __) => const Divider(),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(dados[index].nome),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRotas.perfil,
+                        arguments: dados[index],
+                      );
+                    },
                   ),
-                )
-                .toList();
-          }
-
-          return ListView.separated(
-            itemCount: dados.length,
-            separatorBuilder: (_, __) => const Divider(),
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(dados[index].nome),
-                trailing: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRotas.perfil,
-                      arguments: dados[index],
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
       drawer: Menulateralwidget(),
     );

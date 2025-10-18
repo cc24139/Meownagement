@@ -36,56 +36,58 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtEmail,
-                  decoration: const InputDecoration(
-                    labelText: "Digite seu Email",
-                    hintText: "email@exemplo.com",
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtEmail,
+                    decoration: const InputDecoration(
+                      labelText: "Digite seu Email",
+                      hintText: "email@exemplo.com",
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtNovaSenha,
-                  decoration: const InputDecoration(
-                    labelText: "Digite sua Nova Senha",
-                    hintText: "Nova Senha",
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtNovaSenha,
+                    decoration: const InputDecoration(
+                      labelText: "Digite sua Nova Senha",
+                      hintText: "Nova Senha",
+                    ),
+                    obscureText: true,
                   ),
-                  obscureText: true,
                 ),
-              ),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  controller: txtConfirmarSenha,
-                  decoration: const InputDecoration(
-                    labelText: "Confirme sua Nova Senha",
-                    hintText: "Confirmação da Nova Senha",
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    controller: txtConfirmarSenha,
+                    decoration: const InputDecoration(
+                      labelText: "Confirme sua Nova Senha",
+                      hintText: "Confirmação da Nova Senha",
+                    ),
+                    obscureText: true,
                   ),
-                  obscureText: true,
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Lógica para alterar a senha
-                  Navigator.pushReplacementNamed(context, AppRotas.confirmacao);
-                },
-                child: const Text("Alterar Senha"),
-              ),
-            ],
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Lógica para alterar a senha
+                    Navigator.pushReplacementNamed(context, AppRotas.confirmacao);
+                  },
+                  child: const Text("Alterar Senha"),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }
