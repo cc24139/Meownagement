@@ -52,22 +52,25 @@ class CardGato extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(nome),
-            if(!bloqueado) ElevatedButtonWidget(
-              text: equipado ? "Equipado" : "Equipar",
-              onPressed: () async {
-                if (equipado) return;
+            if (!bloqueado)
+              ElevatedButtonWidget(
+                text: equipado ? "Equipado" : "Equipar",
+                onPressed: () async {
+                  if (equipado) return;
 
-                localStorage.setItem("gatoEquipado", id.toString());
+                  localStorage.setItem("gatoEquipado", id.toString());
 
-                // Chamar o callback para recarregar a tela
-                if (onEquipar != null) {
-                  onEquipar!();
-                }
-              },
-              highSize: ButtonSize.pequeno,
-              widthSize: ButtonSize.pequeno,
-              catColors: equipado ? CatColors(paleta: 2) : CatColors(paleta: 4),
-            ),
+                  // Chamar o callback para recarregar a tela
+                  if (onEquipar != null) {
+                    onEquipar!();
+                  }
+                },
+                highSize: ButtonSize.pequeno,
+                widthSize: ButtonSize.pequeno,
+                catColors: equipado
+                    ? CatColors(paleta: 2)
+                    : CatColors(paleta: 4),
+              ),
           ],
         ),
       ),
@@ -101,10 +104,11 @@ class _TelaGaleriaState extends State<TelaGaleria> {
     });
   }
 
-  void _equiparGato({required int idGato}) {
+  void _equiparGato({required int idGato, required int codPaleta}) {
     localStorage.setItem("gatoEquipado", idGato.toString());
     setState(() {
       idGatoEquipado = idGato;
+      catColors = CatColors(paleta: codPaleta);
     });
   }
 
@@ -139,7 +143,10 @@ class _TelaGaleriaState extends State<TelaGaleria> {
                           nome: gato.nome,
                           imagem: gato.nomeImagem,
                           equipado: gato.idGato == idGatoEquipado,
-                          onEquipar: () => _equiparGato(idGato: gato.idGato),
+                          onEquipar: () => _equiparGato(
+                            idGato: gato.idGato,
+                            codPaleta: gato.codPaleta,
+                          ),
                           bloqueado: false,
                         );
                       }).toList(),
@@ -187,6 +194,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
         ),
       ),
       drawer: Menulateralwidget(),
+      backgroundColor: catColors.primaria,
     );
   }
 }

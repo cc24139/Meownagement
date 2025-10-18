@@ -27,6 +27,7 @@ void _salvar(BuildContext context) {
 }
 
 class _TelaGavetaState extends State<TelaGaveta> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   OpcoesRecorrencia? _opcoesRecorrencia = OpcoesRecorrencia.semanal;
   final _valorMeta = CurrencyInputController(initialValue: 0.0);
   final _nomeMeta = TextEditingController();
@@ -41,7 +42,6 @@ class _TelaGavetaState extends State<TelaGaveta> {
     _duracaoMeta.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +59,7 @@ class _TelaGavetaState extends State<TelaGaveta> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -75,7 +76,7 @@ class _TelaGavetaState extends State<TelaGaveta> {
                           Builder(
                             builder: (context) => IconButton(
                               onPressed: () =>
-                                  Scaffold.of(context).openDrawer(),
+                                  _scaffoldKey.currentState?.openDrawer(),
                               icon: Icon(
                                 Icons.menu,
                                 color: cores.complementar,
@@ -224,7 +225,9 @@ class _TelaGavetaState extends State<TelaGaveta> {
                         controller: _duracaoMeta,
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.singleLineFormatter,
+                        ],
                         style: TextStyle(color: cores.secundaria, fontSize: 20),
                         decoration: InputDecoration(
                           prefix: Text(
