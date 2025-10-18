@@ -335,4 +335,4 @@ C:\Users\lf446\Documents\Meownagement\API\APIMeow\obj\Debug\net9.0\staticwebasse
 C:\Users\lf446\Documents\Meownagement\API\APIMeow\obj\Debug\net9.0\APIMeow.csproj.Up2Date
 C:\Users\lf446\Documents\Meownagement\API\APIMeow\obj\Debug\net9.0\APIMeow.genruntimeconfig.cache
 C:\Users\lf446\Documents\Meownagement\API\APIMeow\obj\Debug\net9.0\ref\APIMeow.dll
-C:\Users\lf446\Documents\Meownagement\API\APIMeow\bin\Debug\net9.0\Curl\appsettings.json
+C:\Users\lf446\Documents\Meownagement\API\APIMeow\bin\Debug\net9.0\appsettings.json

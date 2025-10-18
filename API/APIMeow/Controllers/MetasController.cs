@@ -69,7 +69,42 @@ namespace APIMeow.Controllers
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
             var listMetaView = new List<MetaView>();
             if (listMetas.Count == 0) return Ok(0);
-            foreach(var meta in listMetas)
+            foreach (var meta in listMetas)
+            {
+                var Idtransacoes = await db.MetaCofrinhoTransacao
+                .Where(mct => mct.IdMeta == meta.IdMeta).ToListAsync();
+                if (Idtransacoes.Count == 0) continue;
+                decimal gastoTotal = 0;
+                var listTransacoes = new List<Transacao>();
+                foreach (var item in Idtransacoes)
+                {
+                    var transacao = await db.Transacao.FindAsync(item.IdTransacao);
+                    if (transacao != null && transacao.Feita == 'S')
+                    {
+                        gastoTotal += transacao.QuantiaDinheiro;
+                        listTransacoes.Add(transacao);
+                    }
+                }
+                listMetaView.Add(new MetaView
+                {
+                    metas = meta,
+                    transacoes = listTransacoes,
+                    totalGasto = gastoTotal
+                });
+            }
+
+            return Ok(listMetaView);
+        }
+        //Na aplicacao 
+        [Authorize]
+        [HttpGet("metas/listar/ ")]
+        public async Task<IActionResult> ListarPorcetagemGasto(DBMeownagement db)
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
+            var listMetaView = new List<MetaView>();
+            if (listMetas.Count == 0) return Ok(0);
+            foreach (var meta in listMetas)
             {
                 var Idtransacoes = await db.MetaCofrinhoTransacao
                 .Where(mct => mct.IdMeta == meta.IdMeta).ToListAsync();

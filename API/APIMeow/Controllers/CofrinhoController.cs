@@ -143,6 +143,59 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
+        [HttpGet("cofrinho/listarPorcentagem")]
+        public async Task<IActionResult> ListarCofrinhosPorcentagem(DBMeownagement db)
+        {
+            try
+            {
+                var idUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var user = await db.Usuario.FindAsync(idUser);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var cofrinhos = await db.Cofrinho
+                    .Where(c => c.IdUsuario == user.IdUsuario)
+                    .ToListAsync();
+
+                var porcentagens = cofrinhos.Select(async c => new
+                {
+                    c.IdCofrinho,
+                    c.Nome,
+                    PorcentagemConcluida = await CalcularPorcentagemConcluida(c, db)
+                });
+
+                return Ok(new { cofrinhos, porcentagens });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        private async Task<decimal> CalcularPorcentagemConcluida(Cofrinho cofrinho, DBMeownagement db)
+        {
+            var transacoes = db.Transacao.Where(x =>
+                x.IdUsuario == cofrinho.IdUsuario &&
+                x.IdClassificacao == cofrinho.IdClassificacao &&
+                x.Feita == 'S' &&
+                x.DataCriacao.Date >= cofrinho.DataCriacao.Date &&
+                x.DataFinalizacao.Date <= cofrinho.DataTermino.Date &&
+                x.QuantiaDinheiro > 0 &&
+                db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == x.IdTransacao && mct.IdCofrinho == cofrinho.IdCofrinho)).ToList();
+            if (transacoes.Count == 0)
+            {
+                return 0;
+            }
+            var economias = transacoes.Sum(x => x.QuantiaDinheiro);
+            cofrinho.DinheiroEconomizado = economias;
+            db.Cofrinho.Update(cofrinho);
+            await db.SaveChangesAsync();
+            return economias / cofrinho.Economia * 100;
+        }
+
+        [Authorize]
         [HttpPut("cofrinho/criar")]
         public async Task<IActionResult> CriarCofrinho([FromBody] CreateCofrinhoViewModel model, DBMeownagement db)
         {
