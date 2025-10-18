@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/rotas.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaAlterarSenha extends StatefulWidget {
   const TelaAlterarSenha({super.key});
@@ -78,8 +79,8 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Lógica para alterar a senha
-                    Navigator.pushReplacementNamed(context, AppRotas.confirmacao);
+                    UsuarioServices().EsqueceuSenhaUsuario(txtEmail.text, txtNovaSenha.text);
+                    Navigator.pushReplacementNamed(context, AppRotas.confirmacao, arguments: {'email': txtEmail.text, 'isCreateCount': false});
                   },
                   child: const Text("Alterar Senha"),
                 ),

@@ -100,9 +100,18 @@ class _TelaLoginState extends State<TelaLogin> {
                       Navigator.pushReplacementNamed(
                         context,
                         AppRotas.alterarSenha,
+
                       );
                     },
-                    child: const Text("Esqueci minha senha"),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AppRotas.alterarSenha,
+                        );
+                      },
+                      child: const Text("Esqueci minha senha"),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),

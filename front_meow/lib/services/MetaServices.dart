@@ -99,7 +99,7 @@ class Metaservices extends Http {
     }
   }
 
-  Future<String> criarMetas(CreateMetasViewModel Metas) async {
+  Future<bool> criarMetas(CreateMetasViewModel Metas) async {
     if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
@@ -109,7 +109,7 @@ class Metaservices extends Http {
       body: json.encode(Metas.toJson()),
     );
     if (response.statusCode == 200) {
-      return response.body;
+      return  true;
     } else {
       throw Exception('Erro ao criar Metas: ${response.body}');
     }

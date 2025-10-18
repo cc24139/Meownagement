@@ -138,17 +138,17 @@ class UsuarioServices extends Http {
 
   Future<String> EsqueceuSenhaUsuario(String Nome, String Senha) async {
     final response = await http.patch(
-      Uri.parse("${urlUsuario}/esqueceuSenha"),
+      Uri.parse("${urlUsuario}/esquecerSenha"),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
       },
-      body: jsonEncode(<String, String>{'Nome': Nome, 'Senha': Senha}),
+      body: jsonEncode(<String, String>{'Email': Nome, 'Senha': Senha}),
     );
 
     if (response.statusCode == 200) {
       return ("Codigo enviado para o email cadastrado");
     } else {
-      throw Exception('Failed to change password usuario');
+      throw Exception('Failed to change password usuario:'+ response.statusCode.toString());
     }
   }
 

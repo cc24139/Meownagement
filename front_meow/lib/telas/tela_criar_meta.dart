@@ -4,7 +4,10 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/rotas.dart';
+import 'package:front_meow/services/MetaServices.dart';
+import 'package:front_meow/services/ViewModel/CreateMetasViewModel.dart';
 import 'package:intl/intl.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 
@@ -21,9 +24,50 @@ void _cancelar(BuildContext context) {
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
 }
 
-void _salvar(BuildContext context) {
-  //TODO salvar na api os dados
-  Navigator.pushReplacementNamed(context, AppRotas.inicial);
+void _salvar(BuildContext context, valor, nomeMeta, duracaoMeta, opcoesRecorrencia) {
+  CreateMetasViewModel createMetasViewModel = CreateMetasViewModel(
+    nome: nomeMeta,
+    gastoLimite: valor,
+    idClassificacao: 1,
+    dataCriacao: DateTime.now(),
+    dataTermino: DateTime.now().add(
+      Duration(
+        days: int.parse(duracaoMeta) *
+            (opcoesRecorrencia == OpcoesRecorrencia.semanal
+                ? 7
+                : opcoesRecorrencia == OpcoesRecorrencia.mensal
+                    ? 30
+                    : 365),
+      ),
+    ),
+    feita: "N",
+  );
+  try{
+  Metaservices().criarMetas(createMetasViewModel);
+  AlertDialog(
+      title: const Text('Sucesso'),
+      content: const Text('Meta criada com sucesso!'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
+    );
+   Navigator.pushReplacementNamed(context, AppRotas.inicial);
+  } catch(e){
+    AlertDialog(
+      title: const Text('Erro'),
+      content: Text('Não foi possível criar a meta: $e'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
+    );
+  }
+ 
 }
 
 class _TelaCriarMetaState extends State<TelaCriarMeta> {
@@ -289,7 +333,7 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () => _salvar(context),
+                      onPressed: () => _salvar(context, _valorMeta.doubleValue, _nomeMeta.text, _duracaoMeta.text, _opcoesRecorrencia),
                       child: Text(
                         "Criar",
                         style: TextStyle(
