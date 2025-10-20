@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return MaterialApp(
+      
       title: "Meownagement",
       initialRoute: "/login",
       routes: {
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
 
       },
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Nunito'),
+      theme: ThemeData(fontFamily: 'Nunito', useMaterial3: true),
 
     );
   }
