@@ -124,6 +124,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 40),
             Row(
               children: [
                 Builder(

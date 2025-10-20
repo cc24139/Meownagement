@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
-import 'package:localstorage/localstorage.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});
@@ -17,16 +15,14 @@ class TelaAmizades extends StatefulWidget {
 class _TelaAmizadesState extends State<TelaAmizades> {
   String textoPesquisa = "";
   late Future<List<UsuarioViewModel>> todosOsUsuarios;
-  CatColors cores = CatColors(paleta: int.parse(localStorage.getItem('paleta') ?? '1'));
+  CatColors cores = CatColors(paleta: 4);
 
-  @override 
+  @override
   void initState() {
     super.initState();
     var httpUsuarios = UsuarioServices();
     todosOsUsuarios = httpUsuarios.ListarUsuarios();
   }
-
-  late List<Usuario> dados;
 
   void onSearchChanged(String value) {
     setState(() {
@@ -60,54 +56,92 @@ class _TelaAmizadesState extends State<TelaAmizades> {
         backgroundColor: cores.corPrimaria,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-
-      
-        child: FutureBuilder<List<UsuarioViewModel>>(
-          future: todosOsUsuarios,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text("Erro: ${snapshot.error}"));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text("Nenhum usuário encontrado"));
-            }
-
-            List<UsuarioViewModel> dados = snapshot.data!;
-            if (textoPesquisa.isNotEmpty) {
-              dados = dados
-                  .where(
-                    (u) => u.nome.toLowerCase().contains(
-                      textoPesquisa.toLowerCase(),
+      drawer: Menulateralwidget(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: TextField(
+              onChanged: onSearchChanged,
+              style: TextStyle(color: cores.complementar),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, color: cores.complementar),
+                hintText: "Pesquisar usuários...",
+                hintStyle: TextStyle(color: cores.complementar.withOpacity(0.7)),
+                filled: true,
+                fillColor: cores.corSecundaria.withOpacity(0.15),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: cores.complementar, width: 1.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: cores.complementar, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<UsuarioViewModel>>(
+              future: todosOsUsuarios,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Erro: ${snapshot.error}",
+                      style: TextStyle(color: cores.complementar),
                     ),
-                  )
-                  .toList();
-            }
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "Nenhum usuário encontrado",
+                      style: TextStyle(color: cores.complementar),
+                    ),
+                  );
+                }
 
-            return ListView.separated(
-              itemCount: dados.length,
-              separatorBuilder: (_, __) => const Divider(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(dados[index].nome),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.send),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRotas.perfil,
-                        arguments: dados[index],
-                      );
-                    },
-                  ),
+                List<UsuarioViewModel> dados = snapshot.data!;
+                if (textoPesquisa.isNotEmpty) {
+                  dados = dados
+                      .where(
+                        (u) => u.nome
+                            .toLowerCase()
+                            .contains(textoPesquisa.toLowerCase()),
+                      )
+                      .toList();
+                }
+
+                return ListView.separated(
+                  itemCount: dados.length,
+                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final usuario = dados[index];
+                    return ListTile(
+                      title: Text(
+                        usuario.nome,
+                        style: TextStyle(color: cores.complementar),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.send, color: cores.complementar),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRotas.perfil,
+                            arguments: usuario,
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
-      drawer: Menulateralwidget(),
     );
   }
 }

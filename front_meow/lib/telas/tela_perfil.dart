@@ -6,6 +6,7 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/locator.dart';
 import 'package:front_meow/models/gato.dart';
+import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
@@ -25,7 +26,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
   final GatoServices serv = locator<GatoServices>();
   List<Gato> dados = [];
   bool _carregando = false;
-  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
+  CatColors cores = CatColors(
+    paleta: int.parse(localStorage.getItem('paleta') ?? '1'),
+  );
 
   Future<void> _carregarGatos() async {
     try {
@@ -58,7 +61,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
       return Colors.orange;
     } else if (raridade == 6) {
       return Colors.red;
-    } else{
+    } else {
       return Colors.grey;
     }
   }
@@ -107,11 +110,19 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               decorationColor: cores.complementar,
                             ),
                           ),
-                          Icon(
-                            Icons.edit_square,
-                            color: cores.complementar,
-                            size: 30,
-                            fill: 0.0,
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                AppRotas.alterarPerfil,
+                              );
+                            },
+                            icon: Icon(
+                              Icons.edit_square,
+                              color: cores.complementar,
+                              size: 30,
+                              fill: 0.0,
+                            ),
                           ),
                         ],
                       ),
