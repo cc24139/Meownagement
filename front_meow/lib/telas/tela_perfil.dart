@@ -9,6 +9,7 @@ import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaPerfil extends StatefulWidget {
@@ -24,7 +25,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
   final GatoServices serv = locator<GatoServices>();
   List<Gato> dados = [];
   bool _carregando = false;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   Future<void> _carregarGatos() async {
     try {

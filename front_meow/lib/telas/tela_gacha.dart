@@ -9,6 +9,7 @@ import 'package:front_meow/Widgets/gachaRollWidget.dart';
 import 'package:front_meow/services/gachaSystem.dart';
 import 'package:front_meow/models/gachaResult.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaGacha extends StatefulWidget {
   const TelaGacha({super.key});
@@ -18,7 +19,7 @@ class TelaGacha extends StatefulWidget {
 }
 
 class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   int meowCoins = 0;
   GachaResult? resultadoGacha;
