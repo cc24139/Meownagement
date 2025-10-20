@@ -68,7 +68,9 @@ class CardGato extends StatelessWidget {
                 highSize: ButtonSize.pequeno,
                 widthSize: ButtonSize.pequeno,
                 catColors: equipado
-                    ? CatColors(paleta: 2)
+                    ? CatColors(
+                        paleta: int.parse(localStorage.getItem("paleta")!),
+                      )
                     : CatColors(paleta: 4),
               ),
           ],
@@ -87,6 +89,10 @@ class _TelaGaleriaState extends State<TelaGaleria> {
   @override
   void initState() {
     super.initState();
+    // Inicializa os Futures imediatamente
+    GatoServices gatoServices = GatoServices();
+    _futureGatos = gatoServices.ListarDesbloqueados();
+    _futureGatosBloqueados = gatoServices.ListarBloqueados();
     _carregarDados();
   }
 
@@ -94,22 +100,22 @@ class _TelaGaleriaState extends State<TelaGaleria> {
     // Carrega o gato equipado
     GatoServices gatoServices = GatoServices();
     Gato gato = await gatoServices.GatoEquipado();
-    catColors = CatColors(paleta: gato.codPaleta);
 
     setState(() {
       idGatoEquipado = gato.idGato;
-      // Inicia o Future para carregar a lista de gatos
-      _futureGatos = gatoServices.ListarDesbloqueados();
-      _futureGatosBloqueados = gatoServices.ListarBloqueados();
+      catColors = CatColors(paleta: gato.codPaleta);
     });
   }
 
   void _equiparGato({required int idGato, required int codPaleta}) {
     localStorage.setItem("gatoEquipado", idGato.toString());
+    localStorage.setItem("paleta", codPaleta.toString());
     setState(() {
       idGatoEquipado = idGato;
       catColors = CatColors(paleta: codPaleta);
     });
+    GatoServices gatoServices = GatoServices();
+    gatoServices.EquiparGato(idGato);
   }
 
   @override
@@ -121,16 +127,20 @@ class _TelaGaleriaState extends State<TelaGaleria> {
             Row(
               children: [
                 Builder(
-                    builder: (context) { 
-                      return IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: Icon(Icons.menu, color: catColors.complementar, size: 25),
-                      );
-                    },
-                  ),
-                  Text("Galeria de Gatos")
+                  builder: (context) {
+                    return IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      icon: Icon(
+                        Icons.menu,
+                        color: catColors.complementar,
+                        size: 25,
+                      ),
+                    );
+                  },
+                ),
+                Text("Galeria de Gatos"),
               ],
             ),
             FutureBuilder(

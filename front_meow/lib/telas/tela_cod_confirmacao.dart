@@ -75,12 +75,12 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 50),
               OtpTextField(
                 numberOfFields: 6,
                 borderColor: Color(0xFF512DA8),
-                fieldWidth: 40,
-                fieldHeight: 50,
+                fieldWidth: 50,
+                fieldHeight: 60,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 showFieldAsBox: true,
                 keyboardType: TextInputType.number,
@@ -107,15 +107,7 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
                     );
                     return;
                   }
-                  if (widget.isCreateCount) {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  } else {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      '/resetar_senha',
-                      arguments: widget.email,
-                    );
-                  }
+                  Navigator.pushNamed(context, "/login");
 
                   showDialog(
                     context: context,

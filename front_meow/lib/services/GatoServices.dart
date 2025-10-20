@@ -189,7 +189,7 @@ class GatoServices extends Http {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
-    final response = await http.put(
+    final response = await http.patch(
       Uri.parse("${urlGato}/equipar/$id"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );

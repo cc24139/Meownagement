@@ -1,3 +1,4 @@
+import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
@@ -28,8 +29,11 @@ class UsuarioServices extends Http {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         String token = data['token'];
-        storage.setItem('token', token);
+        localStorage.setItem('token', token);
         Http.token = token; // Atualiza o token na classe Http
+        var gatoEquipado = await GatoServices().GatoEquipado();
+        localStorage.setItem('gatoEquipado', gatoEquipado.idGato.toString());
+        localStorage.setItem('paleta', gatoEquipado.codPaleta.toString());
         return (true);
       } else if (response.statusCode == 401) {
         return (false);
@@ -154,18 +158,20 @@ class UsuarioServices extends Http {
     String Email,
     String Code,
   ) async {
+   
     final response = await http.patch(
-      Uri.parse("${urlUsuario}/confirmarEsqueceuSenha"),
+      Uri.parse("${urlUsuario}/confirmarEsquecerSenha"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{'Email': Email, 'Code': Code}),
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Código ou Nome inválido');
+      print(response.body);
+      throw Exception(response.body);
     }
   }
 
