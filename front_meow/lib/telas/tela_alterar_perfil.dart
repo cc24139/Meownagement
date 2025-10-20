@@ -13,7 +13,7 @@ class _TelaAlterarPerfilState extends State<TelaAlterarPerfil> {
   TextEditingController txtBio = TextEditingController();
 
   void _salvar() {
-    
+    Navigator.pushReplacementNamed(context, AppRotas.inicial);
   }
 
   void _cancelar() {
@@ -32,8 +32,6 @@ class _TelaAlterarPerfilState extends State<TelaAlterarPerfil> {
     return Scaffold(
       appBar: AppBar(title: const Text("Perfil")),
       body: SingleChildScrollView(
-
-        
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -64,13 +62,16 @@ class _TelaAlterarPerfilState extends State<TelaAlterarPerfil> {
                     onPressed: _cancelar,
                     child: const Text("Cancelar"),
                   ),
-                  ElevatedButton(onPressed: _salvar, child: const Text("Salvar")),
+                  ElevatedButton(
+                    onPressed: _salvar,
+                    child: const Text("Salvar"),
+                  ),
                 ],
               ),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }
