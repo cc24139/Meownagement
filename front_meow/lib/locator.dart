@@ -1,3 +1,5 @@
+import 'package:front_meow/services/GatoServices.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:get_it/get_it.dart';
 import 'package:front_meow/services/metaServices.dart';
 import 'package:front_meow/services/cofrinhoServices.dart';
@@ -13,4 +15,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => Metaservices());
   locator.registerLazySingleton(() => CofrinhoServices());
   locator.registerLazySingleton(() => TransacaoServices());
+  locator.registerLazySingleton(() => UsuarioServices());
+  locator.registerLazySingleton(() => GatoServices());
 }

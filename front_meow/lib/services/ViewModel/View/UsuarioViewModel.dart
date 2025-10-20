@@ -2,6 +2,7 @@ class UsuarioViewModel {
   final int id;
   final String nome;
   final String email;
+  final String? biografia;
   final int pontos;
   final double saldo;
 
@@ -9,7 +10,7 @@ class UsuarioViewModel {
     required this.id,
     required this.nome,
     required this.email,
-    biografia,
+    this.biografia,
     required this.pontos,
     required this.saldo,
   });

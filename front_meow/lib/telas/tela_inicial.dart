@@ -8,6 +8,7 @@ import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/LoginDiarioServices.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -38,15 +39,49 @@ class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: ClipPath(
-              clipper: BolasCimaTelaInicial(),
-              child: Container( 
-                height: 275,
-                color: cores.corSecundaria.withOpacity(0.9),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Builder(
+                    builder: (context) { 
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                      );
+                    },
+                  ),
+                  MeowcoinWidget(saldo: meowCoins),
+
+                  IconButton(
+                    onPressed: () {
+                      // logico do login diario
+
+                      Logindiarioservices()
+                          .AtualizarLoginDiario()
+                          .then((mensagem) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(mensagem)),
+                        );
+                      }).catchError((error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error.toString())),
+                        );
+                      });
+
+                    }, 
+                    icon: Icon(Icons.calendar_today),
+                    color: cores.complementar,
+                    iconSize: 40,
+                  )
+                ],
               ),
             ),
           ),
