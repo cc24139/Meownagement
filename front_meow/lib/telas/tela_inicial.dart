@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_meow/Widgets/BolasBaixoTelaInicial.dart';
+import 'package:front_meow/Widgets/BolasCimaTelaInicial.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
@@ -36,83 +38,108 @@ class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Builder(
-                    builder: (context) { 
-                      return IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: Icon(Icons.menu, color: cores.complementar, size: 25),
-                      );
-                    },
-                  ),
-                  MeowcoinWidget(saldo: meowCoins),
-
-                  Icon(
-                    Icons.calendar_today,
-                    color: cores.complementar,
-                    size: 40,
-                  ),
-                ],
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: ClipPath(
+              clipper: BolasCimaTelaInicial(),
+              child: Container( 
+                height: 275,
+                color: cores.corSecundaria.withOpacity(0.9),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ClipPath(
+              clipper: BolasBaixoTelaInicial(),
+              child: Container( 
+                height: 275,
+                color: cores.corSecundaria.withOpacity(0.9),
+              ),
+            ),
+          ),
+
+
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SvgPicture.asset(
-                        "../../assets/icons/vetor_olho_fechado.svg",
-                        width: 30,
-                        height: 30,
+                      Builder(
+                        builder: (context) { 
+                          return IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                          );
+                        },
+                      ),
+                      MeowcoinWidget(saldo: meowCoins),
+
+                      Icon(
+                        Icons.calendar_today,
                         color: cores.complementar,
+                        size: 40,
                       ),
-                      SizedBox(width: 30),
-                      Text(
-                        "Saldo",
-                        style: TextStyle(color: cores.complementar),
-                      ),
-                      SizedBox(width: 30),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            "../../assets/icons/vetor_olho_fechado.svg",
+                            width: 30,
+                            height: 30,
+                            color: cores.complementar,
+                          ),
+                          SizedBox(width: 30),
+                          Text(
+                            "Saldo",
+                            style: TextStyle(color: cores.complementar),
+                          ),
+                          SizedBox(width: 30),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: cores.complementar,
+                      border: Border.all(color: cores.corTerciaria, width: 2.0),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(width: 1),
+                        Text(
+                          "Veja suas metas",
+                          style: TextStyle(color: cores.secundaria),
+                        ),
+                        Icon(
+                          Icons.arrow_right_alt,
+                          color: cores.corSecundaria,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Telainicialinfoswidget(qualInfo: infoAtual, cor: cores)
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: cores.complementar,
-                  border: Border.all(color: cores.corTerciaria, width: 2.0),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(width: 1),
-                    Text(
-                      "Veja suas metas",
-                      style: TextStyle(color: cores.secundaria),
-                    ),
-                    Icon(
-                      Icons.arrow_right_alt,
-                      color: cores.corSecundaria,
-                      size: 30,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Telainicialinfoswidget(qualInfo: infoAtual, cor: cores)
-            ],
+            ),
           ),
-        ),
+        ],
       ),
-
       drawer: Menulateralwidget(),
       backgroundColor: cores.corPrimaria,
     );

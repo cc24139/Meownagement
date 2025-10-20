@@ -126,9 +126,12 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                           ),
                           Expanded(
                             child: TitleTelaWidget(
-                              title: "Crie suas metas",
-                              subtitle: "",
-                              catColors: cores,
+                              titulo: "Crie Suas Metas",
+                              tamanho: 50,
+                              qtsBolas: 11,
+                              overlapFactor: 0.45,
+                              tamanhoFonte: 38.0,
+                              cores: CatColors(paleta: 2),
                             ),
                           ),
                         ],

@@ -85,9 +85,12 @@ class _TelaGavetaState extends State<TelaGaveta> {
                           ),
                           Expanded(
                             child: TitleTelaWidget(
-                              title: "Guarde na Gaveta",
-                              subtitle: "",
-                              catColors: cores,
+                              titulo: "Guarde na Gaveta",
+                              tamanho: 50,
+                              qtsBolas: 11,
+                              overlapFactor: 0.45,
+                              tamanhoFonte: 38.0,
+                              cores: CatColors(paleta: 2),
                             ),
                           ),
                         ],
