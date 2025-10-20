@@ -3,20 +3,17 @@ import 'package:front_meow/models/login_diario.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:localstorage/localstorage.dart';
 
 class Logindiarioservices extends Http {
   static String urlLogin = "${Http.url}/loginDiario";
-  static String? token = localStorage.getItem('token');
-
   // Gets
   Future<List<LoginDiario>> ListarLoginDiario() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
       Uri.parse("${urlLogin}/listar"),
-      headers: {HttpHeaders.authorizationHeader: token!},
+      headers: {HttpHeaders.authorizationHeader: Http.token!},
     );
 
     if (response.statusCode == 200) {
@@ -30,15 +27,12 @@ class Logindiarioservices extends Http {
   }
   //patch
   Future<String> AtualizarLoginDiario() async {
-    if (token == null) {
+    if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.patch(
       Uri.parse("${urlLogin}/atualizar"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: token!,
-      },
+      headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
