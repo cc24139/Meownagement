@@ -26,6 +26,14 @@ namespace APIMeow.Controllers
             return Ok(listMetas);
         }
         [Authorize]
+        [HttpGet("metas/listar/$idClassificacao")]
+        public async Task<IActionResult> ListarMetasPorClassificacao(int idClassificacao, DBMeownagement db)
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id && m.IdClassificacao == idClassificacao).ToListAsync();
+            return Ok(listMetas);
+        }
+        [Authorize]
         [HttpGet("metas/listarConcluidas")]
         public async Task<IActionResult> ListarMetasConcluidas(DBMeownagement db)
         {
