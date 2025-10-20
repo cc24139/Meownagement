@@ -9,6 +9,7 @@ import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/LoginDiarioServices.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -19,7 +20,7 @@ class TelaInicial extends StatefulWidget {
 
 class _TelaInicialState extends State<TelaInicial> {
   QualInfo infoAtual = QualInfo.metas;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
   int meowCoins = 0;
 
   @override
