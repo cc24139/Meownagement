@@ -5,6 +5,7 @@ import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -16,6 +17,22 @@ class TelaInicial extends StatefulWidget {
 class _TelaInicialState extends State<TelaInicial> {
   QualInfo infoAtual = QualInfo.metas;
   CatColors cores = CatColors(paleta: 4);
+  int meowCoins = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarDados();
+  }
+
+  void _carregarDados() async {
+    UsuarioServices().PerfilUsuario().then((usuario) {
+      setState(() {
+        meowCoins = usuario.pontos;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +54,7 @@ class _TelaInicialState extends State<TelaInicial> {
                       );
                     },
                   ),
-                  MeowcoinWidget(saldo: 20),
+                  MeowcoinWidget(saldo: meowCoins),
 
                   Icon(
                     Icons.calendar_today,
