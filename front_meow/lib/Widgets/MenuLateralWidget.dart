@@ -1,85 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:front_meow/locator.dart';
 import 'package:front_meow/rotas.dart';
+import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
-class Menulateralwidget extends StatelessWidget {
+class Menulateralwidget extends StatefulWidget {
   const Menulateralwidget({super.key});
+
+  @override
+  State<Menulateralwidget> createState() => _MenulateralwidgetState();
+}
+
+class _MenulateralwidgetState extends State<Menulateralwidget> {
+  final UsuarioServices serv = locator<UsuarioServices>();
+  late Future<PerfilViewModel> _userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userFuture = serv.PerfilUsuario();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: const Color(0xFFF1F1F1),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const SizedBox(height: 50),
+      child: FutureBuilder<PerfilViewModel>(
+        future: _userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print("Erro ao carregar perfil para o menu: ${snapshot.error}");
+          }
 
-          _buildDrawerItem(
-            icon: Icons.home,
-            text: 'Tela Inicial',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.inicial);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.emoji_events,
-            text: 'Criar Meta',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.criarMeta);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.inventory_2,
-            text: 'Gaveta',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.gaveta);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.attach_money,
-            text: 'Transações',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.transacoes);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.pets,
-            text: 'Meus gatos',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.galeria);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.person_outline,
-            text: 'Perfil',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.perfil);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.search,
-            text: 'Usuários',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.amizades);
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.move_to_inbox,
-            text: 'Caixa de Gatos',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.gacha);
-            },
-          ),
+          final PerfilViewModel? user = snapshot.data;
 
-          const Divider(color: Colors.black26),
-
-          _buildDrawerItem(
-            icon: Icons.logout,
-            text: 'Deslogar',
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRotas.login);
-            },
-          ),
-        ],
+          return ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              const SizedBox(height: 50),
+              _buildDrawerItem(
+                icon: Icons.home,
+                text: 'Tela Inicial',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.inicial),
+              ),
+              _buildDrawerItem(
+                icon: Icons.emoji_events,
+                text: 'Criar Meta',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.criarMeta),
+              ),
+              _buildDrawerItem(
+                icon: Icons.inventory_2,
+                text: 'Gaveta',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.gaveta),
+              ),
+              _buildDrawerItem(
+                icon: Icons.attach_money,
+                text: 'Transações',
+                onTap: () => Navigator.pushReplacementNamed(
+                    context, AppRotas.transacoes),
+              ),
+              _buildDrawerItem(
+                icon: Icons.pets,
+                text: 'Meus gatos',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.galeria),
+              ),
+              _buildDrawerItem(
+                icon: Icons.person_outline,
+                text: 'Perfil',
+                onTap: () {
+                  if (user != null) {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      AppRotas.perfil,
+                      arguments: {'user': user, 'outroUser': false},
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Não foi possível carregar os dados do perfil.')),
+                    );
+                  }
+                },
+              ),
+              _buildDrawerItem(
+                icon: Icons.search,
+                text: 'Usuários',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.amizades),
+              ),
+              _buildDrawerItem(
+                icon: Icons.move_to_inbox,
+                text: 'Caixa de Gatos',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.gacha),
+              ),
+              const Divider(color: Colors.black26),
+              _buildDrawerItem(
+                icon: Icons.logout,
+                text: 'Deslogar',
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, AppRotas.login),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

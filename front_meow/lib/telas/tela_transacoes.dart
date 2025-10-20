@@ -5,7 +5,8 @@ import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:intl/intl.dart';
-import 'package:front_meow/Widgets/textfieldInputDinheiro.dart'; 
+import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
+import 'package:localstorage/localstorage.dart'; 
 
 class TelaTransacoes extends StatefulWidget {
   const TelaTransacoes({super.key});
@@ -35,7 +36,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
   String dropdownValue = listaClassificacao.first;
   String valorDropdownRecorrencia = listaRecorrencia.first;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
   
   @override
   void dispose() {

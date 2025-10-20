@@ -8,6 +8,7 @@ import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/MetaServices.dart';
 import 'package:front_meow/services/ViewModel/CreateMetasViewModel.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaCriarMeta extends StatefulWidget {
   const TelaCriarMeta({super.key});
@@ -74,7 +75,7 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
   final _nomeMeta = TextEditingController();
   final _duracaoMeta = TextEditingController();
 
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   @override
   void dispose() {

@@ -38,7 +38,7 @@ class _TelaLoginState extends State<TelaLogin> {
       print("Resposta de LoginUsuario: $sucesso");
 
       if (sucesso!) {
-        Navigator.pushReplacementNamed(context, AppRotas.amizades);
+        Navigator.pushReplacementNamed(context, AppRotas.inicial);
       } else {
         ScaffoldMessenger.of(
           context,
@@ -93,25 +93,24 @@ class _TelaLoginState extends State<TelaLogin> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                SizedBox(
-                  width: 250,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        AppRotas.alterarSenha,
-
-                      );
-                    },
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AppRotas.alterarSenha,
-                        );
-                      },
-                      child: const Text("Esqueci minha senha"),
-                    ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Esqueceu sua senha? "),
+                      SizedBox(
+                        width: 250,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRotas.alterarSenha,
+                            );
+                          },
+                          child: const Text("Recuperar senha"),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 30),

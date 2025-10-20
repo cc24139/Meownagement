@@ -5,6 +5,7 @@ import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});
@@ -16,9 +17,9 @@ class TelaAmizades extends StatefulWidget {
 class _TelaAmizadesState extends State<TelaAmizades> {
   String textoPesquisa = "";
   late Future<List<UsuarioViewModel>> todosOsUsuarios;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse(localStorage.getItem('paleta') ?? '1'));
 
-  @override
+  @override 
   void initState() {
     super.initState();
     var httpUsuarios = UsuarioServices();

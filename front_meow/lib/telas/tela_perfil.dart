@@ -9,12 +9,14 @@ import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaPerfil extends StatefulWidget {
-  const TelaPerfil({super.key});
+  final PerfilViewModel user;
+  final bool outroUser;
 
-  //final UsuarioServices serv = locator<UsuarioServices>();
-
+  const TelaPerfil({super.key, required this.user, required this.outroUser});
   @override
   State<TelaPerfil> createState() => _TelaPerfilState();
 }
@@ -23,14 +25,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
   final GatoServices serv = locator<GatoServices>();
   List<Gato> dados = [];
   bool _carregando = false;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   Future<void> _carregarGatos() async {
     try {
       List<Gato> gatosDaApi = await serv.ListarDesbloqueados();
 
       setState(() {
-        dados = gatosDaApi;
+        dados = gatosDaApi.reversed.toList();
         _carregando = false;
       });
     } catch (e) {
@@ -47,17 +49,22 @@ class _TelaPerfilState extends State<TelaPerfil> {
     _carregarGatos();
   }
 
+  MaterialColor _getCorPorRaridade(int raridade) {
+    if (raridade == 3) {
+      return Colors.blue;
+    } else if (raridade == 4) {
+      return Colors.purple;
+    } else if (raridade == 5) {
+      return Colors.orange;
+    } else if (raridade == 6) {
+      return Colors.red;
+    } else{
+      return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context)!.settings.arguments as UsuarioViewModel;
-    var a = UsuarioViewModel(
-      id: 1,
-      nome: "RonaldoGames",
-      email: "jaoao",
-      biografia: "cviacapocanpasnc pac scn panc psnadpsn an pas ndapd vodan",
-      pontos: 67,
-      saldo: 212,
-    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -69,7 +76,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                   Expanded(
                     child: Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Builder(
                             builder: (context) {
@@ -87,12 +94,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           ),
                           CircleAvatar(
                             backgroundImage: AssetImage(
-                              '../assets/images/doudouCat/doudouCatPequena.jpg',
+                              '../assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Pequena.jpg',
                             ),
                             radius: 30,
                           ),
                           Text(
-                            a.nome,
+                            widget.user.nome,
                             style: TextStyle(
                               color: cores.complementar,
                               fontSize: 45,
@@ -116,22 +123,66 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
             Row(
               children: [
+                SizedBox(width: 70),
                 Text(
                   "Gatos",
                   style: TextStyle(color: cores.complementar, fontSize: 16),
                 ),
                 Icon(Icons.arrow_forward, color: cores.complementar, size: 16),
-                Text(dados.length.toString(), style: TextStyle(color: cores.secundaria, fontSize: 20, fontWeight: FontWeight.bold),),
+                Text(
+                  dados.length.toString(),
+                  style: TextStyle(
+                    color: cores.secundaria,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             SizedBox(
-                  width: 400,
-                  child: Divider(color: cores.complementar, thickness: 1),
+              width: 400,
+              child: Divider(color: cores.complementar, thickness: 1),
             ),
             SizedBox(
               width: 360,
-              child: Text(a.biografia.toString(), style: TextStyle(color: cores.complementar, fontSize: 16)),
-            )
+              child: Text(
+                widget.user.biografia.toString(),
+                style: TextStyle(color: cores.complementar, fontSize: 16),
+              ),
+            ),
+
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Galeria",
+                  style: TextStyle(color: cores.complementar, fontSize: 32),
+                ),
+              ],
+            ),
+
+            Wrap(
+              spacing: 8, // espaço horizontal entre os cards
+              runSpacing: 8, // espaço vertical entre as linhas
+              alignment: WrapAlignment.center,
+              children: dados.map((gato) {
+                return ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2,
+                        color: _getCorPorRaridade(gato.raridade),
+                      ),
+                    ),
+                    child: Image.asset(
+                      "../../assets/Images/${gato.nomeImagem}/${gato.nomeImagem}Pequena.jpg",
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
           ],
         ),
       ),

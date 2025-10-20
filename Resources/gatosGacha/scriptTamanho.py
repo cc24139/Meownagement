@@ -46,10 +46,10 @@ def mudaTipo(caminho, nomeImagem):
         print(f"File format not supported: {caminho}")
 
 def processarImagens():
-    # for caminhoImagem in os.listdir(path):
-    #     nome = nomeImagem(caminhoImagem)
+    for caminhoImagem in os.listdir(path):
+        nome = nomeImagem(caminhoImagem)
 
-    #     mudaTipo(path + "/" + caminhoImagem, nome)
+        mudaTipo(path + "/" + caminhoImagem, nome)
 
     for caminhoImagem in os.listdir(path):
         # abre a imagem
