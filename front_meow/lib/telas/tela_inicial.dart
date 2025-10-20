@@ -109,7 +109,7 @@ class _TelaInicialState extends State<TelaInicial> {
                                     Text(
                                       "Login Diário",
                                       style: TextStyle(
-                                        color: cores.complementar,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -117,7 +117,7 @@ class _TelaInicialState extends State<TelaInicial> {
                                 ),
                                 content: Text(
                                   mensagem,
-                                  style: TextStyle(color: cores.complementar),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                                 actions: [
                                   TextButton(
