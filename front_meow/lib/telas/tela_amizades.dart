@@ -18,7 +18,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
   late Future<List<UsuarioViewModel>> todosOsUsuarios;
   CatColors cores = CatColors(paleta: 4);
 
-  @override
+  @override 
   void initState() {
     super.initState();
     var httpUsuarios = UsuarioServices();

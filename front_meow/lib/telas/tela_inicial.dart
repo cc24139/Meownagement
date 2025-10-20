@@ -91,16 +91,85 @@ class _TelaInicialState extends State<TelaInicial> {
                           // logico do login diario
 
                           Logindiarioservices()
-                              .AtualizarLoginDiario()
-                              .then((mensagem) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(mensagem)),
-                            );
-                          }).catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(error.toString())),
-                            );
-                          });
+                            .AtualizarLoginDiario()
+                            .then((mensagem) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: cores.corPrimaria,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.star, color: cores.complementar),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      "Login Diário",
+                                      style: TextStyle(
+                                        color: cores.complementar,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: Text(
+                                  mensagem,
+                                  style: TextStyle(color: cores.complementar),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: cores.complementar,
+                                      foregroundColor: cores.corPrimaria,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    child: const Text("Fechar"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }).catchError((error) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: cores.corPrimaria,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.error_outline, color: Colors.redAccent),
+                                    SizedBox(width: 8),
+                                    const Text(
+                                      "Erro",
+                                      style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: Text(
+                                  error.toString(),
+                                  style: const TextStyle(color: Colors.redAccent),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    child: const Text("Fechar"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        });
 
                         }, 
                         icon: Icon(Icons.calendar_today),
