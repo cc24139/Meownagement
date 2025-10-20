@@ -6,6 +6,7 @@ import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaGaveta extends StatefulWidget {
   const TelaGaveta({super.key});
@@ -32,7 +33,7 @@ class _TelaGavetaState extends State<TelaGaveta> {
   final _nomeMeta = TextEditingController();
   final _duracaoMeta = TextEditingController();
 
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   @override
   void dispose() {
