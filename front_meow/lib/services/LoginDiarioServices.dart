@@ -27,6 +27,7 @@ class Logindiarioservices extends Http {
   }
   //patch
   Future<String> AtualizarLoginDiario() async {
+    print(Http.token);
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
@@ -36,8 +37,13 @@ class Logindiarioservices extends Http {
     );
 
     if (response.statusCode == 200) {
-      return ("Login diario atualizado com sucesso");
-    } else {
+      final data = jsonDecode(response.body);
+      return (data['mensagem']);
+    }
+    else if (response.statusCode == 400) {
+      return ("Já realizou o login diário hoje.");
+    }
+    else {
       throw Exception('Failed to update login diario');
     }
   }
