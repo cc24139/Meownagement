@@ -1,4 +1,3 @@
-// lib/widgets/cat_widgets.dart
 import 'package:flutter/material.dart';
 import '../models/gato.dart';
 import '../animations/gachaAnimations.dart';

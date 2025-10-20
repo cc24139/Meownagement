@@ -1,4 +1,3 @@
-// lib/animations/cat_animations.dart
 import 'package:flutter/material.dart';
 
 class GachaAnimations {

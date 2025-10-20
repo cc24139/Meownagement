@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:localstorage/localstorage.dart';
 
 class Http {

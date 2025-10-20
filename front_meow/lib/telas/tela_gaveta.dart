@@ -5,7 +5,6 @@ import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
-import 'package:intl/intl.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 
 class TelaGaveta extends StatefulWidget {

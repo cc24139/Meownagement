@@ -5,7 +5,6 @@ import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:localstorage/localstorage.dart';
 
 class UsuarioServices extends Http {
@@ -13,7 +12,6 @@ class UsuarioServices extends Http {
   // Token agora é gerenciado pela classe Http
 
   // Posts
-
   Future<bool?> LoginUsuario(
     UsuarioLoginViewModel usuario,
     LocalStorage storage,

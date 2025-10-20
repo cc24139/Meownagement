@@ -4,11 +4,9 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/MetaServices.dart';
 import 'package:front_meow/services/ViewModel/CreateMetasViewModel.dart';
-import 'package:intl/intl.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 
 class TelaCriarMeta extends StatefulWidget {

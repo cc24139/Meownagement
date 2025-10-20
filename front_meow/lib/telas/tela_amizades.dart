@@ -5,7 +5,6 @@ import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
-import 'package:front_meow/services/serv.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});

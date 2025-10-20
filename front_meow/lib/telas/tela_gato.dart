@@ -1,11 +1,7 @@
 //import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
-import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class TelaGato extends StatefulWidget {
   const TelaGato({super.key});

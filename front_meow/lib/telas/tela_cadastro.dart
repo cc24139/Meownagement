@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/BolasLogin.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/usuario.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 
