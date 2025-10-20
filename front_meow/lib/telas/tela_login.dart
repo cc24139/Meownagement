@@ -38,7 +38,7 @@ class _TelaLoginState extends State<TelaLogin> {
       print("Resposta de LoginUsuario: $sucesso");
 
       if (sucesso!) {
-        Navigator.pushReplacementNamed(context, AppRotas.amizades);
+        Navigator.pushReplacementNamed(context, AppRotas.inicial);
       } else {
         ScaffoldMessenger.of(
           context,

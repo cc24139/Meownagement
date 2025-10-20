@@ -56,7 +56,13 @@ class MyApp extends StatelessWidget {
         "/gaveta"         : (context) => const TelaGaveta(),
         "/inicial"        : (context) => const TelaInicial(),
         "/login"          : (context) => const TelaLogin(),
-        "/perfil"         : (context) => const TelaPerfil(),
+        "/perfil"         : (context) {
+                                      final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+                                      return TelaPerfil(
+                                        user: args['user'],
+                                        outroUser: args['outroUser'],
+                                      );
+                                      },
         "/transacoes"     : (context) => const TelaTransacoes(),
 
 
