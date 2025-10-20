@@ -118,6 +118,21 @@ class _TelaGaleriaState extends State<TelaGaleria> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Row(
+              children: [
+                Builder(
+                    builder: (context) { 
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: Icon(Icons.menu, color: catColors.complementar, size: 25),
+                      );
+                    },
+                  ),
+                  Text("Galeria de Gatos")
+              ],
+            ),
             FutureBuilder(
               future: _futureGatos,
               builder: (context, snapshot) {
