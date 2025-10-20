@@ -47,8 +47,8 @@ class CardGato extends StatelessWidget {
           children: [
             Image.asset(
               bloqueado
-                  ? 'assets/images/$imagem/${imagem}pequenaPB.jpg'
-                  : 'assets/images/$imagem/${imagem}pequena.jpg',
+                  ? 'assets/images/$imagem/${imagem}PequenaPB.jpg'
+                  : 'assets/images/$imagem/${imagem}Pequena.jpg',
             ),
             const SizedBox(height: 10),
             Text(nome),
@@ -179,7 +179,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
                           id: gato.idGato,
                           nome: gato.raridade == 6 ? "???" : gato.nome,
                           imagem: gato.raridade == 6
-                              ? "Bloqueado"
+                              ? "bloqueado"
                               : gato.nomeImagem,
                           bloqueado: true,
                           equipado: false,
