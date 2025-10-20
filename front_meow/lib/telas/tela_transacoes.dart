@@ -93,7 +93,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                               qtsBolas: 11,
                               overlapFactor: 0.45,
                               tamanhoFonte: 38.0,
-                              cores: CatColors(paleta: 2),
+                              cores:CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1')),
                             ),
                           ),
                         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:front_meow/Widgets/Tools/BolasSize.dart';
 //import 'package:front_meow/Widgets/Tools/BolasTools.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:localstorage/localstorage.dart';
 
 void main() {
   runApp(
@@ -14,7 +15,7 @@ void main() {
             qtsBolas: 11,
             overlapFactor: 0.45,
             tamanhoFonte: 38.0,
-            cores: CatColors(paleta: 2),
+            cores: CatColors(paleta: localStorage.getItem('paleta') != null ? int.parse(localStorage.getItem('paleta')!) : 1),
           ),
         ),
       ),
