@@ -20,14 +20,20 @@ class CatColors {
         tercearia = Color(0xFF34495E);
         complementar = Colors.white;
       case 3:
-        primaria = Color(0xFF166534);
-        secundaria = Color.fromARGB(255, 223, 140, 140);
+        primaria = Color(0xFFF5DEB3); 
+        secundaria = Color(0xFF166534);
         tercearia = Color(0xFFEA580C);
         complementar = Colors.white;
       case 4:
         primaria     = Color(0xFF374151);
         secundaria   = Color(0xFFF97316);
         tercearia    = Color(0xFFFACC15);
+        complementar = Colors.white;
+        break;
+      case 5:
+        primaria     = Color(0xFFF3F4F6);
+        secundaria   = Color(0xFFEF4444);
+        tercearia    = Color(0xFF374151);
         complementar = Colors.white;
         break;
       default:
