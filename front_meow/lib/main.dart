@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       
       title: "Meownagement",
-      initialRoute: "/amizades",
+      initialRoute: "/login",
       routes: {
 
         "/"               : (context) => const TelaLogin(), //Mudar para tela inicial
