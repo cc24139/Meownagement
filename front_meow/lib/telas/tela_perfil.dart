@@ -110,8 +110,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               decorationColor: cores.complementar,
                             ),
                           ),
-                          IconButton(
+                          IconButton(  
                             onPressed: () {
+                              if (widget.outroUser) return;
                               Navigator.pushReplacementNamed(
                                 context,
                                 AppRotas.alterarPerfil,
@@ -119,7 +120,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             },
                             icon: Icon(
                               Icons.edit_square,
-                              color: cores.complementar,
+                              color: widget.outroUser
+                                  ? Colors.transparent
+                                  : cores.complementar,
                               size: 30,
                               fill: 0.0,
                             ),

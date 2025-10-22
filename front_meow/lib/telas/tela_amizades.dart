@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
+import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});
@@ -67,7 +69,9 @@ class _TelaAmizadesState extends State<TelaAmizades> {
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: cores.complementar),
                 hintText: "Pesquisar usuários...",
-                hintStyle: TextStyle(color: cores.complementar.withOpacity(0.7)),
+                hintStyle: TextStyle(
+                  color: cores.complementar.withOpacity(0.7),
+                ),
                 filled: true,
                 fillColor: cores.corSecundaria.withOpacity(0.15),
                 enabledBorder: OutlineInputBorder(
@@ -107,9 +111,9 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                 if (textoPesquisa.isNotEmpty) {
                   dados = dados
                       .where(
-                        (u) => u.nome
-                            .toLowerCase()
-                            .contains(textoPesquisa.toLowerCase()),
+                        (u) => u.nome.toLowerCase().contains(
+                          textoPesquisa.toLowerCase(),
+                        ),
                       )
                       .toList();
                 }
@@ -119,6 +123,15 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                   separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final usuario = dados[index];
+                    // final perfil = PerfilViewModel(
+                    //   idUsuario: usuario.id,
+                    //   nome: usuario.nome,
+                    //   email: usuario.email,
+                    //   pontos: usuario.pontos,
+                    //   saldo: usuario.saldo,
+                    //   biogradia: usuario.biografia
+                    //   gatoEquipado: , //GET GATO EQUIPADO POR ID
+                    // );
                     return ListTile(
                       title: Text(
                         usuario.nome,
@@ -130,7 +143,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                           Navigator.pushNamed(
                             context,
                             AppRotas.perfil,
-                            arguments: usuario,
+                            arguments: {'user': usuario, 'outroUser': true},
                           );
                         },
                       ),
