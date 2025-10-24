@@ -48,14 +48,14 @@ namespace APIMeow.Controllers
                     loginDiario.NumSequencia += 1;
                 }
                 loginDiario.UltimoLogin = DateTime.Now;
-                int pontosGanhos = 10 + (loginDiario.NumSequencia / 7 * 5);
-                if (pontosGanhos > 100)
+                int pontosGanhos = 60 + (loginDiario.NumSequencia / 7 * 10);
+                if (pontosGanhos > 200)
                 {
-                    pontosGanhos = 100;
+                    pontosGanhos = 200;
                 }
                 usuario.Pontos += pontosGanhos;
                 await db.SaveChangesAsync();
-                return Ok(new { mensagem = $"Login diário atualizado! Você ganhou {pontosGanhos} pontos.", pontosTotais = usuario.Pontos, sequenciaAtual = loginDiario.NumSequencia });
+                return Ok(new { mensagem = $"Login diário realizado! Você ganhou {pontosGanhos} pontos.", pontosTotais = usuario.Pontos, sequenciaAtual = loginDiario.NumSequencia });
             }
             return BadRequest("Você já fez login hoje.");
         }
@@ -67,7 +67,7 @@ namespace APIMeow.Controllers
         
         private bool PerdeuSequencia(DateTime ultimaData, DateTime dataAtual)
         {
-            return (dataAtual - ultimaData).TotalDays > 1;
+            return (dataAtual - ultimaData).TotalDays > 2;
         }
     }
 }

@@ -160,7 +160,7 @@ public class UsuarioController : ControllerBase
             Email = codeEntry.Email,
             Biografia = codeEntry.Biografia,
             Senha = new PasswordHasher<Usuario>().HashPassword(null, codeEntry.Senha),
-            Pontos = 1000,
+            Pontos = 1600,
             Saldo = 0
         };
 
@@ -179,7 +179,7 @@ public class UsuarioController : ControllerBase
         {
             IdUsuario = usuario.IdUsuario,
             NumSequencia = 1,
-            UltimoLogin = DateTime.Now
+            UltimoLogin = DateTime.Now - TimeSpan.FromDays(1)
         });
         db.CodeEmail.Remove(codeEntry);
         await db.SaveChangesAsync();
