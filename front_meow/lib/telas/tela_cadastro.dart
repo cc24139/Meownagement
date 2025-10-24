@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/BolasLogin.dart';
+import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
@@ -141,69 +143,167 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
           Center(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Center(
+              child: Center(
+                child: SizedBox(
+                  width: 300,
                   child: Column(
                     children: [
-                      SizedBox(
-                        width: 250,
-                        child: TextField(
-                          controller: txtUsuario,
-                          decoration: const InputDecoration(
-                            labelText: "Digite seu nome de usuario",
-                            hintText: "Ronaldo123",
-                            border: OutlineInputBorder(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Cadastro",
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 45,
+                              fontFamily: "Londrina",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Username",
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        controller: txtUsuario,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 250,
-                        child: TextField(
-                          controller: txtEmail,
-
-                          decoration: const InputDecoration(
-                            labelText: "Digite seu Email",
-                            hintText: "catlover@meow.com",
-                            border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Email",
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        controller: txtEmail,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
                       
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 250,
-                        child: TextField(
-                          controller: txtSenha,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: "Digite sua senha",
-                            border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Senha",
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        controller: txtSenha,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 250,
-                        child: TextField(
-                          controller: txtConfirmaSenha,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: "Confirme sua senha",
-                            border: OutlineInputBorder(),
+                      
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Confirmar Senha",
+                            style: TextStyle(
+                              color: cores.secundaria,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      TextField(
+                        controller: txtConfirmaSenha,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: cores.tercearia,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      
+                      const SizedBox(height: 15),
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Já possui uma conta? "),
                             SizedBox(
-                              width: 250,
+                              width: 60,
                               child: TextButton(
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(
@@ -211,28 +311,35 @@ class _TelaCadastroState extends State<TelaCadastro> {
                                     AppRotas.login,
                                   );
                                 },
-                                child: const Text("Login"),
+                                child: const Text(
+                                  "Login",
+                                  style: TextStyle(color: Colors.blueAccent),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: _fazerCadastro,
-                          child: Text("Cadastrar"),
-                        ),
+                      const SizedBox(height: 15),
+                      ElevatedButtonWidget(
+                        text: "Cadastrar",
+                        onPressed: () {
+                          _fazerCadastro();
+                        },
+                        highSize: ButtonSize.grande,
+                        widthSize: ButtonSize.grande,
+                        catColors: cores,
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: () => _CodigoExistente(),
-                          child: Text("Já tenho código"),
-                        ),
+                      const SizedBox(height: 20),
+                      ElevatedButtonWidget(
+                        text: "Já tenho código",
+                        onPressed: () {
+                          _CodigoExistente();
+                        },
+                        highSize: ButtonSize.grande,
+                        widthSize: ButtonSize.grande,
+                        catColors: cores,
                       ),
                     ],
                   ),

@@ -140,7 +140,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                       trailing: IconButton(
                         icon: Icon(Icons.send, color: cores.complementar),
                         onPressed: () {
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                             context,
                             AppRotas.perfil,
                             arguments: {'user': usuario, 'outroUser': true},
