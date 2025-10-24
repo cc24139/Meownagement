@@ -97,7 +97,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           ),
                           CircleAvatar(
                             backgroundImage: AssetImage(
-                              '../assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Pequena.jpg',
+                              '/assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Pequena.jpg',
                             ),
                             radius: 30,
                           ),
