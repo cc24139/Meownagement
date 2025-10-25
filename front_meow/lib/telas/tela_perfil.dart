@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
@@ -77,11 +76,11 @@ class _TelaPerfilState extends State<TelaPerfil> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Builder(
+                    child: 
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Builder(
                             builder: (context) {
                               return IconButton(
                                 onPressed: () {
@@ -95,40 +94,47 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               );
                             },
                           ),
+                        SizedBox(height: 10),
+                        Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           CircleAvatar(
-                            backgroundImage: AssetImage(
-                              'assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Pequena.jpg',
-                            ),
-                            radius: 30,
+                                backgroundImage: AssetImage(
+                                  'assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Media.jpg',
+                                ),
+                                radius: 60,
+                              ),
+                              Text(
+                                widget.user.nome,
+                                style: TextStyle(
+                                  color: cores.complementar,
+                                  fontSize: 48,
+                                  fontFamily: "Londrina",
+                                  decorationColor: cores.complementar,
+                                ),
+                              ),
+                              IconButton(  
+                                onPressed: () {
+                                  if (widget.outroUser) return;
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    AppRotas.alterarPerfil,
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.edit_square,
+                                  color: widget.outroUser
+                                      ? Colors.transparent
+                                      : cores.complementar,
+                                  size: 30,
+                                  fill: 0.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            widget.user.nome,
-                            style: TextStyle(
-                              color: cores.complementar,
-                              fontSize: 45,
-                              fontFamily: "Londrina",
-                              decorationColor: cores.complementar,
-                            ),
-                          ),
-                          IconButton(  
-                            onPressed: () {
-                              if (widget.outroUser) return;
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRotas.alterarPerfil,
-                              );
-                            },
-                            icon: Icon(
-                              Icons.edit_square,
-                              color: widget.outroUser
-                                  ? Colors.transparent
-                                  : cores.complementar,
-                              size: 30,
-                              fill: 0.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -146,8 +152,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 Text(
                   dados.length.toString(),
                   style: TextStyle(
-                    color: cores.secundaria,
-                    fontSize: 20,
+                    color: cores.corTerciaria,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -160,7 +166,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
             SizedBox(
               width: 360,
               child: Text(
-                widget.user.biografia.toString(),
+                widget.user.biografia.toString() == "null" ? "Sem biografia." : widget.user.biografia.toString(),
                 style: TextStyle(color: cores.complementar, fontSize: 16),
               ),
             ),

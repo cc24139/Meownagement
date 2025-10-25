@@ -65,7 +65,7 @@ class _TelaInicialState extends State<TelaInicial> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
-                child: const Text("Fechar"),
+                child: const Text("Ir ao Login"),
               ),
             ],
           );
@@ -101,7 +101,6 @@ class _TelaInicialState extends State<TelaInicial> {
               ),
             ),
           ),
-
 
           SingleChildScrollView(
             child: Padding(
