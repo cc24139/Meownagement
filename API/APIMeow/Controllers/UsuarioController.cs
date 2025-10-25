@@ -233,13 +233,8 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Usuário não encontrado.");
         }
-        else if (usuarioExistente.Pontos < 467)
-        {
-            return Conflict("Você não tem pontos suficientes para editar seu perfil. (Custa 467 pontos)");
-        }
         else
         {
-            usuarioExistente.Pontos -= 467;
             usuarioExistente.Biografia = model.Biografia ?? usuarioExistente.Biografia;
             usuarioExistente.Nome = model.Nome ?? usuarioExistente.Nome;
         }

@@ -131,6 +131,10 @@ class UsuarioServices extends Http {
       body: jsonEncode(<String, String>{'Nome': Nome, 'Biografia': Biografia}),
     );
 
+    print(response.body);
+
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       return ("Usuário editado com sucesso");
     } else {
