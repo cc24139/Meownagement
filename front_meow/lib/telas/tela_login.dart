@@ -305,7 +305,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
                       const SizedBox(height: 50),
                       ElevatedButtonWidget(
-                        text: "Cadastrar",
+                        text: "Entrar",
                         onPressed: () {
                           _fazerLogin();
                         },

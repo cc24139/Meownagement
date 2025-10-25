@@ -34,6 +34,43 @@ class _TelaInicialState extends State<TelaInicial> {
       setState(() {
         meowCoins = usuario.pontos;
       });
+    }).catchError((error) {
+      // nao esta logado -> manda de volta pro login
+      // pop-up avisando que precisa logar
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: cores.corPrimaria,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Row(
+              children: [
+                Icon(Icons.error_outline, color: Colors.redAccent),
+                SizedBox(width: 8),
+                const Text(
+                  "Erro",
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            content: const Text(
+              "Você precisa estar logado para acessar essa tela.",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                child: const Text("Fechar"),
+              ),
+            ],
+          );
+        },
+      );
     });
   }
 
