@@ -24,6 +24,24 @@ class Metaservices extends Http {
     }
   }
 
+  Future<List<Metas>> listarMetasClassificao(int idClassificacao) async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse('${urlMetas}/listar/classificacao/$idClassificacao'),
+      headers: Http.headers,
+    );
+    if (response.statusCode == 200) {
+      List<Metas> metas = List<Metas>.from(
+        json.decode(response.body).map((e) => Metas.fromJson(e))
+      );
+      return metas.where((meta) => meta.feita == 'N').toList();
+    } else {
+      throw Exception('Erro ao listar Metas por classificação');
+    }
+  }
+
   Future<List<Metas>> listarMetasConcluidas() async {
     if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');

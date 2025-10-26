@@ -92,20 +92,22 @@ namespace APIMeow.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-            var recorrencia = new Recorrencia
+                var recorrencia = new Recorrencia
+                {
+                    QtsDias = model.QtsDias,
+                    QtsAnos = model.QtsAnos,
+                    QtsMeses = model.QtsMeses
+                };
+                db.Recorrencia.Add(recorrencia);
+                await db.SaveChangesAsync(); // Aqui o EF Core atualiza o recorrencia.IdRecorrencia com o valor do banco
+                
+                // Agora o IdRecorrencia está populado com o valor auto-incrementado do banco
+                return Ok(new { data = recorrencia.IdRecorrencia });
+            }
+            catch (Exception ex)
             {
-                QtsDias = model.QtsDias,
-                QtsAnos = model.QtsAnos,
-                QtsMeses = model.QtsMeses
-            };
-            db.Recorrencia.Add(recorrencia);
-            await db.SaveChangesAsync();
-            return Ok("Criado com sucesso");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

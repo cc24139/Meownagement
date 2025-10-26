@@ -28,9 +28,9 @@ class TransacaoServices extends Http {
     final body = {
       'Nome': Nome,
       'QuantiaDinheiro': QuantiaDinheiro,
-      'Feita': 'N',
       'DataFinalizacao': DataFinalizacao,
       'IdRecorrencia': IdRecorrencia,
+      'Feita': 'N',
       'IdClassificacao': IdClassificacao,
       'IdMeta': idMeta,
       'IdCofrinho': idCofrinho,

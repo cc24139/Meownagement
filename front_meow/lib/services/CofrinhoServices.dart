@@ -28,7 +28,31 @@ class CofrinhoServices extends Http {
     }
   }
 
-  Future<List<Cofrinho>> ListarCofrinhosconcluidos() async {
+  Future<List<Cofrinho>> ListarCofrinhosClassificacao(
+    int idClassificacao,
+  ) async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlCofrinho}/listar/classificacao/$idClassificacao"),
+      headers: Http.headers,
+    );
+
+    if (response.statusCode == 200) {
+      // Converte o JSON para lista de Cofrinho e filtra apenas os não concluídos
+      final List<Cofrinho> todosCofrinhos = List<Cofrinho>.from(
+        json.decode(response.body).map((e) => Cofrinho.fromJson(e)),
+      );
+
+      // Filtra apenas os cofrinhos não concluídos (feita == 'N')
+      return todosCofrinhos.where((cofrinho) => cofrinho.feita == 'N').toList();
+    } else {
+      throw Exception('Failed to load cofrinho');
+    }
+  }
+
+  Future<List<Cofrinho>> ListarCofrinhosConcluidos() async {
     if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
