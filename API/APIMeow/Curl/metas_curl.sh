@@ -14,12 +14,16 @@ curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listarConcluidas" \
 curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listarNaoConcluidas" \
   -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
 
+### Listar metas por classificação (autorizado)
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listar/classificacao/1" \
+  -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
+
 ### Listar metas por data (autorizado)
-curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listar/2025-10-01" \
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listar/data/2025-10-01" \
   -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
 
 ### Listar metas por período (autorizado)
-curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listar/2025-10-01/2025-10-31" \
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/metas/listar/periodo/2025-10-01/2025-10-31" \
   -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
 
 ### Listar quanto foi gasto por metas (autorizado)

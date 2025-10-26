@@ -26,7 +26,7 @@ namespace APIMeow.Controllers
             return Ok(listMetas);
         }
         [Authorize]
-        [HttpGet("metas/listar/$idClassificacao")]
+        [HttpGet("metas/listar/classificacao/{idClassificacao}")]
         public async Task<IActionResult> ListarMetasPorClassificacao(int idClassificacao, DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -52,7 +52,7 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
-        [HttpGet("metas/listar/{dataEffetivas}")]
+        [HttpGet("metas/listar/data/{dataEffetivas}")]
         public async Task<IActionResult> ListarMetasPorData(DateTime dataEffetivas, DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -61,7 +61,7 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
-        [HttpGet("metas/listar/{dataInicio}/{dataFim}")]
+        [HttpGet("metas/listar/periodo/{dataInicio}/{dataFim}")]
         public async Task<IActionResult> ListarMetasPorPeriodo(DateTime dataInicio, DateTime dataFim, DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

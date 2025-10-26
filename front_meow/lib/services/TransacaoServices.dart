@@ -97,7 +97,7 @@ class TransacaoServices extends Http {
     // API expects date in yyyy-MM-dd format in route
     final dateStr = date.toIso8601String().split('T').first;
     final response = await http.get(
-      Uri.parse("${urlTransacao}/listar/$dateStr"),
+      Uri.parse("${urlTransacao}/listar/data/$dateStr"),
       headers: Http.headers,
     );
 
@@ -118,7 +118,7 @@ class TransacaoServices extends Http {
     final startStr = start.toIso8601String().split('T').first;
     final endStr = end.toIso8601String().split('T').first;
     final response = await http.get(
-      Uri.parse("${urlTransacao}/listar/$startStr/$endStr"),
+      Uri.parse("${urlTransacao}/listar/periodo/$startStr/$endStr"),
       headers: Http.headers,
     );
 

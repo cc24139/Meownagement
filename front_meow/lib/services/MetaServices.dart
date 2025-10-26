@@ -64,7 +64,7 @@ class Metaservices extends Http {
     }
     final dataStr = data.toIso8601String();
     final response = await http.get(
-      Uri.parse('${urlMetas}/listar/$dataStr'),
+      Uri.parse('${urlMetas}/listar/data/$dataStr'),
       headers: Http.headers,
     );
     if (response.statusCode == 200) {
@@ -86,7 +86,7 @@ class Metaservices extends Http {
     final inicioStr = dataInicio.toIso8601String();
     final fimStr = dataFim.toIso8601String();
     final response = await http.get(
-      Uri.parse('${urlMetas}/listar/$inicioStr/$fimStr'),
+      Uri.parse('${urlMetas}/listar/periodo/$inicioStr/$fimStr'),
       headers: Http.headers,
     );
     if (response.statusCode == 200) {
@@ -108,7 +108,7 @@ class Metaservices extends Http {
       body: json.encode(Metas.toJson()),
     );
     if (response.statusCode == 200) {
-      return  true;
+      return true;
     } else {
       throw Exception('Erro ao criar Metas: ${response.body}');
     }

@@ -40,7 +40,7 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
-        [HttpGet("cofrinho/listar/$idClassificao")]
+        [HttpGet("cofrinho/listar/classificacao/{idClassificacao}")]
         public async Task<IActionResult> ListarCofrinhosPorClassificacao(int idClassificacao, DBMeownagement db)
         {
             try
@@ -117,7 +117,7 @@ namespace APIMeow.Controllers
         }
 
         [Authorize]
-        [HttpGet("cofrinho/listar/{data}")]
+        [HttpGet("cofrinho/listar/data/{data}")]
         public async Task<IActionResult> ListarCofrinhosPorData(DateTime data, DBMeownagement db)
         {
             try

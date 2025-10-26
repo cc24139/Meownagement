@@ -14,8 +14,12 @@ curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/cofrinho/listarConcluidos"
 curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/cofrinho/listarNaoConcluidos" \
   -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
 
+### Listar cofrinhos por classificação (autorizado)
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/cofrinho/listar/classificacao/1" \
+  -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
+
 ### Listar por data (autorizado) - forneça data ISO
-curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/cofrinho/listar/2025-10-13" \
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/cofrinho/listar/data/2025-10-13" \
   -H "Authorization: Bearer COLE_AQUI_SEU_TOKEN"
 
 ### Listar ganho total e cofrinhos (autorizado)

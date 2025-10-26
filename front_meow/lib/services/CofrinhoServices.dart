@@ -69,7 +69,7 @@ class CofrinhoServices extends Http {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
-      Uri.parse("${urlCofrinho}/listar/${data.toIso8601String()}"),
+      Uri.parse("${urlCofrinho}/listar/data/${data.toIso8601String()}"),
       headers: Http.headers,
     );
 

@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
 
 class Recorrenciaservices extends Http {
-  static String urlRecorrencia = "${Http.url}/recorrencias";
+  static String urlRecorrencia = "${Http.url}/recorrencia";
   static String? token = localStorage.getItem('token');
 
   // Posts
@@ -25,7 +25,8 @@ class Recorrenciaservices extends Http {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<Recorrencia>.from(
-          data.map((recorrencia) => Recorrencia.fromJson(recorrencia)));
+        data.map((recorrencia) => Recorrencia.fromJson(recorrencia)),
+      );
     } else {
       throw Exception('Failed to load recorrencias');
     }

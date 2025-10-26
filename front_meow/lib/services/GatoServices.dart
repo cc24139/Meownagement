@@ -31,7 +31,7 @@ class GatoServices extends Http {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
     final response = await http.get(
-      Uri.parse("${urlGato}/buscar/$id"),
+      Uri.parse("${urlGato}/listarIdGato/$id"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
 

@@ -15,12 +15,12 @@ curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/transacoes/listar/recorren
 
 ### 3) Listar transações por data específica (autorizado)
 # data no formato ISO (ex: 2025-10-13)
-curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/transacoes/listar/2025-10-13" \
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/transacoes/listar/data/2025-10-13" \
   
 
 ### 4) Listar transações por período (autorizado)
 # dataInicio e dataFim no formato ISO
-curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/transacoes/listar/2025-10-01/2025-10-31" \
+curl -X GET "https://cookiebeco.roney.stein.nom.br/v1/transacoes/listar/periodo/2025-10-01/2025-10-31" \
   
 
 ### 5) Listar transações positivas (autorizado)

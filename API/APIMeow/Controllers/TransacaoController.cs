@@ -32,7 +32,7 @@ public class TransacaoController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("transacoes/listar/{dataEffetiva}")]
+    [HttpGet("transacoes/listar/data/{dataEffetiva}")]
     public async Task<IActionResult> ListarTransacoesPorData(string dataEffetiva, DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,7 +46,7 @@ public class TransacaoController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("transacoes/listar/{dataInicioStr}/{dataFimStr}")]
+    [HttpGet("transacoes/listar/periodo/{dataInicioStr}/{dataFimStr}")]
     public async Task<IActionResult> ListarTransacoesPorPeriodo(string dataInicioStr, string dataFimStr, DBMeownagement db)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
