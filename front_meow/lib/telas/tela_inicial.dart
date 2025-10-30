@@ -7,6 +7,7 @@ import 'package:front_meow/Widgets/MeowCoinWidget.dart';
 import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/services/TransacaoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/LoginDiarioServices.dart';
 import 'package:localstorage/localstorage.dart';
@@ -20,58 +21,100 @@ class TelaInicial extends StatefulWidget {
 
 class _TelaInicialState extends State<TelaInicial> {
   QualInfo infoAtual = QualInfo.metas;
-  CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
+  CatColors cores = CatColors(
+    paleta: int.parse(localStorage.getItem('paleta') ?? '1'),
+  );
   int meowCoins = 0;
 
   @override
   void initState() {
     super.initState();
     _carregarDados();
+    _atualizarTransacoes();
+  }
+
+  void _atualizarTransacoes() async {
+    var transacao = TransacaoServices();
+    await transacao.AtualizarTransaceos()
+        .then((mensagem) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: cores.corPrimaria,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                title: Column(
+                  children: [
+                    Icon(Icons.update, color: cores.complementar),
+                    SizedBox(width: 8),
+                    Text(
+                      mensagem,
+                      style: TextStyle(
+                        color: cores.complementar,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        })
+        .catchError((error) {
+          // opcional: tratar erro
+        });
   }
 
   void _carregarDados() async {
-    UsuarioServices().PerfilUsuario().then((usuario) {
-      setState(() {
-        meowCoins = usuario.pontos;
-      });
-    }).catchError((error) {
-      // nao esta logado -> manda de volta pro login
-      // pop-up avisando que precisa logar
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: cores.corPrimaria,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            title: Row(
-              children: [
-                Icon(Icons.error_outline, color: Colors.redAccent),
-                SizedBox(width: 8),
-                const Text(
-                  "Erro",
-                  style: TextStyle(
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
+    UsuarioServices()
+        .PerfilUsuario()
+        .then((usuario) {
+          setState(() {
+            meowCoins = usuario.pontos!;
+          });
+        })
+        .catchError((error) {
+           print(error);
+          // nao esta logado -> manda de volta pro login
+          // pop-up avisando que precisa logar
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: cores.corPrimaria,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              ],
-            ),
-            content: const Text(
-              "Você precisa estar logado para acessar essa tela.",
-              style: TextStyle(color: Colors.redAccent),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
-                child: const Text("Ir ao Login"),
-              ),
-            ],
+                title: Row(
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.redAccent),
+                    SizedBox(width: 8),
+                    const Text(
+                      "Erro",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                content: const Text(
+                  "Você precisa estar logado para acessar essa tela.",
+                  style: TextStyle(color: Colors.redAccent),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, '/login'),
+                    child: const Text("Ir ao Login"),
+                  ),
+                ],
+              );
+            },
           );
-        },
-      );
-    });
+        });
   }
 
   @override
@@ -79,23 +122,22 @@ class _TelaInicialState extends State<TelaInicial> {
     return Scaffold(
       body: Stack(
         children: [
-          
           Align(
             alignment: Alignment.topCenter,
             child: ClipPath(
               clipper: BolasCimaTelaInicial(),
-              child: Container( 
+              child: Container(
                 height: 275,
                 color: cores.corSecundaria.withOpacity(0.9),
               ),
             ),
           ),
-          
+
           Align(
             alignment: Alignment.bottomCenter,
             child: ClipPath(
               clipper: BolasBaixoTelaInicial(),
-              child: Container( 
+              child: Container(
                 height: 275,
                 color: cores.corSecundaria.withOpacity(0.9),
               ),
@@ -112,12 +154,16 @@ class _TelaInicialState extends State<TelaInicial> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Builder(
-                        builder: (context) { 
+                        builder: (context) {
                           return IconButton(
                             onPressed: () {
                               Scaffold.of(context).openDrawer();
                             },
-                            icon: Icon(Icons.menu, color: cores.complementar, size: 25),
+                            icon: Icon(
+                              Icons.menu,
+                              color: cores.complementar,
+                              size: 25,
+                            ),
                           );
                         },
                       ),
@@ -128,96 +174,105 @@ class _TelaInicialState extends State<TelaInicial> {
                           // logico do login diario
 
                           Logindiarioservices()
-                            .AtualizarLoginDiario()
-                            .then((mensagem) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: cores.corPrimaria,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                title: Row(
-                                  children: [
-                                    Icon(Icons.star, color: cores.complementar),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      "Login Diário",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                content: Text(
-                                  mensagem,
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: cores.complementar,
-                                      foregroundColor: cores.corPrimaria,
+                              .AtualizarLoginDiario()
+                              .then((mensagem) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: cores.corPrimaria,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                    ),
-                                    onPressed: () => Navigator.of(context).pop(),
-                                    child: const Text("Fechar"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }).catchError((error) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: cores.corPrimaria,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                title: Row(
-                                  children: [
-                                    Icon(Icons.error_outline, color: Colors.redAccent),
-                                    SizedBox(width: 8),
-                                    const Text(
-                                      "Erro",
-                                      style: TextStyle(
-                                        color: Colors.redAccent,
-                                        fontWeight: FontWeight.bold,
+                                      title: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.star,
+                                            color: cores.complementar,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            "Login Diário",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                content: Text(
-                                  error.toString(),
-                                  style: const TextStyle(color: Colors.redAccent),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context).pop(),
-                                    child: const Text("Fechar"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        });
-
-                        }, 
+                                      content: Text(
+                                        mensagem,
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: cores.complementar,
+                                            foregroundColor: cores.corPrimaria,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text("Fechar"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              })
+                              .catchError((error) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: cores.corPrimaria,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.error_outline,
+                                            color: Colors.redAccent,
+                                          ),
+                                          SizedBox(width: 8),
+                                          const Text(
+                                            "Erro",
+                                            style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      content: Text(
+                                        error.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.redAccent,
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text("Fechar"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              });
+                        },
                         icon: Icon(Icons.calendar_today),
                         color: cores.complementar,
                         iconSize: 40,
-                      )
+                      ),
                     ],
                   ),
 
-
-                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -262,13 +317,12 @@ class _TelaInicialState extends State<TelaInicial> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Telainicialinfoswidget(qualInfo: infoAtual, cor: cores)
+                  Telainicialinfoswidget(qualInfo: infoAtual, cor: cores),
                 ],
               ),
             ),
           ),
-      
-        ]
+        ],
       ),
       drawer: Menulateralwidget(),
       backgroundColor: cores.corPrimaria,

@@ -78,8 +78,9 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
   Future<void> _salvar() async {
     try {
       DateFormat inputFormat = DateFormat('yyyy/MM/dd');
-      DateTime parsedDate =
-          DateFormat('dd/MM/yyyy').parse(_dateController.text);
+      DateTime parsedDate = DateFormat(
+        'dd/MM/yyyy',
+      ).parse(_dateController.text);
       int? idRecorrencia = null;
       if (valorDropdownRecorrencia != "Sem Recorrencia") {
         idRecorrencia = await Recorrenciaservices().CriarRecorrencia(
@@ -102,32 +103,44 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
         idMeta,
         idCofrinho,
       );
-      AlertDialog(
-        title: Text("Sucesso"),
-        content: Text("Transação criada com sucesso!"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushReplacementNamed(
-                context,
-                AppRotas.inicial,
-              );
-            },
-            child: Text("OK"),
-          ),
-        ],
+
+      // Mostrar o AlertDialog de sucesso
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Sucesso"),
+            content: Text("Transação criada com sucesso!"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Fecha o dialog
+                  Navigator.pushReplacementNamed(context, AppRotas.inicial);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
       );
-      print(resp);
-      Navigator.pushReplacementNamed(
-        context,
-        AppRotas.inicial,
-      );
-      
     } catch (e) {
-      AlertDialog(
-        title: Text("Erro"),
-        content: Text("Erro ao criar transação: ${e.toString()}"),
+      // Mostrar o AlertDialog de erro
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Erro"),
+            content: Text("Erro ao criar transação: ${e.toString()}"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
       );
     }
   }

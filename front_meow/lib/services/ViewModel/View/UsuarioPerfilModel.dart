@@ -9,6 +9,7 @@ class UsuarioPerfilModel {
   List<Gato>? gatosDesbloqueados;
 
   UsuarioPerfilModel({
+    this.idUsuario,
     this.nome,
     this.biografia,
     this.gatoEquipado,
@@ -18,17 +19,20 @@ class UsuarioPerfilModel {
 
   factory UsuarioPerfilModel.fromJson(Map<String, dynamic> json) {
     return UsuarioPerfilModel(
+      idUsuario: json['idUsuario'],
       nome: json['nome'],
       biografia: json['biografia'],
+      pontos: json['pontos'],
       gatoEquipado: json['gatoEquipado'] != null
           ? Gato.fromJson(json['gatoEquipado'])
           : null,
       gatosDesbloqueados: json['gatosDesbloqueados'] != null
-          ? (json['gatosDesbloqueados'] as List)
-                .map((i) => Gato.fromJson(i))
-                .toList()
+          ? List<Gato>.from(
+              json['gatosDesbloqueados']
+                  .map((gato) => Gato.fromJson(gato)),
+            )
           : null,
-      pontos: json['pontos'],
+        
     );
   }
 

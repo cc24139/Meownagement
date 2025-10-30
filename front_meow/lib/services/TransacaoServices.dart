@@ -249,20 +249,18 @@ class TransacaoServices extends Http {
     );
   }
 
-  Future<String> AtualizarTransaceos(int id) async {
+  Future<String> AtualizarTransaceos() async {
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }
 
     final response = await http.get(
-      Uri.parse(
-        "${Http.url.replaceAll('/transacoes', '')}/transacao/atualizar",
-      ),
+      Uri.parse("${Http.url}/transacao/atualizar"),
       headers: Http.headers,
     );
 
     if (response.statusCode == 200) {
-      return ("Transações atualizadas com sucesso");
+      return (response.body);
     }
     throw Exception(
       'Failed to update transacoes: ${response.statusCode} ${response.body}',

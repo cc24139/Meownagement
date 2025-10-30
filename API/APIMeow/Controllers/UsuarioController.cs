@@ -86,9 +86,10 @@ public class UsuarioController : ControllerBase
         var gatoEquipado = await db.Gatos.Where(g =>
         g.IdGato == db.UsuarioGato.Where(ug => ug.IdUsuario == id && ug.Equipado == 'S')
         .Select(ug => ug.IdGato).FirstOrDefault()).FirstOrDefaultAsync();
-        var gatosDesbloqueados = await db.UsuarioGato
+        var gatosDesbloqueados = await db.Gatos.Where(g => db.UsuarioGato
             .Where(ug => ug.IdUsuario == id)
-            .Select(ug => new { ug.IdGato, ug.Copias, ug.Equipado })
+            .Select(ug => ug.IdGato)
+            .Contains(g.IdGato))
             .ToListAsync();
 
         return Ok(new { usuario.IdUsuario, usuario.Nome, usuario.Biografia, usuario.Pontos, gatoEquipado, gatosDesbloqueados });
@@ -110,7 +111,12 @@ public class UsuarioController : ControllerBase
         {
             return NotFound("Usuário não encontrado.");
         }
-        return Ok(new { usuario.IdUsuario, usuario.Nome, usuario.Email, usuario.Biografia, usuario.Pontos, usuario.Saldo, gatoEquipado });
+        var gatosDesbloqueados = await db.Gatos.Where(g => db.UsuarioGato
+            .Where(ug => ug.IdUsuario == int.Parse(IdUsuario))
+            .Select(ug => ug.IdGato)
+            .Contains(g.IdGato))
+            .ToListAsync();
+        return Ok(new { usuario.IdUsuario, usuario.Nome, usuario.Biografia, usuario.Pontos, gatoEquipado, gatosDesbloqueados });
     }
 
     [HttpPost]

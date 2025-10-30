@@ -24,7 +24,7 @@ void main() {
           child: MetasPageView(
             metas: [],
             cor: CatColors(paleta: 2),
-            metaServices: locator<Metaservices>(),
+            metaServices: Metaservices(),
           ),
         ),
       ),

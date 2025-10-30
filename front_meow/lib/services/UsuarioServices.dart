@@ -1,4 +1,5 @@
 import 'package:front_meow/services/GatoServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
@@ -92,13 +93,17 @@ class UsuarioServices extends Http {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{'Nome': nome, 'Email': email, 'Senha': senha})
+      body: jsonEncode(<String, String>{
+        'Nome': nome,
+        'Email': email,
+        'Senha': senha,
+      }),
     );
 
     if (response.statusCode == 200) {
       return (true);
     } else {
-      throw Exception("Erro no cadastro:  "+ response.body.toString());
+      throw Exception("Erro no cadastro:  " + response.body.toString());
     }
   }
 
@@ -145,24 +150,20 @@ class UsuarioServices extends Http {
   Future<String> EsqueceuSenhaUsuario(String Nome, String Senha) async {
     final response = await http.patch(
       Uri.parse("${urlUsuario}/esquecerSenha"),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
+      headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{'Email': Nome, 'Senha': Senha}),
     );
 
     if (response.statusCode == 200) {
       return ("Codigo enviado para o email cadastrado");
     } else {
-      throw Exception('Failed to change password usuario:'+ response.statusCode.toString());
+      throw Exception(
+        'Failed to change password usuario:' + response.statusCode.toString(),
+      );
     }
   }
 
-  Future<bool> ConfirmarEsquecerSenhaUsuario(
-    String Email,
-    String Code,
-  ) async {
-   
+  Future<bool> ConfirmarEsquecerSenhaUsuario(String Email, String Code) async {
     final response = await http.patch(
       Uri.parse("${urlUsuario}/confirmarEsquecerSenha"),
       headers: <String, String>{
@@ -179,11 +180,29 @@ class UsuarioServices extends Http {
     }
   }
 
-  Future<PerfilViewModel> PerfilUsuario() async {
+  Future<UsuarioPerfilModel> UsuarioPorId(int idUsuario) async {
     if (Http.token == null || Http.token!.isEmpty) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
       //tem que redirecionar para a tela de login
     }
+    final response = await http.get(
+      Uri.parse("${urlUsuario}/$idUsuario"),
+      headers: Http.headers,
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return UsuarioPerfilModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load usuario por id');
+    }
+  }
+
+  Future<UsuarioPerfilModel> PerfilUsuario() async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+      //tem que redirecionar para a tela de login
+    }
+ 
     final response = await http.get(
       Uri.parse("${urlUsuario}/perfil"),
       headers: Http.headers,
@@ -193,7 +212,7 @@ class UsuarioServices extends Http {
       final data = json.decode(response.body);
       print(data);
       print(Http.token);
-      return PerfilViewModel.fromJson(data);
+      return UsuarioPerfilModel.fromJson(data);
     } else {
       print(response.statusCode);
       print(Http.token);

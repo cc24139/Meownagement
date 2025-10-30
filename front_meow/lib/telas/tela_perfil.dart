@@ -8,12 +8,13 @@ import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaPerfil extends StatefulWidget {
-  final PerfilViewModel user;
+  final UsuarioPerfilModel user;
   final bool outroUser;
 
   const TelaPerfil({super.key, required this.user, required this.outroUser});
@@ -23,6 +24,7 @@ class TelaPerfil extends StatefulWidget {
 
 class _TelaPerfilState extends State<TelaPerfil> {
   final GatoServices serv = locator<GatoServices>();
+  UsuarioPerfilModel? usuarioPerfil;
   List<Gato> dados = [];
   bool _carregando = false;
   CatColors cores = CatColors(
@@ -31,10 +33,16 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
   Future<void> _carregarGatos() async {
     try {
-      List<Gato> gatosDaApi = await serv.ListarDesbloqueados();
-
-      setState(() {
-        dados = gatosDaApi.reversed.toList();
+      UsuarioServices usuarioServices = locator<UsuarioServices>();
+      setState(() async {
+        if (widget.outroUser) {
+          usuarioPerfil = await usuarioServices.UsuarioPorId(
+            widget.user!.idUsuario!,
+          );
+        } else {
+          usuarioPerfil = await usuarioServices.PerfilUsuario();
+        }
+        dados = usuarioPerfil!.gatosDesbloqueados!.reversed.toList();
         _carregando = false;
       });
     } catch (e) {
@@ -76,37 +84,36 @@ class _TelaPerfilState extends State<TelaPerfil> {
               child: Row(
                 children: [
                   Expanded(
-                    child: 
-                    Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Builder(
-                            builder: (context) {
-                              return IconButton(
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
-                                },
-                                icon: Icon(
-                                  Icons.menu,
-                                  color: cores.complementar,
-                                  size: 30,
-                                ),
-                              );
-                            },
-                          ),
+                          builder: (context) {
+                            return IconButton(
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              icon: Icon(
+                                Icons.menu,
+                                color: cores.complementar,
+                                size: 30,
+                              ),
+                            );
+                          },
+                        ),
                         SizedBox(height: 10),
                         Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvatar(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
                                 backgroundImage: AssetImage(
-                                  'assets/images/${widget.user.gatoEquipado.nomeImagem}/${widget.user.gatoEquipado.nomeImagem}Media.jpg',
+                                  'assets/images/${usuarioPerfil!.gatoEquipado?.nomeImagem}/${usuarioPerfil!.gatoEquipado?.nomeImagem}Media.jpg',
                                 ),
                                 radius: 60,
                               ),
                               Text(
-                                widget.user.nome,
+                                usuarioPerfil!.nome.toString(),
                                 style: TextStyle(
                                   color: cores.complementar,
                                   fontSize: 48,
@@ -114,7 +121,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                                   decorationColor: cores.complementar,
                                 ),
                               ),
-                              IconButton(  
+                              IconButton(
                                 onPressed: () {
                                   if (widget.outroUser) return;
                                   Navigator.pushReplacementNamed(
@@ -166,7 +173,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
             SizedBox(
               width: 360,
               child: Text(
-                widget.user.biografia.toString() == "null" ? "Sem biografia." : widget.user.biografia.toString(),
+                usuarioPerfil!.biografia.toString() == "null"
+                    ? "Sem biografia."
+                    : usuarioPerfil!.biografia.toString(),
                 style: TextStyle(color: cores.complementar, fontSize: 16),
               ),
             ),

@@ -143,7 +143,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                           Navigator.pushReplacementNamed(
                             context,
                             AppRotas.perfil,
-                            arguments: {'user': usuario, 'outroUser': true},
+                            arguments: {'user': usuario.id, 'outroUser': true},
                           );
                         },
                       ),

@@ -44,7 +44,7 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
   void atualizarMeowCoins() {
     UsuarioServices().PerfilUsuario().then((usuario) {
       setState(() {
-        meowCoins = usuario.pontos;
+        meowCoins = usuario.pontos!;
       });
     });
   }

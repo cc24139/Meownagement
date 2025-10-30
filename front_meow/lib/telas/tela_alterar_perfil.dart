@@ -29,8 +29,8 @@ class _TelaAlterarPerfilState extends State<TelaAlterarPerfil> {
   void _carregarDados() async {
     UsuarioServices().PerfilUsuario().then((usuario) {
       setState(() {
-        meowCoins = usuario.pontos;
-        txtNome.text = usuario.nome;
+        meowCoins = usuario!.pontos!;
+        txtNome.text = usuario!.nome!;
         txtBio.text = usuario.biografia ?? "Sem biografia.";
       });
     }).catchError((error) {

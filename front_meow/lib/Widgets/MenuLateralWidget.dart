@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_meow/locator.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class Menulateralwidget extends StatefulWidget {
@@ -13,26 +14,27 @@ class Menulateralwidget extends StatefulWidget {
 
 class _MenulateralwidgetState extends State<Menulateralwidget> {
   final UsuarioServices serv = locator<UsuarioServices>();
-  late Future<PerfilViewModel> _userFuture;
+  late Future<UsuarioPerfilModel> _userFuture;
 
   @override
   void initState() {
     super.initState();
-    _userFuture = serv.PerfilUsuario();
+   
   }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: const Color(0xFFF1F1F1),
-      child: FutureBuilder<PerfilViewModel>(
-        future: _userFuture,
+      child: FutureBuilder<UsuarioPerfilModel>(
+        future: serv.PerfilUsuario(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print("Erro ao carregar perfil para o menu: ${snapshot.error}");
           }
 
-          final PerfilViewModel? user = snapshot.data;
+          final UsuarioPerfilModel? user = snapshot.data;
+          print(user);
 
           return ListView(
             padding: EdgeInsets.zero,
