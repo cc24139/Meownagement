@@ -4,9 +4,9 @@ import 'package:front_meow/Widgets/HistoricoTransferencias.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/Widgets/TransacoesRecorrentes.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/models/Cofrinho.dart';
 import 'package:front_meow/models/transacao.dart';
+import 'package:front_meow/services/ViewModel/View/MetaPorcentagemVIewModel.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
 import 'SemMetasEncontradas.dart';
@@ -19,9 +19,9 @@ class Telainicialinfoswidget extends StatelessWidget {
   final QualInfo qualInfo; // Transações, Metas etc
   final CatColors cor;
 
-  final Metaservices metaServices = locator<Metaservices>();
-  final CofrinhoServices cofrinhoServices = locator<CofrinhoServices>();
-  final TransacaoServices transacaoServices = locator<TransacaoServices>();
+  final dynamic metaServices = locator<Metaservices>();
+  final dynamic cofrinhoServices = locator<CofrinhoServices>();
+  final dynamic transacaoServices = locator<TransacaoServices>();
 
   Telainicialinfoswidget({
     super.key,
@@ -44,8 +44,8 @@ class Telainicialinfoswidget extends StatelessWidget {
   }
 
    Widget _metas() {
-    return FutureBuilder<List<Metas>>(
-    future: metaServices.listarMetas(),
+    return FutureBuilder<List<MetasPorcentagemViewModel>>(
+    future: metaServices.listarMetasComPorcentagem(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const Center(child: CircularProgressIndicator());
@@ -54,7 +54,7 @@ class Telainicialinfoswidget extends StatelessWidget {
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
         return SemMetasEncontradas(cor: cor);
       } else {
-        return MetasPageView(metas: snapshot.data!, cor: cor, metaServices: metaServices);
+        return MetasPageView(metas: snapshot.data!, cor: cor);
       }
     },
   );
