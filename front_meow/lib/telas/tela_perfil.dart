@@ -32,16 +32,26 @@ class _TelaPerfilState extends State<TelaPerfil> {
   );
 
   Future<void> _carregarGatos() async {
+    setState(() {
+      _carregando = true;
+    });
+
     try {
       UsuarioServices usuarioServices = locator<UsuarioServices>();
-      setState(() async {
-        if (widget.outroUser) {
-          usuarioPerfil = await usuarioServices.UsuarioPorId(
-            widget.user!.idUsuario!,
-          );
-        } else {
-          usuarioPerfil = await usuarioServices.PerfilUsuario();
-        }
+
+      // Fazer o trabalho assíncrono ANTES do setState
+      UsuarioPerfilModel usuarioCarregado;
+      if (widget.outroUser) {
+        usuarioCarregado = await usuarioServices.UsuarioPorId(
+          widget.user.idUsuario!,
+        );
+      } else {
+        usuarioCarregado = await usuarioServices.PerfilUsuario();
+      }
+
+      // Agora atualizar o estado de forma síncrona
+      setState(() {
+        usuarioPerfil = usuarioCarregado;
         dados = usuarioPerfil!.gatosDesbloqueados!.reversed.toList();
         _carregando = false;
       });

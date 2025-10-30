@@ -4,6 +4,7 @@ import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
+import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
@@ -140,10 +141,17 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                       trailing: IconButton(
                         icon: Icon(Icons.send, color: cores.complementar),
                         onPressed: () {
+                          var perfil = new UsuarioPerfilModel(
+                            idUsuario: usuario.id,
+                            nome: usuario.nome,
+                            pontos: usuario.pontos,
+                            biografia: usuario.biografia,
+                            gatoEquipado: null, //GET GATO EQUIPADO POR ID
+                          );
                           Navigator.pushReplacementNamed(
                             context,
                             AppRotas.perfil,
-                            arguments: {'user': usuario.id, 'outroUser': true},
+                            arguments: {'user': perfil, 'outroUser': true},
                           );
                         },
                       ),
