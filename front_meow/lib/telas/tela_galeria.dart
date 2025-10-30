@@ -46,7 +46,7 @@ class CardGato extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => TelaGato(idGato: id, nomeGato: nome),
+                  builder: (ctx) => TelaGato(idGato: id, nomeGato: nome, imagemGato: imagem),
                 ),
               );
             },

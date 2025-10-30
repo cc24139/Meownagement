@@ -31,6 +31,7 @@ class Telainicialinfoswidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(qualInfo);
     switch (qualInfo) {
       case QualInfo.transacoes:
         return Column(children: [_transacoes()]);
@@ -52,8 +53,10 @@ class Telainicialinfoswidget extends StatelessWidget {
       } else if (snapshot.hasError) {
         return Center(child: Text('Erro ao carregar metas'));
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        print(snapshot.data);
         return SemMetasEncontradas(cor: cor);
       } else {
+        print(snapshot.data);
         return MetasPageView(metas: snapshot.data!, cor: cor);
       }
     },

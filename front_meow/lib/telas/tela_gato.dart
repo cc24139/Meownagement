@@ -7,8 +7,9 @@ import 'package:localstorage/localstorage.dart';
 class TelaGato extends StatefulWidget {
   final int? idGato;
   final String nomeGato;
+  final String imagemGato;
 
-  const TelaGato({super.key, this.idGato, required this.nomeGato});
+  const TelaGato({super.key, this.idGato, required this.nomeGato, required this.imagemGato});
 
   @override
   State<TelaGato> createState() => _TelaGatoState();
@@ -69,7 +70,7 @@ class _TelaGatoState extends State<TelaGato> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image.asset(
-                          "../../assets/images/doudouCat/doudouCatGrande.jpg",
+                          "assets/images/${widget.imagemGato}/${widget.imagemGato}Grande.jpg",
                           width: 300,
                           height: 300,
                         ),
