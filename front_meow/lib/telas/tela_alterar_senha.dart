@@ -43,6 +43,15 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, size: 30, color: cores.primaria),
+              onPressed: () => {
+                Navigator.pushReplacementNamed(context, AppRotas.login)
+              },
+            ),
+          ),
 
           Center(
             child: SingleChildScrollView(
@@ -55,7 +64,7 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Alterar Senha",
+                            "Recuperar Senha",
                             style: TextStyle(
                               color: cores.secundaria,
                               fontSize: 45,
