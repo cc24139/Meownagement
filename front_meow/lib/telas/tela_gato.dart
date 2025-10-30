@@ -2,16 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaGato extends StatefulWidget {
-  const TelaGato({super.key});
+  final int? idGato;
+  final String nomeGato;
+
+  const TelaGato({super.key, this.idGato, required this.nomeGato});
 
   @override
   State<TelaGato> createState() => _TelaGatoState();
 }
 
 class _TelaGatoState extends State<TelaGato> {
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +31,7 @@ class _TelaGatoState extends State<TelaGato> {
               Expanded(child: Container(height: 3, color: cores.complementar)),
               const SizedBox(width: 10),
               Text(
-                "Ronaldo",
+                widget.nomeGato,
                 style: TextStyle(
                   fontFamily: "Londrina",
                   fontWeight: FontWeight.bold,

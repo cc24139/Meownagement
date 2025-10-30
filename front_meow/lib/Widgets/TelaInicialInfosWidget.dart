@@ -54,7 +54,7 @@ class Telainicialinfoswidget extends StatelessWidget {
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
         return SemMetasEncontradas(cor: cor);
       } else {
-        return MetasPageView(metas: snapshot.data!, cor: cor,);
+        return MetasPageView(metas: snapshot.data!, cor: cor, metaServices: metaServices);
       }
     },
   );
