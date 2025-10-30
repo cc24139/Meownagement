@@ -17,7 +17,7 @@ class CatColors {
       case 2:
         primaria = Color(0xFFECF0F1);
         secundaria = Color(0xFF2C3E50);
-        tercearia = Color(0xFF34495E);
+        tercearia = Color(0xFF6B95BE);
         complementar = Colors.black;
       case 3:
         primaria = Color(0xFFF5DEB3); 

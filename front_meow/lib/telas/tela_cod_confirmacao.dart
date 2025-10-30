@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
+import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
+import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 
 class TelaCodConfirmacao extends StatefulWidget {
@@ -40,29 +43,36 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
     }
   }
 
+  CatColors cores = CatColors(paleta: 2);
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Confirmação por Email",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Londrina",
-          ),
-        ),
-        centerTitle: true,
-      ),
+    CatColors cores = CatColors(paleta: 2);
+    return Scaffold(     
+      backgroundColor: cores.corPrimaria,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Confirmação por Email",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Londrina",
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 150),
               Text(
                 "Digite o código de 6 dígitos enviado para:",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: cores.secundaria),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10),
@@ -71,14 +81,15 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF512DA8),
+                  color: cores.tercearia,
                 ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 50),
               OtpTextField(
                 numberOfFields: 6,
-                borderColor: Color(0xFF512DA8),
+                disabledBorderColor: cores.tercearia,
+                focusedBorderColor: cores.secundaria,
                 fieldWidth: 50,
                 fieldHeight: 60,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -87,7 +98,7 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
                 textStyle: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: cores.secundaria,
                 ),
                 decoration: InputDecoration(contentPadding: EdgeInsets.all(8)),
                 borderRadius: BorderRadius.circular(8),
@@ -121,18 +132,12 @@ class _TelaCodConfirmacaoState extends State<TelaCodConfirmacao> {
                 },
               ),
               SizedBox(height: 30),
-              TextButton(
-                onPressed: () {
-                  // _enviarCodigo();
-                },
-                child: Text(
-                  "Reenviar Código",
-                  style: TextStyle(
-                    color: Color(0xFF512DA8),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+              ElevatedButtonWidget(
+                text: "Reenviar Código",
+                onPressed: (){}, 
+                highSize: ButtonSize.muitoPequeno, 
+                widthSize: ButtonSize.pequeno, 
+                catColors: cores
               ),
               SizedBox(height: 20),
               SizedBox(
