@@ -8,7 +8,7 @@ namespace APIMeow.ViewModels.Visualization
     public class CofrinhoView
     {
         public Cofrinho cofrinho { get; set; }
-        public List<Transacao> transacoes { get; set; }
+    
         public decimal totalGanho { get; set; }
     }
 }

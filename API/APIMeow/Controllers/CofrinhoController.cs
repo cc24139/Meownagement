@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using APIMeow.ViewModels;
+using APIMeow.ViewModels.Visualization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace APIMeow.Controllers
 {
@@ -184,14 +186,18 @@ namespace APIMeow.Controllers
                     .Where(c => c.IdUsuario == user.IdUsuario)
                     .ToListAsync();
 
-                var porcentagens = cofrinhos.Select(async c => new
+                var listCofrinhoViewm = new List<CofrinhoView>();
+                foreach (var cofrinho in cofrinhos)
                 {
-                    c.IdCofrinho,
-                    c.Nome,
-                    PorcentagemConcluida = await CalcularPorcentagemConcluida(c, db)
-                });
+                    var porcentagem = await CalcularPorcentagemConcluida(cofrinho, db);
+                    listCofrinhoViewm.Add(new CofrinhoView
+                    {
+                        cofrinho = cofrinho,
+                        totalGanho = porcentagem
+                    });
+                }
 
-                return Ok(new { cofrinhos, porcentagens });
+                return Ok(new { listCofrinhoViewm });
             }
             catch (Exception ex)
             {
@@ -241,7 +247,7 @@ namespace APIMeow.Controllers
                 {
                     IdUsuario = user.IdUsuario,
                     Economia = model.Economia,
-                    QtsMoedas = 2 * model.DataCriacao.Day + 67,
+                    QtsMoedas = 100 * Math.Abs(model.DataTermino.DayOfYear - model.DataCriacao.DayOfYear) + 67,
                     DinheiroEconomizado = 0,
                     DataCriacao = model.DataCriacao,
                     DataTermino = model.DataTermino,

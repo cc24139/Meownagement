@@ -105,8 +105,8 @@ namespace APIMeow.Controllers
         }
         //Na aplicacao 
         [Authorize]
-        [HttpGet("metas/listar/ ")]
-        public async Task<IActionResult> ListarPorcetagemGasto(DBMeownagement db)
+        [HttpGet("metas/listar/porcentagem")]
+        public async Task<IActionResult> ListarPorcentagemGasto(DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
@@ -115,7 +115,7 @@ namespace APIMeow.Controllers
             foreach (var meta in listMetas)
             {
                 var Idtransacoes = await db.MetaCofrinhoTransacao
-                .Where(mct => mct.IdMeta == meta.IdMeta).ToListAsync();
+                .Where(mct => mct.IdMeta == meta.IdMeta && db.Transacao.Any(t => t.IdTransacao == mct.IdTransacao && t.Feita == 'S')).ToListAsync();
                 if (Idtransacoes.Count == 0) continue;
                 decimal gastoTotal = 0;
                 var listTransacoes = new List<Transacao>();
@@ -132,7 +132,7 @@ namespace APIMeow.Controllers
                 {
                     metas = meta,
                     transacoes = listTransacoes,
-                    totalGasto = gastoTotal
+                    totalGasto = gastoTotal / meta.GastoLimite * 100
                 });
             }
 
@@ -180,7 +180,7 @@ namespace APIMeow.Controllers
                 {
                     Nome = meta.Nome,
                     GastoLimite = meta.GastoLimite,
-                    QtsMoedas = 2 * meta.DataCriacao.Day + 67 ,
+                    QtsMoedas = 100 * Math.Abs(meta.DataTermino.DayOfYear - meta.DataCriacao.DayOfYear) + 67,
                     DataCriacao = meta.DataCriacao,
                     DataTermino = meta.DataTermino,
                     Feita = meta.Feita,

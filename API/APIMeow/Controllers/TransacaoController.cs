@@ -198,9 +198,9 @@ public class TransacaoController : ControllerBase
             transacao.Feita = 'S';
             transacao.SaldoAtual = transacao.QuantiaDinheiro + usuarioAtual.Saldo;
             usuarioAtual.Saldo += transacao.QuantiaDinheiro;
-            if(transacao.IdRecorrencia != null)
-                if (await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados))
-                    qtsAtualizadas++;
+            if (transacao.IdRecorrencia != null)
+                await GerarNovaTransacao(transacao, db, metaCofrinhoTransacaoLigados);
+            qtsAtualizadas++;
         }
         await AtualizarSaldo(userId, db);
         await db.SaveChangesAsync();

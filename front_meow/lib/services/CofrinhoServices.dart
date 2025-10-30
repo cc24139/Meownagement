@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:core';
 
-import 'package:front_meow/services/ViewModel/CreateCofrinhoViewModel.dart';
 import 'package:front_meow/models/Cofrinho.dart';
+import 'package:front_meow/services/ViewModel/Create/CreateCofrinhoViewModel.dart';
+import 'package:front_meow/services/ViewModel/View/CofrinhoPorcentagemViewModel.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,6 +27,27 @@ class CofrinhoServices extends Http {
       );
     } else {
       throw Exception('Failed to load cofrinho');
+    }
+  }
+
+  Future<List<CofrinhoPorcentagemViewModel>>
+  ListarCofrinhosPorcentagem() async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse("${urlCofrinho}/listarPorcentagem"),
+      headers: Http.headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> lista = data['listCofrinhoViewm'] ?? [];
+      return List<CofrinhoPorcentagemViewModel>.from(
+        lista.map((e) => CofrinhoPorcentagemViewModel.fromJson(e)),
+      );
+    } else {
+      throw Exception('Failed to load cofrinho porcentagem');
     }
   }
 

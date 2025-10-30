@@ -105,9 +105,25 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
       AlertDialog(
         title: Text("Sucesso"),
         content: Text("Transação criada com sucesso!"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacementNamed(
+                context,
+                AppRotas.inicial,
+              );
+            },
+            child: Text("OK"),
+          ),
+        ],
       );
       print(resp);
-      Navigator.pushReplacementNamed(context, AppRotas.inicial);
+      Navigator.pushReplacementNamed(
+        context,
+        AppRotas.inicial,
+      );
+      
     } catch (e) {
       AlertDialog(
         title: Text("Erro"),

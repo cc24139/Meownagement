@@ -73,6 +73,28 @@ public class UsuarioController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("usuarios/{id}")]
+    public async Task<IActionResult> ObterUsuarioPorId([FromRoute] int id, DBMeownagement db)
+    {
+        var usuario = await db.Usuario
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.IdUsuario == id);
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        var gatoEquipado = await db.Gatos.Where(g =>
+        g.IdGato == db.UsuarioGato.Where(ug => ug.IdUsuario == id && ug.Equipado == 'S')
+        .Select(ug => ug.IdGato).FirstOrDefault()).FirstOrDefaultAsync();
+        var gatosDesbloqueados = await db.UsuarioGato
+            .Where(ug => ug.IdUsuario == id)
+            .Select(ug => new { ug.IdGato, ug.Copias, ug.Equipado })
+            .ToListAsync();
+
+        return Ok(new { usuario.IdUsuario, usuario.Nome, usuario.Biografia, usuario.Pontos, gatoEquipado, gatosDesbloqueados });
+    }
+
+    [Authorize]
     [HttpGet("usuarios/perfil")]
     public async Task<IActionResult> ObterPerfilUsuario(DBMeownagement db)
     {

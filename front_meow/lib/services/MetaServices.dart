@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'package:front_meow/services/ViewModel/CreateMetasViewModel.dart';
+
 import 'package:front_meow/models/Meta.dart';
+import 'package:front_meow/services/ViewModel/Create/CreateMetasViewModel.dart';
+import 'package:front_meow/services/ViewModel/View/MetaPorcentagemVIewModel.dart';
 import 'package:front_meow/services/serv.dart';
 import 'package:http/http.dart' as http;
 
@@ -91,6 +93,25 @@ class Metaservices extends Http {
       );
     } else {
       throw Exception('Erro ao listar Metas por data');
+    }
+  }
+
+  Future<List<MetasPorcentagemViewModel>> listarMetasComPorcentagem() async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+    }
+    final response = await http.get(
+      Uri.parse('${urlMetas}/listar/porcentagem'),
+      headers: Http.headers,
+    );
+    if (response.statusCode == 200) {
+      return List<MetasPorcentagemViewModel>.from(
+        json.decode(response.body).map(
+              (e) => MetasPorcentagemViewModel.fromJson(e),
+        ),
+      );
+    } else {
+      throw Exception('Erro ao listar Metas com porcentagem');
     }
   }
 
