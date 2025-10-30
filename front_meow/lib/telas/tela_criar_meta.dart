@@ -6,7 +6,7 @@ import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/MetaServices.dart';
-import 'package:front_meow/services/ViewModel/CreateMetasViewModel.dart';
+import 'package:front_meow/services/ViewModel/Create/CreateMetasViewModel.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 import 'package:localstorage/localstorage.dart';
 
