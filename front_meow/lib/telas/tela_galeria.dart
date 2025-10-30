@@ -4,6 +4,7 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/gato.dart';
+import 'package:front_meow/telas/tela_gato.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -38,42 +39,54 @@ class CardGato extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              bloqueado
-                  ? 'assets/images/$imagem/${imagem}PequenaPB.jpg'
-                  : 'assets/images/$imagem/${imagem}Pequena.jpg',
-            ),
-            const SizedBox(height: 10),
-            Text(nome),
-            if (!bloqueado)
-              ElevatedButtonWidget(
-                text: equipado ? "Equipado" : "Equipar",
-                onPressed: () async {
-                  if (equipado) return;
-
-                  localStorage.setItem("gatoEquipado", id.toString());
-
-                  // Chamar o callback para recarregar a tela
-                  if (onEquipar != null) {
-                    onEquipar!();
-                  }
-                },
-                highSize: ButtonSize.pequeno,
-                widthSize: ButtonSize.pequeno,
-                catColors: equipado
-                    ? CatColors(
-                        paleta: int.parse(localStorage.getItem("paleta")!),
-                      )
-                    : CatColors(paleta: 4),
+    return GestureDetector(
+      onTap: bloqueado
+          ? null
+          : () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => TelaGato(idGato: id, nomeGato: nome),
+                ),
+              );
+            },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                bloqueado
+                    ? 'assets/images/$imagem/${imagem}PequenaPB.jpg'
+                    : 'assets/images/$imagem/${imagem}Pequena.jpg',
               ),
-          ],
+              const SizedBox(height: 10),
+              Text(nome),
+              if (!bloqueado)
+                ElevatedButtonWidget(
+                  text: equipado ? "Equipado" : "Equipar",
+                  onPressed: () async {
+                    if (equipado) return;
+
+                    localStorage.setItem("gatoEquipado", id.toString());
+
+                    // Chamar o callback para recarregar a tela
+                    if (onEquipar != null) {
+                      onEquipar!();
+                    }
+                  },
+                  highSize: ButtonSize.pequeno,
+                  widthSize: ButtonSize.pequeno,
+                  catColors: equipado
+                      ? CatColors(
+                          paleta: int.parse(localStorage.getItem("paleta")!),
+                        )
+                      : CatColors(paleta: 4),
+                ),
+            ],
+          ),
         ),
       ),
     );

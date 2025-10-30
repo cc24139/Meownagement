@@ -51,7 +51,13 @@ class MyApp extends StatelessWidget {
         "/criarMeta"      : (context) => const TelaCriarMeta(),
         "/gacha"          : (context) => const TelaGacha(),
         "/galeria"        : (context) => const TelaGaleria(),
-        "/gato"           : (context) => const TelaGato(),
+        "/gato"           : (context) {
+                                      final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+                                      return TelaGato(
+                                        idGato: args['idGato'],
+                                        nomeGato: args['nomeGato'],
+                                      );
+                                      },
         "/gatoDoUser"     : (context) => const TelaGatoDoUser(),
         "/gaveta"         : (context) => const TelaGaveta(),
         "/inicial"        : (context) => const TelaInicial(),
