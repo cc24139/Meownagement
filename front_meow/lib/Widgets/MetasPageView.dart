@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/GraficoConclusaoWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/services/ViewModel/View/MetaPorcentagemVIewModel.dart';
-import 'package:front_meow/services/metaServices.dart';
-import 'package:front_meow/locator.dart';
 
 // var meta1 = Metas(idMeta: 1, nome: "Viajar para o Japão", gastoLimite: 5000,
 //              qtsMoedas: 10,feita: "Não",dataCriacao: DateTime.now(),
@@ -24,7 +21,6 @@ void main() {
           child: MetasPageView(
             metas: [],
             cor: CatColors(paleta: 2),
-            metaServices: Metaservices(),
           ),
         ),
       ),
@@ -33,15 +29,13 @@ void main() {
 }
 
 class MetasPageView extends StatelessWidget {
-  final Metaservices metaServices;
-  final List<Metas> metas;
+  final List<MetasPorcentagemViewModel> metas;
   final CatColors cor;
 
   const MetasPageView({
     super.key,
     required this.metas,
     required this.cor,
-    required this.metaServices,
   });
 
   @override
@@ -63,103 +57,58 @@ class MetasPageView extends StatelessWidget {
     );
   }
 
-  Widget _metaCard(Metas meta) {
-    return FutureBuilder<List<MetasPorcentagemViewModel>>(
-      future: metaServices.listarMetasComPorcentagem(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: cor.corTerciaria, width: 2),
-              borderRadius: BorderRadius.circular(16),
+  Widget _metaCard(MetasPorcentagemViewModel metaPorcentagem) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: cor.corTerciaria, width: 2),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: cor.corTerciaria.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            metaPorcentagem.meta.nome,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            child: const Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: cor.corTerciaria, width: 2),
-              borderRadius: BorderRadius.circular(16),
+          ),
+          const SizedBox(height: 80),
+          Text(
+            'R\$ ${metaPorcentagem.meta.gastoLimite.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 18,
+              fontFamily: 'Londrina',
+              color: Color(0x93888888),
             ),
-            child: Center(child: Text('Erro ao carregar meta')),
-          );
-        } else {
-          final listaMetasPorcentagem = snapshot.data ?? [];
-          final metaPorcentagem = listaMetasPorcentagem.firstWhere(
-            (m) => m.meta.idMeta == meta.idMeta,
-            orElse: () => MetasPorcentagemViewModel(
-              meta: meta,
-              transacoes: [],
-              totalGasto: 0.0,
+          ),
+          Text(
+            'R\$ ${metaPorcentagem.totalGasto.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 36,
+              fontFamily: 'Londrina',
+              color: Colors.black,
             ),
-          );
-
-          final porcentagem = metaPorcentagem.meta.gastoLimite > 0
-              ? (metaPorcentagem.totalGasto /
-                    metaPorcentagem.meta.gastoLimite *
-                    100)
-              : 0.0;
-
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: cor.corTerciaria, width: 2),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: cor.corTerciaria.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  metaPorcentagem.meta.nome,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 80),
-                Text(
-                  'R\$ ${metaPorcentagem.meta.gastoLimite.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Londrina',
-                    color: Color(0x93888888),
-                  ),
-                ),
-                Text(
-                  'R\$ ${metaPorcentagem.totalGasto.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontFamily: 'Londrina',
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 80),
-                GraficoConclusaoWidget(
-                  porcentagem: porcentagem.toInt(),
-                  catColors: cor,
-                ),
-              ],
-            ),
-          );
-        }
-      },
+          ),
+          const SizedBox(height: 80),
+          GraficoConclusaoWidget(
+            porcentagem: metaPorcentagem.totalGasto.toInt(),
+            catColors: cor,
+          ),
+        ],
+      ),
     );
   }
 }

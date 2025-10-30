@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
                                       return TelaGato(
                                         idGato: args['idGato'],
                                         nomeGato: args['nomeGato'],
+                                        imagemGato: args['imagemGato'],
                                       );
                                       },
         "/gatoDoUser"     : (context) => const TelaGatoDoUser(),

@@ -2,13 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/models/gato.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:front_meow/services/GatoServices.dart';
 
 class TelaGato extends StatefulWidget {
   final int? idGato;
   final String nomeGato;
+  final String imagemGato;
 
-  const TelaGato({super.key, this.idGato, required this.nomeGato});
+  const TelaGato({super.key, this.idGato, required this.nomeGato, required this.imagemGato});
 
   @override
   State<TelaGato> createState() => _TelaGatoState();
@@ -16,6 +19,22 @@ class TelaGato extends StatefulWidget {
 
 class _TelaGatoState extends State<TelaGato> {
   CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
+  GatoServices gatoServices = GatoServices();
+  double posseGato = 0.0;
+  double usoGato = 0.0;
+  int numeroCopias = 0;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarDados();
+  }
+
+  void _carregarDados() async {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +88,7 @@ class _TelaGatoState extends State<TelaGato> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image.asset(
-                          "../../assets/images/doudouCat/doudouCatGrande.jpg",
+                          "assets/images/${widget.imagemGato}/${widget.imagemGato}Grande.jpg",
                           width: 300,
                           height: 300,
                         ),
