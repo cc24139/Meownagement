@@ -104,6 +104,7 @@ class Metaservices extends Http {
       Uri.parse('${urlMetas}/listar/porcentagem'),
       headers: Http.headers,
     );
+
     if (response.statusCode == 200) {
       return List<MetasPorcentagemViewModel>.from(
         json.decode(response.body).map(

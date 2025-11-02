@@ -14,7 +14,7 @@ class MetasPorcentagemViewModel {
 
   factory MetasPorcentagemViewModel.fromJson(Map<String, dynamic> json) {
     MetasPorcentagemViewModel result = MetasPorcentagemViewModel(
-      meta: Metas.fromJson(json['meta']),
+      meta: Metas.fromJson(json['metas']),
       transacoes: List<Transacao>.from(
         (json['transacoes'] as List).map((e) => Transacao.fromJson(e)),
       ),
