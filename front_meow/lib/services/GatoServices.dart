@@ -85,7 +85,6 @@ class GatoServices extends Http {
       Uri.parse("${urlGato}/estaticas/$id"),
       headers: {HttpHeaders.authorizationHeader: 'Bearer ${Http.token}'},
     );
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return GatosEstaticasViewModel.fromJson(data);

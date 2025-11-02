@@ -2,16 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/gato.dart';
+import 'package:front_meow/services/ViewModel/GatosEstaticasViewModel.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:front_meow/services/GatoServices.dart';
 
 class TelaGato extends StatefulWidget {
-  final int? idGato;
+  final int idGato;
   final String nomeGato;
   final String imagemGato;
+  final int raridade;
 
-  const TelaGato({super.key, this.idGato, required this.nomeGato, required this.imagemGato});
+  const TelaGato({super.key, required this.idGato, required this.nomeGato, required this.imagemGato, required this.raridade});
 
   @override
   State<TelaGato> createState() => _TelaGatoState();
@@ -20,10 +21,7 @@ class TelaGato extends StatefulWidget {
 class _TelaGatoState extends State<TelaGato> {
   CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
   GatoServices gatoServices = GatoServices();
-  double posseGato = 0.0;
-  double usoGato = 0.0;
-  int numeroCopias = 0;
-
+  GatosEstaticasViewModel? estatisticas;
 
   @override
   void initState() {
@@ -32,7 +30,8 @@ class _TelaGatoState extends State<TelaGato> {
   }
 
   void _carregarDados() async {
-    
+    estatisticas = await gatoServices.EstaticasGatosId(widget.idGato);
+    setState(() {});
   }
 
   @override
@@ -74,9 +73,9 @@ class _TelaGatoState extends State<TelaGato> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    4,
+                    widget.raridade,
                     (_) =>
-                        Icon(Icons.pets, size: 50, color: cores.complementar),
+                        Icon(Icons.star, size: 50, color: cores.complementar),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -106,17 +105,12 @@ class _TelaGatoState extends State<TelaGato> {
 
                       SizedBox(height: 5),
                       Text(
-                        "Posse do gato: ${12.3.toString()}%",
+                        "Posse do gato: ${estatisticas?.qtsPossuem.toString() ?? 'carregando...'}%",
                         style: TextStyle(color: cores.corTerciaria),
                       ),
                       SizedBox(height: 5),
                       Text(
-                        "Uso do gato: ${1.23.toString()}%",
-                        style: TextStyle(color: cores.corTerciaria),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Numero de cópias: ${123.toString()}",
+                        "Numero de cópias: ${estatisticas?.qtsCopias.toString() ?? 'carregando...'}",
                         style: TextStyle(color: cores.corTerciaria),
                       ),
                     ],
