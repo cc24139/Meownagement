@@ -109,14 +109,22 @@ namespace APIMeow.Controllers
         public async Task<IActionResult> ListarPorcentagemGasto(DBMeownagement db)
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var listMetas = await db.Metas.Where(m => m.IdUsuario.ToString() == id).ToListAsync();
+            var listMetas = await db.Metas.Where(m => m.IdUsuario == int.Parse(id) && m.Feita == 'N').ToListAsync();
             var listMetaView = new List<MetaView>();
             if (listMetas.Count == 0) return Ok(0);
             foreach (var meta in listMetas)
             {
                 var Idtransacoes = await db.MetaCofrinhoTransacao
                 .Where(mct => mct.IdMeta == meta.IdMeta && db.Transacao.Any(t => t.IdTransacao == mct.IdTransacao && t.Feita == 'S')).ToListAsync();
-                if (Idtransacoes.Count == 0) continue;
+                if (Idtransacoes.Count == 0) {
+                    listMetaView.Add(new MetaView
+                    {
+                        metas = meta,
+                        transacoes = new List<Transacao>(),
+                        totalGasto = 0
+                    });
+                    continue;
+                };
                 decimal gastoTotal = 0;
                 var listTransacoes = new List<Transacao>();
                 foreach (var item in Idtransacoes)
@@ -128,11 +136,12 @@ namespace APIMeow.Controllers
                         listTransacoes.Add(transacao);
                     }
                 }
+                var porcentagem = Math.Abs(gastoTotal) / meta.GastoLimite * 100;
                 listMetaView.Add(new MetaView
                 {
                     metas = meta,
                     transacoes = listTransacoes,
-                    totalGasto = gastoTotal / meta.GastoLimite * 100
+                    totalGasto = porcentagem > 100 ? 100 : porcentagem
                 });
             }
 
