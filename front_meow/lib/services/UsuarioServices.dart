@@ -53,7 +53,6 @@ class UsuarioServices extends Http {
       Uri.parse("${urlUsuario}/listar"),
       headers: Http.headers,
     );
-    print(response.request);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<UsuarioViewModel>.from(
@@ -136,10 +135,6 @@ class UsuarioServices extends Http {
       body: jsonEncode(<String, String>{'Nome': Nome, 'Biografia': Biografia}),
     );
 
-    print(response.body);
-
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       return ("Usuário editado com sucesso");
     } else {
@@ -171,11 +166,9 @@ class UsuarioServices extends Http {
       },
       body: jsonEncode(<String, String>{'Email': Email, 'Code': Code}),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return true;
     } else {
-      print(response.body);
       throw Exception(response.body);
     }
   }
@@ -210,12 +203,8 @@ class UsuarioServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print(data);
-      print(Http.token);
       return UsuarioPerfilModel.fromJson(data);
     } else {
-      print(response.statusCode);
-      print(Http.token);
       throw Exception('Failed to load perfil usuario');
     }
   }

@@ -23,6 +23,7 @@ class CardGato extends StatelessWidget {
   final int id;
   final String nome;
   final String imagem;
+  final int raridade;
   final bool equipado;
   final VoidCallback? onEquipar;
   final bool bloqueado;
@@ -32,6 +33,7 @@ class CardGato extends StatelessWidget {
     required this.id,
     required this.nome,
     required this.imagem,
+    required this.raridade,
     this.equipado = false,
     this.onEquipar,
     required this.bloqueado,
@@ -46,7 +48,7 @@ class CardGato extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => TelaGato(idGato: id, nomeGato: nome, imagemGato: imagem),
+                  builder: (ctx) => TelaGato(idGato: id, nomeGato: nome, imagemGato: imagem, raridade: raridade),
                 ),
               );
             },
@@ -181,6 +183,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
                           id: gato.idGato,
                           nome: gato.nome,
                           imagem: gato.nomeImagem,
+                          raridade: gato.raridade,
                           equipado: gato.idGato == idGatoEquipado,
                           onEquipar: () => _equiparGato(
                             idGato: gato.idGato,
@@ -220,6 +223,7 @@ class _TelaGaleriaState extends State<TelaGaleria> {
                           imagem: gato.raridade == 6
                               ? "bloqueado"
                               : gato.nomeImagem,
+                          raridade: gato.raridade,
                           bloqueado: true,
                           equipado: false,
                         );

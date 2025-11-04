@@ -2,7 +2,7 @@ import 'package:front_meow/models/gato.dart';
 
 class GatosEstaticasViewModel {
   final Gato gato;
-  final int qtsPossuem;
+  final double qtsPossuem;
   final int qtsCopias;
 
   GatosEstaticasViewModel({
@@ -14,7 +14,7 @@ class GatosEstaticasViewModel {
   factory GatosEstaticasViewModel.fromJson(Map<String, dynamic> json) {
     return GatosEstaticasViewModel(
       gato: Gato.fromJson(json['gato']),
-      qtsPossuem: json['qtsPossuem'],
+      qtsPossuem: double.parse(json['qtsPossuem'].toStringAsFixed(2)),
       qtsCopias: json['qtsCopias'],
     );
   }
