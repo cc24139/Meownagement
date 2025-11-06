@@ -193,7 +193,7 @@ namespace APIMeow.Controllers
                     listCofrinhoViewm.Add(new CofrinhoView
                     {
                         cofrinho = cofrinho,
-                        totalGanho = porcentagem
+                        totalGanho = porcentagem > 100 ? 100 : porcentagem < 0 ? 0 : porcentagem
                     });
                 }
 
@@ -223,7 +223,7 @@ namespace APIMeow.Controllers
             cofrinho.DinheiroEconomizado = economias;
             db.Cofrinho.Update(cofrinho);
             await db.SaveChangesAsync();
-            return economias / cofrinho.Economia * 100;
+            return Math.Abs(economias) / cofrinho.Economia * 100;
         }
 
         [Authorize]

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
@@ -41,6 +43,41 @@ class UsuarioServices extends Http {
       }
     } catch (e) {
       throw Exception('Failed to login usuario');
+    }
+  }
+
+  Future<Usuario> ObterUsuarioLogado() async {
+    if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+      // tem que redirecionar para a tela de login
+    }
+    final response = await http.get(
+      Uri.parse("${urlUsuario}/listar/user"),
+      headers: Http.headers,
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return Usuario.fromJson(data);
+    } else {
+      throw Exception('Failed to load usuario logado');
+    }
+  }
+
+  Future<double> ObterSaldo() async {
+        if (Http.token == null || Http.token!.isEmpty) {
+      throw Exception('Você foi deslogado, por favor faça login novamente.');
+      // tem que redirecionar para a tela de login
+    }
+    final response = await http.get(
+      Uri.parse("${urlUsuario}/listar/user"),
+      headers: Http.headers,
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final user = Usuario.fromJson(data);
+      return user.saldo;
+    } else {
+      throw Exception('Failed to load usuario logado');
     }
   }
 

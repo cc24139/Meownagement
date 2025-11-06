@@ -85,6 +85,20 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
   @override
   Widget build(BuildContext context) {
+    // Se ainda estiver carregando ou não temos dados, mostrar indicador de progresso
+    if (_carregando || usuarioPerfil == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: cores.corSecundaria),
+        ),
+        backgroundColor: cores.primaria,
+        drawer: Menulateralwidget(),
+      );
+    }
+
+    // A partir daqui, usuarioPerfil não é nulo
+    final perfil = usuarioPerfil!;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -118,12 +132,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             children: [
                               CircleAvatar(
                                 backgroundImage: AssetImage(
-                                  'assets/images/${usuarioPerfil!.gatoEquipado?.nomeImagem}/${usuarioPerfil!.gatoEquipado?.nomeImagem}Media.jpg',
+                                  'assets/images/${perfil.gatoEquipado?.nomeImagem}/${perfil.gatoEquipado?.nomeImagem}Media.jpg',
                                 ),
                                 radius: 60,
                               ),
                               Text(
-                                usuarioPerfil!.nome.toString(),
+                                perfil.nome.toString(),
                                 style: TextStyle(
                                   color: cores.complementar,
                                   fontSize: 48,
@@ -183,9 +197,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
             SizedBox(
               width: 360,
               child: Text(
-                usuarioPerfil!.biografia.toString() == "null"
+                perfil.biografia.toString() == "null"
                     ? "Sem biografia."
-                    : usuarioPerfil!.biografia.toString(),
+                    : perfil.biografia.toString(),
                 style: TextStyle(color: cores.complementar, fontSize: 16),
               ),
             ),

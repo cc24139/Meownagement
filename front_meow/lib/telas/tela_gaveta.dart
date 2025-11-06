@@ -4,8 +4,12 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/models/Cofrinho.dart';
+import 'package:front_meow/models/classificacao.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
+import 'package:front_meow/services/CofrinhoServices.dart';
+import 'package:front_meow/services/ViewModel/Create/CreateCofrinhoViewModel.dart';
 import 'package:localstorage/localstorage.dart';
 
 class TelaGaveta extends StatefulWidget {
@@ -15,20 +19,39 @@ class TelaGaveta extends StatefulWidget {
   State<TelaGaveta> createState() => _TelaGavetaState();
 }
 
+List<Classificacao> listaClassificacao = <Classificacao>[
+  Classificacao(idClassificacao: 1, tipo: "Alimentação"),
+  Classificacao(idClassificacao: 2, tipo: "Moradia / Aluguel"),
+  Classificacao(idClassificacao: 3, tipo: "Contas e Serviços"),
+  Classificacao(idClassificacao: 4, tipo: "Transporte"),
+  Classificacao(idClassificacao: 5, tipo: "Saúde"),
+  Classificacao(idClassificacao: 6, tipo: "Educação"),
+  Classificacao(idClassificacao: 7, tipo: "Lazer"),
+  Classificacao(idClassificacao: 8, tipo: "Compras / Vestuário"),
+  Classificacao(idClassificacao: 9, tipo: "Salário / Receitas"),
+  Classificacao(idClassificacao: 10, tipo: "Investimentos"),
+];
+
 enum OpcoesRecorrencia { semanal, mensal, anual }
 
 void _cancelar(BuildContext context) {
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
 }
 
-void _salvar(BuildContext context) {
-  //TODO salvar na api os dados
+void _salvar(BuildContext context, CreateCofrinhoViewModel criarCofrinho) {
+  var cofrinho = CofrinhoServices();
+  try{
+    cofrinho.CriarCofrinho(criarCofrinho);
+  }catch(e){
+    print(e);
+  }
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
 }
 
 class _TelaGavetaState extends State<TelaGaveta> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   OpcoesRecorrencia? _opcoesRecorrencia = OpcoesRecorrencia.semanal;
+  String dropdownValue = listaClassificacao[0].tipo;
   final _valorMeta = CurrencyInputController(initialValue: 0.0);
   final _nomeMeta = TextEditingController();
   final _duracaoMeta = TextEditingController();
@@ -167,6 +190,60 @@ class _TelaGavetaState extends State<TelaGaveta> {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      Text(
+                        "Classificação da Meta",
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                      ),
+                      // Removido Expanded — não usar Expanded dentro de SingleChildScrollView (altura ilimitada)
+                      DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        alignment: AlignmentDirectional.center,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 2,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        value:
+                            listaClassificacao.any(
+                              (c) => c.tipo == dropdownValue,
+                            )
+                            ? dropdownValue
+                            : null,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onChanged: (String? value) =>
+                            setState(() => dropdownValue = value!),
+                        items: listaClassificacao.map<DropdownMenuItem<String>>(
+                          (Classificacao value) {
+                            return DropdownMenuItem<String>(
+                              value: value.tipo,
+                              child: Center(
+                                child: Text(
+                                  value.tipo,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,7 +375,22 @@ class _TelaGavetaState extends State<TelaGaveta> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () => _salvar(context),
+                      onPressed: () => _salvar(context,new CreateCofrinhoViewModel(
+                       nome: _nomeMeta.text,
+                       economia: _valorMeta.doubleValue,
+                       dataCriacao: DateTime.now(),
+                       dataTermino: DateTime.now().add(
+                         Duration(
+                           days: _opcoesRecorrencia == OpcoesRecorrencia.semanal
+                               ? int.parse(_duracaoMeta.text) * 7
+                               : _opcoesRecorrencia == OpcoesRecorrencia.mensal
+                                   ? int.parse(_duracaoMeta.text) * 30
+                                   : int.parse(_duracaoMeta.text) * 365,
+                         ),
+                       ),
+                        feita: "N",
+                        idClassificacao: 1,
+                      )),
                       child: Text(
                         "Criar",
                         style: TextStyle(

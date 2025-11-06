@@ -67,7 +67,7 @@ namespace APIMeow.Controllers
         
         private bool PerdeuSequencia(DateTime ultimaData, DateTime dataAtual)
         {
-            return (dataAtual - ultimaData).TotalDays > 2;
+            return Math.Abs((dataAtual - ultimaData).TotalDays) > 2;
         }
     }
 }

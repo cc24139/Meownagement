@@ -27,18 +27,25 @@ class TelaTransacoes extends StatefulWidget {
 enum OpcoesTransacao { despesa, receita }
 
 final List<Classificacao> listaClassificacao = <Classificacao>[
-  Classificacao(idClassificacao: 1, tipo: "Labubus"),
-  Classificacao(idClassificacao: 2, tipo: "Transporte"),
-  Classificacao(idClassificacao: 3, tipo: "Alimentação"),
-  Classificacao(idClassificacao: 4, tipo: "Lazer"),
+  Classificacao(idClassificacao: 1, tipo: "Alimentação"),
+  Classificacao(idClassificacao: 2, tipo: "Moradia / Aluguel"),
+  Classificacao(idClassificacao: 3, tipo: "Contas e Serviços"),
+  Classificacao(idClassificacao: 4, tipo: "Transporte"),
+  Classificacao(idClassificacao: 5, tipo: "Saúde"),
+  Classificacao(idClassificacao: 6, tipo: "Educação"),
+  Classificacao(idClassificacao: 7, tipo: "Lazer"),
+  Classificacao(idClassificacao: 8, tipo: "Compras / Vestuário"),
+  Classificacao(idClassificacao: 9, tipo: "Salário / Receitas"),
+  Classificacao(idClassificacao: 10, tipo: "Investimentos"),
 ];
-final List<String> listaRecorrencia = <String>[
-  "Sem Recorrencia",
-  "Diaria",
-  "Semanal",
-  "Mensal",
-  "Anual",
-];
+
+final Map<String, String> listaRecorrencia = {
+  "Sem Recorrencia": "",
+  "Diaria": "Quantos Dias",
+  "Semanal": "Quantas Semanas",
+  "Mensal": "Quantos Meses",
+  "Anual": "Quantos Anos",
+};
 
 void _cancelar(BuildContext context) {
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
@@ -50,7 +57,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
   final _valorController = CurrencyInputController(initialValue: 0.0);
 
   String dropdownValue = listaClassificacao.first.tipo;
-  String valorDropdownRecorrencia = listaRecorrencia.first;
+  String valorDropdownRecorrencia = listaRecorrencia.entries.first.key;
   int qtsDias = 0;
   int qtsMeses = 0;
   int qtsAnos = 0;
@@ -761,23 +768,23 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                         icon: const Icon(Icons.arrow_drop_down),
                         onChanged: (String? value) =>
                             setState(() => valorDropdownRecorrencia = value!),
-                        items: listaRecorrencia.map<DropdownMenuItem<String>>((
-                          String value,
-                        ) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Center(
-                              child: Text(
-                                value,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
+                        items: listaRecorrencia.keys
+                            .map<DropdownMenuItem<String>>((String key) {
+                              return DropdownMenuItem<String>(
+                                value: key,
+                                child: Center(
+                                  child: Text(
+                                    key,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                              );
+                            })
+                            .toList(),
                       ),
                       const SizedBox(height: 16),
                       if (valorDropdownRecorrencia != "Sem Recorrencia")
@@ -819,7 +826,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                           },
                           decoration: InputDecoration(
                             labelText:
-                                "Quantos ${valorDropdownRecorrencia.toLowerCase()}?",
+                                "${(listaRecorrencia[valorDropdownRecorrencia]?.isNotEmpty == true ? listaRecorrencia[valorDropdownRecorrencia]!.toLowerCase() : valorDropdownRecorrencia.toLowerCase())}?",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(

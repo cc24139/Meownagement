@@ -41,6 +41,20 @@ public class UsuarioController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("usuarios/listar/user")]
+    public async Task<IActionResult> ListarUsuarioLogado(DBMeownagement db){
+         var IdUsuario = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var usuario = await db.Usuario
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.IdUsuario == int.Parse(IdUsuario));
+        if (usuario == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+        return Ok(usuario);
+    }
+
+    [Authorize]
     [HttpGet]
     [Route("usuarios/listar")]
     public async Task<IActionResult> ListarUsuarios(DBMeownagement db)

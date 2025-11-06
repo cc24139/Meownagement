@@ -4,6 +4,7 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
+import 'package:front_meow/models/classificacao.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/MetaServices.dart';
 import 'package:front_meow/services/ViewModel/Create/CreateMetasViewModel.dart';
@@ -12,7 +13,6 @@ import 'package:localstorage/localstorage.dart';
 
 class TelaCriarMeta extends StatefulWidget {
   const TelaCriarMeta({super.key});
-
   @override
   State<TelaCriarMeta> createState() => _TelaCriarMetaState();
 }
@@ -23,27 +23,35 @@ void _cancelar(BuildContext context) {
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
 }
 
-void _salvar(BuildContext context, valor, nomeMeta, duracaoMeta, opcoesRecorrencia) {
+void _salvar(
+  BuildContext context,
+  valor,
+  nomeMeta,
+  duracaoMeta,
+  opcoesRecorrencia,
+  idClassificacao,
+) async {
   CreateMetasViewModel createMetasViewModel = CreateMetasViewModel(
     nome: nomeMeta,
     gastoLimite: valor,
-    idClassificacao: 1,
+    idClassificacao: idClassificacao,
     dataCriacao: DateTime.now(),
     dataTermino: DateTime.now().add(
       Duration(
-        days: int.parse(duracaoMeta) *
+        days:
+            int.parse(duracaoMeta) *
             (opcoesRecorrencia == OpcoesRecorrencia.semanal
                 ? 7
                 : opcoesRecorrencia == OpcoesRecorrencia.mensal
-                    ? 30
-                    : 365),
+                ? 30
+                : 365),
       ),
     ),
     feita: "N",
   );
-  try{
-  Metaservices().criarMetas(createMetasViewModel);
-  AlertDialog(
+  try {
+    Metaservices().criarMetas(createMetasViewModel);
+    AlertDialog(
       title: const Text('Sucesso'),
       content: const Text('Meta criada com sucesso!'),
       actions: [
@@ -53,8 +61,8 @@ void _salvar(BuildContext context, valor, nomeMeta, duracaoMeta, opcoesRecorrenc
         ),
       ],
     );
-   Navigator.pushReplacementNamed(context, AppRotas.inicial);
-  } catch(e){
+    Navigator.pushReplacementNamed(context, AppRotas.inicial);
+  } catch (e) {
     AlertDialog(
       title: const Text('Erro'),
       content: Text('Não foi possível criar a meta: $e'),
@@ -66,18 +74,31 @@ void _salvar(BuildContext context, valor, nomeMeta, duracaoMeta, opcoesRecorrenc
       ],
     );
   }
- 
 }
 
 class _TelaCriarMetaState extends State<TelaCriarMeta> {
+  List<Classificacao> listaClassificacao = <Classificacao>[
+    Classificacao(idClassificacao: 1, tipo: "Alimentação"),
+    Classificacao(idClassificacao: 2, tipo: "Moradia / Aluguel"),
+    Classificacao(idClassificacao: 3, tipo: "Contas e Serviços"),
+    Classificacao(idClassificacao: 4, tipo: "Transporte"),
+    Classificacao(idClassificacao: 5, tipo: "Saúde"),
+    Classificacao(idClassificacao: 6, tipo: "Educação"),
+    Classificacao(idClassificacao: 7, tipo: "Lazer"),
+    Classificacao(idClassificacao: 8, tipo: "Compras / Vestuário"),
+    Classificacao(idClassificacao: 9, tipo: "Salário / Receitas"),
+    Classificacao(idClassificacao: 10, tipo: "Investimentos"),
+  ];
   OpcoesRecorrencia? _opcoesRecorrencia = OpcoesRecorrencia.semanal;
+  String dropdownValue = "Alimentação";
+
   final _valorMeta = CurrencyInputController(initialValue: 0.0);
   final _nomeMeta = TextEditingController();
   final _duracaoMeta = TextEditingController();
 
-  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
-
-  @override
+  CatColors cores = CatColors(
+    paleta: int.parse(localStorage.getItem('paleta') ?? '1'),
+  );
   void dispose() {
     _valorMeta.dispose();
     _nomeMeta.dispose();
@@ -127,7 +148,7 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                           ),
                           Expanded(
                             child: Center(
-                              child:TitleTelaWidget(
+                              child: TitleTelaWidget(
                                 titulo: "Crie Suas Metas",
                                 tamanho: 50,
                                 qtsBolas: 11,
@@ -208,6 +229,59 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      Text(
+                        "Classificação da meta",
+                        style: TextStyle(color: cores.secundaria, fontSize: 20),
+                      ),
+                      // Removido Expanded — não usar Expanded dentro de SingleChildScrollView (altura ilimitada)
+                      DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        alignment: AlignmentDirectional.center,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: cores.corTerciaria,
+                              width: 2,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        value:
+                            listaClassificacao.any(
+                              (c) => c.tipo == dropdownValue,
+                            )
+                            ? dropdownValue
+                            : null,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onChanged: (String? value) =>
+                            setState(() => dropdownValue = value!),
+                        items: listaClassificacao.map<DropdownMenuItem<String>>(
+                          (Classificacao value) {
+                            return DropdownMenuItem<String>(
+                              value: value.tipo,
+                              child: Center(
+                                child: Text(
+                                  value.tipo,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +345,9 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                         controller: _duracaoMeta,
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.singleLineFormatter,
+                        ],
                         style: TextStyle(color: cores.secundaria, fontSize: 20),
                         decoration: InputDecoration(
                           prefix: Text(
@@ -337,7 +413,16 @@ class _TelaCriarMetaState extends State<TelaCriarMeta> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () => _salvar(context, _valorMeta.doubleValue, _nomeMeta.text, _duracaoMeta.text, _opcoesRecorrencia),
+                      onPressed: () => _salvar(
+                        context,
+                        _valorMeta.doubleValue,
+                        _nomeMeta.text,
+                        _duracaoMeta.text,
+                        _opcoesRecorrencia,
+                        listaClassificacao
+                            .firstWhere((c) => c.tipo == dropdownValue)
+                            .idClassificacao,
+                      ),
                       child: Text(
                         "Criar",
                         style: TextStyle(
