@@ -62,7 +62,7 @@ class SemGavetasEncontradas extends StatelessWidget {
             ),
             SizedBox(height: 15),
             ElevatedButtonWidget(text: "Criar", onPressed: (){
-              Navigator.pushReplacementNamed(context, AppRotas.criarMeta);
+              Navigator.pushReplacementNamed(context, AppRotas.gaveta);
               },highSize: ButtonSize.pequeno, widthSize: ButtonSize.medio, catColors: cor)
           ],  
         ),

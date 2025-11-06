@@ -66,7 +66,8 @@ class _QualInfoWidgetState extends State<QualInfoWidget> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        width: 300,
+        padding: const EdgeInsets.symmetric(vertical: 2.0),
         decoration: BoxDecoration(
           color: widget.cor.complementar,
           border: Border.all(color: widget.cor.corTerciaria, width: 2.0),
@@ -78,20 +79,20 @@ class _QualInfoWidgetState extends State<QualInfoWidget> {
             Icon(
               Icons.arrow_left,
               color: widget.cor.corSecundaria.withOpacity(0.7),
-              size: 30,
+              size: 24,
             ),
             Expanded(
               child: Text(
                 texto,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: widget.cor.secundaria, fontSize: 16),
+                style: TextStyle(color: widget.cor.secundaria, fontSize: 14),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Icon(
               Icons.arrow_right,
               color: widget.cor.corSecundaria.withOpacity(0.7),
-              size: 30,
+              size: 24,
             ),
           ],
         ),
