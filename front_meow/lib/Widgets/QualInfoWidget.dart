@@ -18,7 +18,7 @@ class QualInfoWidget extends StatefulWidget {
 }
 
 class _QualInfoWidgetState extends State<QualInfoWidget> {
-  QualInfo _qualInfo = QualInfo.transacoes;
+  QualInfo _qualInfo = QualInfo.metas;
 
   // Função para avançar para o próximo item da lista
   void _proximoItem() {
@@ -69,7 +69,7 @@ class _QualInfoWidgetState extends State<QualInfoWidget> {
         width: 300,
         padding: const EdgeInsets.symmetric(vertical: 2.0),
         decoration: BoxDecoration(
-          color: widget.cor.complementar,
+          color: Colors.white,
           border: Border.all(color: widget.cor.corTerciaria, width: 2.0),
           borderRadius: BorderRadius.circular(6),
         ),
