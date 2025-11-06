@@ -4,6 +4,7 @@ import 'package:front_meow/Widgets/BolasBaixoTelaInicial.dart';
 import 'package:front_meow/Widgets/BolasCimaTelaInicial.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/MeowCoinWidget.dart';
+import 'package:front_meow/Widgets/SaldoWidget.dart';
 import 'package:front_meow/Widgets/TelaInicialInfosWidget.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/colors/colors.dart';
@@ -11,6 +12,7 @@ import 'package:front_meow/services/TransacaoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/LoginDiarioServices.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:front_meow/Widgets/QualInfoWidget.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -271,50 +273,17 @@ class _TelaInicialState extends State<TelaInicial> {
                         iconSize: 40,
                       ),
                     ],
-                  ),
+                  ),  
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            "../../assets/icons/vetor_olho_fechado.svg",
-                            width: 30,
-                            height: 30,
-                            color: cores.complementar,
-                          ),
-                          SizedBox(width: 30),
-                          Text(
-                            "Saldo",
-                            style: TextStyle(color: cores.complementar),
-                          ),
-                          SizedBox(width: 30),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: cores.complementar,
-                      border: Border.all(color: cores.corTerciaria, width: 2.0),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(width: 1),
-                        Text(
-                          "Veja suas metas",
-                          style: TextStyle(color: cores.secundaria),
-                        ),
-                        Icon(
-                          Icons.arrow_right_alt,
-                          color: cores.corSecundaria,
-                          size: 30,
-                        ),
-                      ],
-                    ),
+                  SaldoWidget(cores: cores),
+                  SizedBox(height: 10),
+                  QualInfoWidget(
+                    cor: cores,
+                    onInfoChanged: (QualInfo novaInfo) {
+                      setState(() {
+                        infoAtual = novaInfo;
+                      });
+                    },
                   ),
                   SizedBox(height: 20),
                   Telainicialinfoswidget(qualInfo: infoAtual, cor: cores),
