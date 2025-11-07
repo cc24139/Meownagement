@@ -57,6 +57,13 @@ class GavetaPageView extends StatelessWidget {
   }
 
  Widget _metaCard(Cofrinho gaveta) {
+
+      print(gaveta.nome);
+      print(gaveta.economia);
+      print(gaveta.dinheiroEconomizado);
+      print(gaveta.qtsMoedas);
+
+
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         padding: const EdgeInsets.all(5),
@@ -103,7 +110,7 @@ class GavetaPageView extends StatelessWidget {
             ),
             SizedBox(height: 80),
             GraficoConclusaoWidget(
-              porcentagem: 25,
+              porcentagem: int.parse((gaveta.dinheiroEconomizado / gaveta.economia * 100).toStringAsFixed(0)),
               catColors: cor,
             ),
           ],  
