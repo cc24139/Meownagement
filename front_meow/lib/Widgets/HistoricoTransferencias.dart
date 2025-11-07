@@ -71,7 +71,6 @@ class HistoricoTransferencias extends StatelessWidget {
 
   const HistoricoTransferencias({super.key, required this.transacoes, required this.cor});
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,7 +101,7 @@ class HistoricoTransferencias extends StatelessWidget {
             child: ListView.builder(
               itemCount: transacoes.length,
               itemBuilder: (context, index) {
-                final transacao = transacoes[index];
+                final transacao = transacoes[transacoes.length - 1 - index];
                 final ganhou = transacao.quantiaDinheiro > 0;
                 return Column(
                   children: [
@@ -125,7 +124,7 @@ class HistoricoTransferencias extends StatelessWidget {
                                 style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                               ),
                               Text(
-                                "Lazer: ${transacao.idClassificacao}",
+                                transacao.nome,
                                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                             ],

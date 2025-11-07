@@ -104,7 +104,7 @@ class MetasPageView extends StatelessWidget {
           ),
           const SizedBox(height: 80),
           GraficoConclusaoWidget(
-            porcentagem: metaPorcentagem.totalGasto.toInt(),
+            porcentagem: int.parse((metaPorcentagem.totalGasto / metaPorcentagem.meta.gastoLimite * 100).toStringAsFixed(0)),
             catColors: cor,
           ),
         ],

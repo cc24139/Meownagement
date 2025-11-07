@@ -76,10 +76,13 @@ class _QualInfoWidgetState extends State<QualInfoWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(
-              Icons.arrow_left,
-              color: widget.cor.corSecundaria.withOpacity(0.7),
-              size: 24,
+            GestureDetector(
+              onTap: _itemAnterior,
+              child: Icon(
+                Icons.arrow_left,
+                color: widget.cor.corSecundaria.withOpacity(0.7),
+                size: 24,
+              ),
             ),
             Expanded(
               child: Text(
@@ -89,10 +92,13 @@ class _QualInfoWidgetState extends State<QualInfoWidget> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Icon(
-              Icons.arrow_right,
-              color: widget.cor.corSecundaria.withOpacity(0.7),
-              size: 24,
+            GestureDetector(
+              onTap: _proximoItem,
+              child: Icon(
+                Icons.arrow_right,
+                color: widget.cor.corSecundaria.withOpacity(0.7),
+                size: 24,
+              ),
             ),
           ],
         ),
