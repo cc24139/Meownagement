@@ -103,7 +103,15 @@ class TransacoesRecorrentes extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24.0),
-                      ElevatedButtonWidget(text: "Excluir", onPressed: () {}, highSize: ButtonSize.pequeno, widthSize: ButtonSize.medio, catColors: cor),
+                      ElevatedButtonWidget(
+                        text: "Excluir", 
+                        onPressed: () {
+                          
+                        }, 
+                        highSize: ButtonSize.pequeno, 
+                        widthSize: ButtonSize.medio, 
+                        catColors: cor
+                      ),
                     ],
                   ),
                 ),
