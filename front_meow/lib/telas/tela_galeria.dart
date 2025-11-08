@@ -81,11 +81,11 @@ class CardGato extends StatelessWidget {
                   },
                   highSize: ButtonSize.pequeno,
                   widthSize: ButtonSize.pequeno,
-                  catColors: equipado
+                  catColors: !equipado
                       ? CatColors(
                           paleta: int.parse(localStorage.getItem("paleta")!),
                         )
-                      : CatColors(paleta: 4),
+                      : CatColors(paleta: 5),
                 ),
             ],
           ),

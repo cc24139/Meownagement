@@ -30,7 +30,7 @@ environment:
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/images/uncleBao/uncleBaoGrande.jpg"
+  image_path: "assets/images/iconeMeownagement.jpg"
 
 dependencies:
   flutter:

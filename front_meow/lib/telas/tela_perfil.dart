@@ -8,6 +8,7 @@ import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:front_meow/telas/tela_gato.dart';
 
 class TelaPerfil extends StatefulWidget {
   final UsuarioPerfilModel user;
@@ -35,7 +36,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
     try {
       UsuarioServices usuarioServices = locator<UsuarioServices>();
 
-      // Fazer o trabalho assíncrono ANTES do setState
       UsuarioPerfilModel usuarioCarregado;
       if (widget.outroUser) {
         usuarioCarregado = await usuarioServices.UsuarioPorId(
@@ -45,7 +45,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
         usuarioCarregado = await usuarioServices.PerfilUsuario();
       }
 
-      // Agora atualizar o estado de forma síncrona
       setState(() {
         usuarioPerfil = usuarioCarregado;
         dados = usuarioPerfil!.gatosDesbloqueados!.reversed.toList();
@@ -216,17 +215,27 @@ class _TelaPerfilState extends State<TelaPerfil> {
               runSpacing: 8, // espaço vertical entre as linhas
               alignment: WrapAlignment.center,
               children: dados.map((gato) {
-                return ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: _getCorPorRaridade(gato.raridade),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => TelaGato(idGato: gato.idGato, nomeGato: gato.nome, imagemGato: gato.nomeImagem, raridade: gato.raridade),
                       ),
-                    ),
-                    child: Image.asset(
-                      "assets/images/${gato.nomeImagem}/${gato.nomeImagem}Pequena.jpg",
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                          color: _getCorPorRaridade(gato.raridade),
+                        ),
+                      ),
+                      child: Image.asset(
+                        "assets/images/${gato.nomeImagem}/${gato.nomeImagem}Pequena.jpg",
+                      ),
                     ),
                   ),
                 );
