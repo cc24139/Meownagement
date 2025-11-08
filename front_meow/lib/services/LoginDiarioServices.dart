@@ -27,7 +27,6 @@ class Logindiarioservices extends Http {
   }
   //patch
   Future<String> AtualizarLoginDiario() async {
-    print(Http.token);
     if (Http.token == null) {
       throw Exception('Você foi deslogado, por favor faça login novamente.');
     }

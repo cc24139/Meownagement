@@ -159,7 +159,6 @@ class GatoServices extends Http {
       
       List<int> result = List<int>.from(data);
       
-      print('Porcentagens recebidas: $result');
       return result;
     } 
     else {
@@ -224,7 +223,6 @@ class GatoServices extends Http {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print("Paleta: "+ data.toString());
       return data;
     } else {
       throw Exception('Failed to load paleta id');
@@ -244,14 +242,6 @@ class GatoServices extends Http {
       },
       body: jsonEncode(nome),
     );
-
-    if (response.statusCode == 200) {
-      print('Gato desbloqueado: $nome');
-    }
-    else {
-      print('Failed to desbloquear gato: $nome, Status code: ${response.statusCode}');
-    }
-
     return response.statusCode == 200;
   }
 } 

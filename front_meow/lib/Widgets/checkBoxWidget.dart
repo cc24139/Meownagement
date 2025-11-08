@@ -11,7 +11,7 @@ void main() {
             initialValue: false,
             corText: new CatColors(paleta: 2).secundaria,
             onChange: (bool? value) {
-              print("Checkbox value changed: $value");
+              null;
             },
           ),
         ),

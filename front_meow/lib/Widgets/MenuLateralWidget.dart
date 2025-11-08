@@ -28,11 +28,12 @@ class _MenulateralwidgetState extends State<Menulateralwidget> {
         future: serv.PerfilUsuario(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print("Erro ao carregar perfil para o menu: ${snapshot.error}");
+            return Center(
+              child: Text('Erro ao carregar dados do usuário: ${snapshot.error}'),
+            );
           }
 
           final UsuarioPerfilModel? user = snapshot.data;
-          print(user);
 
           return ListView(
             padding: EdgeInsets.zero,

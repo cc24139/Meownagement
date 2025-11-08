@@ -54,7 +54,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
       setState(() {
         _carregando = false;
       });
-      print("Ocorreu um erro: $e");
     }
   }
 

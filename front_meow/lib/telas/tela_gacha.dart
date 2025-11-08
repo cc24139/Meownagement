@@ -149,7 +149,9 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     try {
       resultadoGacha = await gachaSystem?.rollSingle(bannerAtual);
     } catch (e) {
-      print("Erro ao realizar roll único: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao realizar roll único: $e")),
+      );
     }
 
     atualizarMeowCoins();
@@ -188,7 +190,9 @@ class _TelaGachaState extends State<TelaGacha> with TickerProviderStateMixin {
     try {
       resultadoGacha = await gachaSystem?.rollMulti(bannerAtual);
     } catch (e) {
-      print("Erro ao realizar roll múltiplo: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao realizar roll múltiplo: $e")),
+      );
     }
 
     atualizarMeowCoins();

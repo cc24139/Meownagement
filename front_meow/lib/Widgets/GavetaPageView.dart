@@ -117,10 +117,8 @@ class GavetaPageView extends StatelessWidget {
   }
 
   void _ConcluirMeta(BuildContext context, int id) async {
-    print('Concluir gaveta com id: $id');
     try {
       var result = await CofrinhoServices().ConcluirCofrinho(id);
-      print('Gaveta concluída com sucesso!');
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(

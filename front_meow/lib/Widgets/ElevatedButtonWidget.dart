@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 
-VoidCallback ronaldo = () => print("Botão pressionado");
+VoidCallback ronaldo = () => AlertDialog(
+      title: Text("Você clicou no botão!"),
+    ).toString();
 
 void main() {
   runApp(

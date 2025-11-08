@@ -77,7 +77,6 @@ class _TelaInicialState extends State<TelaInicial> {
           });
         })
         .catchError((error) {
-           print(error);
           // nao esta logado -> manda de volta pro login
           // pop-up avisando que precisa logar
           showDialog(

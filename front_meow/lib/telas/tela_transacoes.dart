@@ -98,8 +98,6 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
           ? -_valorController.doubleValue
           : _valorController.doubleValue;
 
-      print("Id Meta: $idMeta");
-      print("Id Cofrinho: $idCofrinho");
       await TransacaoServices().CriarTransacao(
         _descricaoTransacao,
         valorTransacao,

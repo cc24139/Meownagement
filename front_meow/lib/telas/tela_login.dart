@@ -35,12 +35,10 @@ class _TelaLoginState extends State<TelaLogin> {
   void _fazerLogin() async {
     if (txtEmail.text.isNotEmpty && txtSenha.text.isNotEmpty) {
       var httpUsuarios = UsuarioServices();
-      print("Chamando LoginUsuario...");
       var sucesso = await httpUsuarios.LoginUsuario(
         UsuarioLoginViewModel(email: txtEmail.text, senha: txtSenha.text),
         localStorage,
       );
-      print("Resposta de LoginUsuario: $sucesso");
 
       if (sucesso!) {
         Navigator.pushReplacementNamed(context, AppRotas.inicial);

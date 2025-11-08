@@ -31,7 +31,6 @@ class Telainicialinfoswidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(qualInfo);
     switch (qualInfo) {
       case QualInfo.transacoes:
         return Column(children: [_transacoes()]);

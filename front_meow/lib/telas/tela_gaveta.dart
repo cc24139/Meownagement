@@ -42,7 +42,9 @@ void _salvar(BuildContext context, CreateCofrinhoViewModel criarCofrinho) {
   try{
     cofrinho.CriarCofrinho(criarCofrinho);
   }catch(e){
-    print(e);
+    SnackBar(
+      content: Text('Erro ao criar cofrinho: $e'),
+    );
   }
   Navigator.pushReplacementNamed(context, AppRotas.inicial);
 }
