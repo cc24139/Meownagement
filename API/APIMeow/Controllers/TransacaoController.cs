@@ -124,10 +124,19 @@ public class TransacaoController : ControllerBase
         }
         var metaCofrinhoTransacao = await db.MetaCofrinhoTransacao.Where(m =>
         m.IdTransacao == transacao.IdTransacao).ToListAsync();
-        if(metaCofrinhoTransacao != null && metaCofrinhoTransacao.Count > 0)
+        if (metaCofrinhoTransacao != null && metaCofrinhoTransacao.Count > 0)
         {
             db.MetaCofrinhoTransacao.RemoveRange(metaCofrinhoTransacao);
             await db.SaveChangesAsync();
+        }
+        if(transacao.IdRecorrencia != null)
+        {
+            var recorrencia = await db.Recorrencia.FindAsync(transacao.IdRecorrencia);
+            if(recorrencia != null)
+            {
+                db.Recorrencia.Remove(recorrencia);
+                await db.SaveChangesAsync();
+            }
         }
         db.Transacao.Remove(transacao);
         await db.SaveChangesAsync();

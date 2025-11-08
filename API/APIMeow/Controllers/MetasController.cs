@@ -132,7 +132,7 @@ namespace APIMeow.Controllers
                     var transacao = await db.Transacao.FindAsync(item.IdTransacao);
                     if (transacao != null && transacao.Feita == 'S')
                     {
-                        gastoTotal += transacao.QuantiaDinheiro;
+                        gastoTotal += transacao.QuantiaDinheiro * -1;
                         listTransacoes.Add(transacao);
                     }
                 }
@@ -249,13 +249,15 @@ namespace APIMeow.Controllers
                 {
                     var listTransacaoGastos = await db.Transacao
                     .Where(t => t.IdUsuario.ToString() == usuarioId && t.IdClassificacao == meta.IdClassificacao
-                    && t.Feita == 'S'&& t.DataCriacao.Date >= meta.DataCriacao.Date && t.DataFinalizacao.Date <= meta.DataTermino.Date && t.QuantiaDinheiro < 0
+                    && t.Feita == 'S'&& t.DataCriacao.Date >= meta.DataCriacao.Date && t.DataFinalizacao.Date <= meta.DataTermino.Date 
                     //Busca todas as transacoes relacionadas a meta
                     && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == t.IdTransacao && mct.IdMeta == meta.IdMeta) 
                     )
                     .ToListAsync();
-                    decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro);
-                    if (gastoTotal < meta.GastoLimite)
+                    decimal gastoTotal = listTransacaoGastos.Where(t => t.QuantiaDinheiro < 0).Sum(t => t.QuantiaDinheiro);
+                    decimal recuperado = listTransacaoGastos.Where(t => t.QuantiaDinheiro > 0).Sum(t => t.QuantiaDinheiro);
+                    gastoTotal -= recuperado;
+                    if (gastoTotal <= meta.GastoLimite)
                     {
                         var usuario = await db.Usuario.FindAsync(meta.IdUsuario);
                         usuario.Pontos += meta.QtsMoedas;
