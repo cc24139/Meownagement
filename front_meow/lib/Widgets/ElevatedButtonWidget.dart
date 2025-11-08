@@ -48,8 +48,6 @@ class ElevatedButtonWidget extends StatelessWidget {
         return 100;
       case ButtonSize.grande:
         return 250;
-      default:
-        return 150;
     }
   }
   double? _getButtonHeight() {
@@ -62,8 +60,6 @@ class ElevatedButtonWidget extends StatelessWidget {
         return 45;
       case ButtonSize.grande:
         return 55;
-      default:
-        return 45;
     }
   }
 

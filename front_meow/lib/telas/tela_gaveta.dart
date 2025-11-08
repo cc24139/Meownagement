@@ -4,7 +4,6 @@ import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/Widgets/TitleTelaWidget.dart';
 import 'package:front_meow/Widgets/VerticalSelectWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Cofrinho.dart';
 import 'package:front_meow/models/classificacao.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';

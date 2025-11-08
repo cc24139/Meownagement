@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/locator.dart';
@@ -9,9 +7,7 @@ import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
-import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaPerfil extends StatefulWidget {
   final UsuarioPerfilModel user;

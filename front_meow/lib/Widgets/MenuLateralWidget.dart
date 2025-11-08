@@ -3,7 +3,6 @@ import 'package:front_meow/locator.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
-import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class Menulateralwidget extends StatefulWidget {
   const Menulateralwidget({super.key});
@@ -14,7 +13,6 @@ class Menulateralwidget extends StatefulWidget {
 
 class _MenulateralwidgetState extends State<Menulateralwidget> {
   final UsuarioServices serv = locator<UsuarioServices>();
-  late Future<UsuarioPerfilModel> _userFuture;
 
   @override
   void initState() {

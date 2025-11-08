@@ -7,7 +7,6 @@ import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/classificacao.dart';
 import 'package:front_meow/models/Meta.dart';
 import 'package:front_meow/models/Cofrinho.dart';
-import 'package:front_meow/models/recorrencia.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/MetaServices.dart';
 import 'package:front_meow/services/CofrinhoServices.dart';
@@ -84,7 +83,6 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
   Future<void> _salvar() async {
     try {
-      DateFormat inputFormat = DateFormat('yyyy/MM/dd');
       DateTime parsedDate = DateFormat(
         'dd/MM/yyyy',
       ).parse(_dateController.text);
@@ -102,7 +100,7 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
 
       print("Id Meta: $idMeta");
       print("Id Cofrinho: $idCofrinho");
-      String resp = await TransacaoServices().CriarTransacao(
+      await TransacaoServices().CriarTransacao(
         _descricaoTransacao,
         valorTransacao,
         parsedDate.toIso8601String(),

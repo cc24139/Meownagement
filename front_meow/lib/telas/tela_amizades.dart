@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/gato.dart';
 import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
-import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});

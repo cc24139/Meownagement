@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:front_meow/Widgets/BolasBaixoTelaInicial.dart';
 import 'package:front_meow/Widgets/BolasCimaTelaInicial.dart';
 import 'package:front_meow/Widgets/MenuLateralWidget.dart';

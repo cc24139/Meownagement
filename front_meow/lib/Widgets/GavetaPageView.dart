@@ -3,7 +3,6 @@ import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/GraficoConclusaoWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Cofrinho.dart';
 import 'package:front_meow/services/CofrinhoServices.dart';
 import 'package:front_meow/services/ViewModel/View/CofrinhoPorcentagemViewModel.dart';
 

@@ -44,8 +44,6 @@ class BolasTools extends StatelessWidget {
           return 150;
         case Bolassize.grande:
           return 300;
-        default:
-          return 30;
       }
     }
     switch (size) {
@@ -55,8 +53,6 @@ class BolasTools extends StatelessWidget {
         return 60;
       case Bolassize.grande:
         return 120;
-      default:
-        return 30;
     }
   }
 
@@ -69,8 +65,7 @@ class BolasTools extends StatelessWidget {
           return 100;
         case Bolassize.grande:
           return 200;
-        default:
-          return 30;
+
       }
     }
     switch (size) {
@@ -80,8 +75,6 @@ class BolasTools extends StatelessWidget {
         return 60;
       case Bolassize.grande:
         return 120;
-      default:
-        return 30;
     }
   }
 

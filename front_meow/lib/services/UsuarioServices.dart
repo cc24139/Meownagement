@@ -1,8 +1,5 @@
-import 'dart:collection';
-
 import 'package:front_meow/services/GatoServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
-import 'package:front_meow/services/ViewModel/perfilViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioLoginViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
 import 'package:front_meow/models/usuario.dart';
@@ -44,6 +41,7 @@ class UsuarioServices extends Http {
     } catch (e) {
       throw Exception('Failed to login usuario');
     }
+    return null;
   }
 
   Future<Usuario> ObterUsuarioLogado() async {
