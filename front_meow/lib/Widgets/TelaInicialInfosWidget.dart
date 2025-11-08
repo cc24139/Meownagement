@@ -4,8 +4,8 @@ import 'package:front_meow/Widgets/HistoricoTransferencias.dart';
 import 'package:front_meow/Widgets/Tools/qualInfo.dart';
 import 'package:front_meow/Widgets/TransacoesRecorrentes.dart';
 import 'package:front_meow/colors/colors.dart';
-import 'package:front_meow/models/Cofrinho.dart';
 import 'package:front_meow/models/transacao.dart';
+import 'package:front_meow/services/ViewModel/View/CofrinhoPorcentagemViewModel.dart';
 import 'package:front_meow/services/ViewModel/View/MetaPorcentagemVIewModel.dart';
 import 'MetasPageView.dart';
 import 'package:front_meow/services/metaServices.dart';
@@ -44,68 +44,67 @@ class Telainicialinfoswidget extends StatelessWidget {
     }
   }
 
-   Widget _metas() {
+  Widget _metas() {
     return FutureBuilder<List<MetasPorcentagemViewModel>>(
-    future: metaServices.listarMetasComPorcentagem(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Erro ao carregar metas'));
-      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return SemMetasEncontradas(cor: cor);
-      } else {
-        return MetasPageView(metas: snapshot.data!, cor: cor);
-      }
-    },
-  );
+      future: metaServices.listarMetasComPorcentagem(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Erro ao carregar metas'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return SemMetasEncontradas(cor: cor);
+        } else {
+          return MetasPageView(metas: snapshot.data!, cor: cor);
+        }
+      },
+    );
   }
 
   Widget _transacoes() {
     return FutureBuilder<List<Transacao>>(
-    future: transacaoServices.ListarTransacoes(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Erro ao carregar metas'));
-      } else {
-        return HistoricoTransferencias(transacoes: snapshot.data!, cor: cor);
-      }
-    },
-  );
+      future: transacaoServices.ListarTransacoes(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Erro ao carregar metas'));
+        } else {
+          return HistoricoTransferencias(transacoes: snapshot.data!, cor: cor);
+        }
+      },
+    );
   }
 
   Widget _gaveta() {
-    return FutureBuilder<List<Cofrinho>>(
-    future: cofrinhoServices.ListarCofrinhos(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Erro ao carregar metas'));
-      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return SemGavetasEncontradas(cor: cor);
-      } else {
-        return GavetaPageView(gaveta: snapshot.data!, cor: cor);
-      }
-    },
-  );
+    return FutureBuilder<List<CofrinhoPorcentagemViewModel>>(
+      future: cofrinhoServices.ListarCofrinhosPorcentagem(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Erro ao carregar metas'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return SemGavetasEncontradas(cor: cor);
+        } else {
+          return GavetaPageView(gaveta: snapshot.data!, cor: cor);
+        }
+      },
+    );
   }
 
   Widget _transacoesRecorrentes() {
     return FutureBuilder<List<Transacao>>(
-    future: transacaoServices.ListarTransacoesRecorrentes(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Erro ao carregar metas'));
-      } else {
-        return TransacoesRecorrentes(transacoes: snapshot.data!, cor: cor);
-      }
-    },
-  );
+      future: transacaoServices.ListarTransacoesRecorrentes(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Erro ao carregar metas'));
+        } else {
+          return TransacoesRecorrentes(transacoes: snapshot.data!, cor: cor);
+        }
+      },
+    );
   }
 }
-

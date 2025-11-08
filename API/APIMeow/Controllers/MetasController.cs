@@ -136,12 +136,11 @@ namespace APIMeow.Controllers
                         listTransacoes.Add(transacao);
                     }
                 }
-                var porcentagem = Math.Abs(gastoTotal) / meta.GastoLimite * 100;
                 listMetaView.Add(new MetaView
                 {
                     metas = meta,
                     transacoes = listTransacoes,
-                    totalGasto = porcentagem > 100 ? 100 : porcentagem
+                    totalGasto = gastoTotal
                 });
             }
 
@@ -246,7 +245,7 @@ namespace APIMeow.Controllers
                 {
                     return NotFound("Meta não encontrada.");
                 }
-                if (meta.DataTermino.Date == DateTime.Now.Date && meta.Feita == 'N')
+                if (meta.DataTermino.Date <= DateTime.Now.Date)
                 {
                     var listTransacaoGastos = await db.Transacao
                     .Where(t => t.IdUsuario.ToString() == usuarioId && t.IdClassificacao == meta.IdClassificacao
@@ -255,7 +254,7 @@ namespace APIMeow.Controllers
                     && db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == t.IdTransacao && mct.IdMeta == meta.IdMeta) 
                     )
                     .ToListAsync();
-                    decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro*(-1));
+                    decimal gastoTotal = listTransacaoGastos.Sum(t => t.QuantiaDinheiro);
                     if (gastoTotal < meta.GastoLimite)
                     {
                         var usuario = await db.Usuario.FindAsync(meta.IdUsuario);
@@ -266,7 +265,7 @@ namespace APIMeow.Controllers
                     }
                     else
                     {
-                        meta.Feita = 'N';
+                        meta.Feita = 'S';
                         await db.SaveChangesAsync();
                         return Ok("Gastos excedeu a meta :( sem pontos adicionados.");
                     }

@@ -50,28 +50,34 @@ void _salvar(
     feita: "N",
   );
   try {
-    Metaservices().criarMetas(createMetasViewModel);
-    AlertDialog(
-      title: const Text('Sucesso'),
-      content: const Text('Meta criada com sucesso!'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
-        ),
-      ],
+    await Metaservices().criarMetas(createMetasViewModel);
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sucesso'),
+        content: const Text('Meta criada com sucesso!'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
     Navigator.pushReplacementNamed(context, AppRotas.inicial);
   } catch (e) {
-    AlertDialog(
-      title: const Text('Erro'),
-      content: Text('Não foi possível criar a meta: $e'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
-        ),
-      ],
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Erro'),
+        content: Text('Não foi possível criar a meta: $e'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 }

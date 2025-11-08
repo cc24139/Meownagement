@@ -183,7 +183,7 @@ namespace APIMeow.Controllers
                 }
 
                 var cofrinhos = await db.Cofrinho
-                    .Where(c => c.IdUsuario == user.IdUsuario)
+                    .Where(c => c.IdUsuario == user.IdUsuario && c.Feita == 'N')
                     .ToListAsync();
 
                 var listCofrinhoViewm = new List<CofrinhoView>();
@@ -214,7 +214,7 @@ namespace APIMeow.Controllers
                 x.DataCriacao.Date >= cofrinho.DataCriacao.Date &&
                 x.DataFinalizacao.Date <= cofrinho.DataTermino.Date &&
                 x.QuantiaDinheiro > 0 &&
-                db.MetaCofrinhoTransacao.Any(mct => mct.IdTransacao == x.IdTransacao && mct.IdCofrinho == cofrinho.IdCofrinho)).ToList();
+                db.MetaCofrinhoTransacao.Any(mct =>  mct.IdCofrinho == cofrinho.IdCofrinho)).ToList();
             if (transacoes.Count == 0)
             {
                 return 0;
@@ -328,10 +328,10 @@ namespace APIMeow.Controllers
                 }
                 else
                 {
-                    cofre.Feita = 'N';
+                    cofre.Feita = 'S';
                     db.Cofrinho.Update(cofre);
                     await db.SaveChangesAsync();
-                    return BadRequest("Você não atingiu o valor necessário para concluir o cofrinho.");
+                    return BadRequest("Você não atingiu o valor necessário para concluir o cofrinho. :( sem pontos adicionados");
                 }
             }
             catch (Exception ex)

@@ -17,7 +17,7 @@ void main() {
 }
 
 class GraficoConclusaoWidget extends StatelessWidget {
-  final int porcentagem;
+  final double porcentagem;
   final CatColors catColors;
   const GraficoConclusaoWidget({
     super.key,
@@ -48,7 +48,7 @@ class GraficoConclusaoWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$porcentagem%',
+                  '${porcentagem.toStringAsFixed(2)}%',
                   style: TextStyle(fontSize: 36,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Londrina',
