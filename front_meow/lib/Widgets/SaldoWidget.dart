@@ -17,21 +17,16 @@ class _SaldoWidgetState extends State<SaldoWidget> {
   
   bool _saldoVisivel = false;
   
-  // 1. Declaramos o Future aqui.
-  //    Assumindo que ObterSaldo() retorna um Future<double> ou Future<num>
   late Future<double> _saldoFuture; 
   
-  // 2. Removemos o _saldoValor daqui.
   final String _saldoOculto = "Saldo";
 
   @override
   void initState() {
     super.initState();
-    // 3. Inicializamos o Future no initState para ser chamado apenas UMA VEZ.
     _saldoFuture = widget.usuarioServices.ObterSaldo();
   }
 
-  // A função de toggle está correta
   void _toggleVisibilidadeSaldo() {
     setState(() {
       _saldoVisivel = !_saldoVisivel;
@@ -41,12 +36,9 @@ class _SaldoWidgetState extends State<SaldoWidget> {
   @override
   Widget build(BuildContext context) {
     
-    // A lógica do ícone está correta
     final String iconePath = _saldoVisivel
-        ? "../../assets/icons/vetor_olho_aberto.svg" 
-        : "../../assets/icons/vetor_olho_fechado.svg";
-
-    // 4. A lógica do 'textoSaldo' foi MOVIDA para dentro do FutureBuilder
+        ? "assets/icons/vetor_olho_aberto.svg" 
+        : "assets/icons/vetor_olho_fechado.svg";
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +46,6 @@ class _SaldoWidgetState extends State<SaldoWidget> {
         Row(
           children: [
             
-            // O GestureDetector está correto
             GestureDetector(
               onTap: _toggleVisibilidadeSaldo, 
               child: SvgPicture.asset(
@@ -67,33 +58,28 @@ class _SaldoWidgetState extends State<SaldoWidget> {
             
             SizedBox(width: 30),
             
-            // 5. SUBSTITUÍMOS o Text por um FutureBuilder
             FutureBuilder<double>( 
-              future: _saldoFuture, // Ele vai "ouvir" este future
+              future: _saldoFuture, 
               builder: (context, snapshot) {
 
-                String textoSaldo; // Variável final do texto
+                String textoSaldo; 
 
                 if (snapshot.hasData) {
-                  // SUCESSO! Os dados chegaram (snapshot.data)
                   
-                  // Criamos o _saldoValor REAL aqui dentro
                   final String _saldoValor = "R\$ ${snapshot.data!.toStringAsFixed(2)}";
                   
-                  // Agora aplicamos a lógica de visibilidade
                   textoSaldo = _saldoVisivel 
                       ? _saldoValor 
                       : _saldoOculto;
 
                 } else if (snapshot.hasError) {
-                  textoSaldo = "Erro ao carregar"; // Ou podemos usar _saldoOculto
+                  textoSaldo = "Erro ao carregar"; 
                 
                 } else {
-                  // Enquanto espera (ConnectionState.waiting)
-                  textoSaldo = _saldoOculto; // Mostra "Saldo"
+
+                  textoSaldo = _saldoOculto; 
                 }
 
-                // Retorna o Text com o valor decidido
                 return Text(
                   textoSaldo, 
                   style: TextStyle(color: widget.cores.complementar),
