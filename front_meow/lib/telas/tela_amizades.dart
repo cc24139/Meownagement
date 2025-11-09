@@ -85,78 +85,86 @@ class _TelaAmizadesState extends State<TelaAmizades> {
             ),
           ),
           Expanded(
-            child: FutureBuilder<List<UsuarioViewModel>>(
-              future: todosOsUsuarios,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      "Erro: ${snapshot.error}",
-                      style: TextStyle(color: cores.complementar),
-                    ),
-                  );
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(
-                    child: Text(
-                      "Nenhum usuário encontrado",
-                      style: TextStyle(color: cores.complementar),
-                    ),
-                  );
-                }
-
-                List<UsuarioViewModel> dados = snapshot.data!;
-                if (textoPesquisa.isNotEmpty) {
-                  dados = dados
-                      .where(
-                        (u) => u.nome.toLowerCase().contains(
-                          textoPesquisa.toLowerCase(),
-                        ),
-                      )
-                      .toList();
-                }
-
-                return ListView.separated(
-                  itemCount: dados.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
-                  itemBuilder: (context, index) {
-                    final usuario = dados[index];
-                    // final perfil = PerfilViewModel(
-                    //   idUsuario: usuario.id,
-                    //   nome: usuario.nome,
-                    //   email: usuario.email,
-                    //   pontos: usuario.pontos,
-                    //   saldo: usuario.saldo,
-                    //   biogradia: usuario.biografia
-                    //   gatoEquipado: , //GET GATO EQUIPADO POR ID
-                    // );
-                    return ListTile(
-                      title: Text(
-                        usuario.nome,
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: FutureBuilder<List<UsuarioViewModel>>(
+                future: todosOsUsuarios,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "Erro: ${snapshot.error}",
                         style: TextStyle(color: cores.complementar),
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.send, color: cores.complementar),
-                        onPressed: () {
-                          var perfil = new UsuarioPerfilModel(
-                            idUsuario: usuario.id,
-                            nome: usuario.nome,
-                            pontos: usuario.pontos,
-                            biografia: usuario.biografia,
-                            gatoEquipado: null, //GET GATO EQUIPADO POR ID
-                          );
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRotas.perfil,
-                            arguments: {'user': perfil, 'outroUser': true},
-                          );
-                        },
+                    );
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "Nenhum usuário encontrado",
+                        style: TextStyle(color: cores.complementar),
                       ),
                     );
-                  },
-                );
-              },
+                  }
+
+                  List<UsuarioViewModel> dados = snapshot.data!;
+                  if (textoPesquisa.isNotEmpty) {
+                    dados = dados
+                        .where(
+                          (u) => u.nome.toLowerCase().contains(
+                            textoPesquisa.toLowerCase(),
+                          ),
+                        )
+                        .toList();
+                  }
+
+                  return ListView.separated(
+                    itemCount: dados.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      final usuario = dados[index];
+                      // final perfil = PerfilViewModel(
+                      //   idUsuario: usuario.id,
+                      //   nome: usuario.nome,
+                      //   email: usuario.email,
+                      //   pontos: usuario.pontos,
+                      //   saldo: usuario.saldo,
+                      //   biogradia: usuario.biografia
+                      //   gatoEquipado: , //GET GATO EQUIPADO POR ID
+                      // );
+                      return ListTile(
+                        title: Text(
+                          usuario.nome,
+                          style: TextStyle(color: cores.complementar),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.send, color: cores.complementar),
+                          onPressed: () {
+                            var perfil = new UsuarioPerfilModel(
+                              idUsuario: usuario.id,
+                              nome: usuario.nome,
+                              pontos: usuario.pontos,
+                              biografia: usuario.biografia,
+                              gatoEquipado: null, //GET GATO EQUIPADO POR ID
+                            );
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRotas.perfil,
+                              arguments: {'user': perfil, 'outroUser': true},
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ],
