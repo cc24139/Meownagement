@@ -3,6 +3,7 @@ import 'package:front_meow/Widgets/ElevatedButtonWidget.dart';
 import 'package:front_meow/Widgets/Tools/ButtonSize.dart';
 import 'package:front_meow/colors/colors.dart';
 import 'package:front_meow/models/transacao.dart';
+import 'package:front_meow/services/TransacaoServices.dart';
 import 'package:intl/intl.dart';
 
 List<Transacao> transacoesExemplo = [
@@ -14,7 +15,8 @@ List<Transacao> transacoesExemplo = [
     dataCriacao: DateTime.now().subtract(Duration(days: 1)),
     saldoAtual: 0,
     dataFinalizacao: DateTime.now().subtract(Duration(days: 1)),
-    nome: "Compra no mercado",    feita: "Sim",
+    nome: "Compra no mercado",
+    feita: "Sim",
     idRecorrencia: null,
   ),
   Transacao(
@@ -60,36 +62,56 @@ void main() {
     MaterialApp(
       home: Scaffold(
         body: Center(
-          child: TransacoesRecorrentes(transacoes: transacoesExemplo, cor: CatColors(paleta: 2)),
+          child: TransacoesRecorrentes(
+            transacoes: transacoesExemplo,
+            cor: CatColors(paleta: 2),
+          ),
         ),
       ),
     ),
   );
 }
 
-class TransacoesRecorrentes extends StatelessWidget {
+class TransacoesRecorrentes extends StatefulWidget {
   final List<Transacao> transacoes;
   final CatColors cor;
 
-  const TransacoesRecorrentes({super.key, required this.transacoes, required this.cor});
+  const TransacoesRecorrentes({
+    super.key,
+    required this.transacoes,
+    required this.cor,
+  });
 
-  void _mostrarDialogoDeExclusao(BuildContext context) {
+  @override
+  State<TransacoesRecorrentes> createState() => _TransacoesRecorrentesState();
+}
+
+class _TransacoesRecorrentesState extends State<TransacoesRecorrentes> {
+  late List<Transacao> _transacoes;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fazemos uma cópia local para controlar remoções locais sem depender do pai
+    _transacoes = List<Transacao>.from(widget.transacoes);
+  }
+
+  void _mostrarDialogoDeExclusao(BuildContext context, int idTransacao) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14.0),
-            side: BorderSide(color: cor.corTerciaria, width: 2), // Borda vermelha
+            side: BorderSide(color: widget.cor.corTerciaria, width: 2),
           ),
           elevation: 0,
           backgroundColor: Colors.white,
           child: Container(
             height: 200,
-            width: 275, // Altura do conteúdo do diálogo
+            width: 275,
             child: Stack(
               children: <Widget>[
-                // Conteúdo principal do diálogo
                 Positioned.fill(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -104,36 +126,87 @@ class TransacoesRecorrentes extends StatelessWidget {
                       ),
                       const SizedBox(height: 24.0),
                       ElevatedButtonWidget(
-                        text: "Excluir", 
-                        onPressed: () {
-                          
-                        }, 
-                        highSize: ButtonSize.pequeno, 
-                        widthSize: ButtonSize.medio, 
-                        catColors: cor
+                        text: "Excluir",
+                        onPressed: () async {
+                          final outerContext = context;
+                          // Fechar diálogo de confirmação
+                          Navigator.of(dialogContext).pop();
+
+                          try {
+                            await TransacaoServices().DeletarTransacao(
+                              idTransacao,
+                            );
+
+                            // Remover localmente e atualizar a UI
+                            setState(() {
+                              _transacoes.removeWhere(
+                                (t) => t.idTransacao == idTransacao,
+                              );
+                            });
+
+                            // Mostrar diálogo de sucesso
+                            await showDialog(
+                              context: outerContext,
+                              builder: (BuildContext ctx) {
+                                return AlertDialog(
+                                  title: const Text("Sucesso"),
+                                  content: const Text(
+                                    "Recorrência excluída com sucesso.",
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: const Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } catch (e) {
+                            // Mostrar diálogo de erro
+                            await showDialog(
+                              context: outerContext,
+                              builder: (BuildContext ctx) {
+                                return AlertDialog(
+                                  title: const Text("Erro"),
+                                  content: Text(
+                                    "Falha ao excluir a recorrência: $e",
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: const Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        highSize: ButtonSize.pequeno,
+                        widthSize: ButtonSize.medio,
+                        catColors: widget.cor,
                       ),
                     ],
                   ),
                 ),
-                // Botão 'X' para fechar
                 Positioned(
                   top: 8,
                   left: 8,
                   child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.black, size: 28),
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                      size: 28,
+                    ),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Apenas fecha o diálogo
-                    },
-                  ),
-                ),
-                // Botão 'X' para fechar
-                Positioned(
-                  top: 8,
-                  left: 8,
-                  child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.black, size: 28),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Apenas fecha o diálogo
+                      Navigator.of(
+                        dialogContext,
+                      ).pop(); // Apenas fecha o diálogo
                     },
                   ),
                 ),
@@ -147,7 +220,6 @@ class TransacoesRecorrentes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Definindo as proporções do layout para reutilizar nos títulos e nos itens
     const int flexData = 3;
     const int flexClassificacao = 4;
     const int flexValor = 3;
@@ -160,10 +232,10 @@ class TransacoesRecorrentes extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: cor.tercearia, width: 2),
+        border: Border.all(color: widget.cor.tercearia, width: 2),
         boxShadow: [
           BoxShadow(
-            color: cor.tercearia.withOpacity(0.3),
+            color: widget.cor.tercearia.withOpacity(0.3),
             blurRadius: 5,
             spreadRadius: 2,
             offset: Offset(0, 3),
@@ -178,24 +250,33 @@ class TransacoesRecorrentes extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0), // Adiciona um padding para alinhar
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Row(
               children: [
                 const Expanded(
                   flex: flexData,
-                  child: Text("Próxima Recorrência:", style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  child: Text(
+                    "Próxima Recorrência:",
+                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
                 ),
-                SizedBox(width: 18), // Espaço para o divisor
+                SizedBox(width: 18),
                 const Expanded(
                   flex: flexClassificacao,
-                  child: Text("Classificação:", style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  child: Text(
+                    "Classificação:",
+                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
                 ),
-                SizedBox(width: 18), // Espaço para o divisor
+                SizedBox(width: 18),
                 const Expanded(
                   flex: flexValor,
-                  child: Text("Valor:", textAlign: TextAlign.start, style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  child: Text(
+                    "Valor:",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
                 ),
-                // AQUI: Um espaço reservado para alinhar com o ícone de remover
                 const SizedBox(width: 24),
               ],
             ),
@@ -203,9 +284,9 @@ class TransacoesRecorrentes extends StatelessWidget {
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
-              itemCount: transacoes.length,
+              itemCount: _transacoes.length,
               itemBuilder: (context, index) {
-                final transacao = transacoes[index];
+                final transacao = _transacoes[index];
                 final ganhou = transacao.quantiaDinheiro > 0;
                 return Column(
                   children: [
@@ -213,32 +294,36 @@ class TransacoesRecorrentes extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Row(
                         children: [
-                          // AQUI: Substituímos SizedBox por Expanded para garantir o alinhamento
                           Expanded(
                             flex: flexData,
                             child: Text(
-                              DateFormat('dd/MM/yy').format(transacao.dataFinalizacao),
+                              DateFormat(
+                                'dd/MM/yy',
+                              ).format(transacao.dataFinalizacao),
                               style: const TextStyle(fontSize: 12),
                             ),
                           ),
                           Container(
                             width: 2,
                             height: 20,
-                            color: cor.tercearia,
+                            color: widget.cor.tercearia,
                             margin: const EdgeInsets.symmetric(horizontal: 8),
                           ),
                           Expanded(
                             flex: flexClassificacao,
                             child: Text(
                               transacao.nome,
-                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                              overflow: TextOverflow.ellipsis, // Evita que o texto quebre a linha
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Container(
                             width: 2,
                             height: 20,
-                            color: cor.tercearia,
+                            color: widget.cor.tercearia,
                             margin: const EdgeInsets.symmetric(horizontal: 8),
                           ),
                           Expanded(
@@ -246,7 +331,9 @@ class TransacoesRecorrentes extends StatelessWidget {
                             child: Text(
                               "${ganhou ? "R\$ " : "-R\$ "}${transacao.quantiaDinheiro.abs().toStringAsFixed(2)}",
                               style: TextStyle(
-                                color: ganhou ? const Color(0xFF02B74D) : Colors.black,
+                                color: ganhou
+                                    ? const Color(0xFF02B74D)
+                                    : Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "Londrina",
                                 fontSize: 14,
@@ -255,20 +342,26 @@ class TransacoesRecorrentes extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                              _mostrarDialogoDeExclusao(context);
+                              _mostrarDialogoDeExclusao(
+                                context,
+                                transacao.idTransacao,
+                              );
                             },
-                            borderRadius: BorderRadius.circular(30), // Efeito de clique circular
-                            child: const Icon(Icons.remove_circle_outline, color: Colors.black),
+                            borderRadius: BorderRadius.circular(30),
+                            child: const Icon(
+                              Icons.remove_circle_outline,
+                              color: Colors.black,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    if (index != transacoes.length - 1)
+                    if (index != _transacoes.length - 1)
                       Center(
                         child: Container(
                           width: 275,
                           height: 2,
-                          color: cor.tercearia,
+                          color: widget.cor.tercearia,
                         ),
                       ),
                   ],
