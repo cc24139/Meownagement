@@ -14,11 +14,8 @@ class SaldoWidget extends StatefulWidget {
 }
 
 class _SaldoWidgetState extends State<SaldoWidget> {
-  
   bool _saldoVisivel = false;
-  
   late Future<double> _saldoFuture; 
-  
   final String _saldoOculto = "Saldo";
 
   @override
@@ -35,62 +32,60 @@ class _SaldoWidgetState extends State<SaldoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
     final String iconePath = _saldoVisivel
         ? "assets/icons/vetor_olho_aberto.svg" 
         : "assets/icons/vetor_olho_fechado.svg";
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            
-            GestureDetector(
-              onTap: _toggleVisibilidadeSaldo, 
-              child: SvgPicture.asset(
-                iconePath, 
-                width: 30,
-                height: 30,
-                color: widget.cores.complementar,
-              ),
-            ),
-            
-            SizedBox(width: 30),
-            
-            FutureBuilder<double>( 
-              future: _saldoFuture, 
-              builder: (context, snapshot) {
-
-                String textoSaldo; 
-
-                if (snapshot.hasData) {
-                  
-                  final String _saldoValor = "R\$ ${snapshot.data!.toStringAsFixed(2)}";
-                  
-                  textoSaldo = _saldoVisivel 
-                      ? _saldoValor 
-                      : _saldoOculto;
-
-                } else if (snapshot.hasError) {
-                  textoSaldo = "Erro ao carregar"; 
-                
-                } else {
-
-                  textoSaldo = _saldoOculto; 
-                }
-
-                return Text(
-                  textoSaldo, 
-                  style: TextStyle(color: widget.cores.complementar),
-                );
-              },
-            ),
-            
-            SizedBox(width: 30),
-          ],
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: widget.cores.complementar==Colors.white ? Colors.black : widget.cores.complementar,
+          width: 2,
         ),
-      ],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: _toggleVisibilidadeSaldo,
+            child: SvgPicture.asset(
+              iconePath,
+              width: 20,
+              height: 20,
+              color: widget.cores.complementar==Colors.white ? Colors.black : widget.cores.complementar,
+            ),
+          ),
+          const SizedBox(width: 8),
+          FutureBuilder<double>(
+            future: _saldoFuture,
+            builder: (context, snapshot) {
+              String textoSaldo;
+
+              if (snapshot.hasData) {
+                final String _saldoValor = "R\$ ${snapshot.data!.toStringAsFixed(2)}";
+                textoSaldo = _saldoVisivel ? _saldoValor : _saldoOculto;
+              } else if (snapshot.hasError) {
+                textoSaldo = "Erro ao carregar";
+              } else {
+                textoSaldo = _saldoOculto;
+              }
+
+              return Text(
+                textoSaldo,
+                style: TextStyle(
+                  color: widget.cores.complementar==Colors.white ? Colors.black : widget.cores.complementar,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

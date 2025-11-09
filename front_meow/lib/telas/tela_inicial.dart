@@ -272,9 +272,9 @@ class _TelaInicialState extends State<TelaInicial> {
                       ),
                     ],
                   ),  
-
+                  SizedBox(height: 15),
                   SaldoWidget(cores: cores),
-                  SizedBox(height: 10),
+                  SizedBox(height: 15),
                   QualInfoWidget(
                     cor: cores,
                     onInfoChanged: (QualInfo novaInfo) {
