@@ -42,7 +42,7 @@ class CatColors {
         tercearia    = Color(0xFF374151);
         complementar = Colors.black;
         break;
-      default:
+      case 6:
         primaria     = Colors.white;
         secundaria   = Colors.white;
         tercearia    = Colors.white;

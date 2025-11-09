@@ -22,6 +22,7 @@ class _TelaGatoState extends State<TelaGato> {
   CatColors cores = CatColors(paleta:int.parse( localStorage.getItem('paleta') ?? '1'));
   GatoServices gatoServices = GatoServices();
   GatosEstaticasViewModel? estatisticas;
+  int? idPaletaGato;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _TelaGatoState extends State<TelaGato> {
 
   void _carregarDados() async {
     estatisticas = await gatoServices.EstaticasGatosId(widget.idGato);
+    idPaletaGato = await gatoServices.PaletaId(widget.idGato);
     setState(() {});
   }
 
@@ -144,9 +146,9 @@ class _TelaGatoState extends State<TelaGato> {
                             begin: AlignmentGeometry.centerLeft,
                             end: AlignmentGeometry.centerRight,
                             colors: [
-                              cores.tercearia,
-                              cores.secundaria,
-                              cores.primaria,
+                              CatColors(paleta: idPaletaGato ?? 6).corTerciaria,
+                              CatColors(paleta: idPaletaGato ?? 6).corSecundaria,
+                              CatColors(paleta: idPaletaGato ?? 6).corPrimaria,
                             ],
                             stops: [0.0, 0.5, 1.0],
                           ),
