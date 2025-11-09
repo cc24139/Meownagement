@@ -85,7 +85,7 @@ class CardGato extends StatelessWidget {
                       ? CatColors(
                           paleta: int.parse(localStorage.getItem("paleta")!),
                         )
-                      : CatColors(paleta: 5),
+                      : CatColors(paleta: int.parse(localStorage.getItem("paleta")!)-1),
                 ),
             ],
           ),

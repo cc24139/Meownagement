@@ -9,10 +9,16 @@ class CatColors {
 
   CatColors({required this.paleta}) {
     switch (paleta) {
+      case 0:
+        primaria = Color.fromARGB(255, 75, 41, 126);
+        secundaria = Color.fromARGB(255, 131, 78, 131);
+        tercearia = Color.fromARGB(255, 109, 68, 152);
+        complementar = Colors.black;
+        break;
       case 1:
         primaria = Color(0xFFF8EDEB);
-        secundaria = Color(0xFFFFB5A7);
-        tercearia = Color(0xFFFCD5CE);
+        secundaria = Color.fromARGB(255, 249, 156, 138);
+        tercearia = Color.fromARGB(255, 205, 80, 31);
         complementar = Colors.black;
       case 2:
         primaria = Color(0xFFECF0F1);
