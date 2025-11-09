@@ -42,7 +42,7 @@ class _SaldoWidgetState extends State<SaldoWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: widget.cores.complementar==Colors.white ? Colors.black : widget.cores.complementar,
+          color: widget.cores.corTerciaria,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(10),
