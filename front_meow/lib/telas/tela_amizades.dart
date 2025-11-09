@@ -37,8 +37,11 @@ class _TelaAmizadesState extends State<TelaAmizades> {
     return Scaffold(
       backgroundColor: cores.primaria,
       appBar: AppBar(
-        // Aumenta a altura da AppBar para evitar que o título grande seja cortado
         toolbarHeight: 120,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: cores.corPrimaria,
         centerTitle: true,
         title: Text(
           "Usuários",
@@ -135,7 +138,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                   return ListView.separated(
                     itemCount: dados.length,
                       separatorBuilder: (context, __) {
-                        final width = MediaQuery.of(context).size.width * 0.6;
+                        final width = MediaQuery.of(context).size.width * 0.7;
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Align(
