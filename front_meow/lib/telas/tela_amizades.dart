@@ -5,6 +5,7 @@ import 'package:front_meow/rotas.dart';
 import 'package:front_meow/services/UsuarioServices.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioPerfilModel.dart';
 import 'package:front_meow/services/ViewModel/View/UsuarioViewModel.dart';
+import 'package:localstorage/localstorage.dart';
 
 class TelaAmizades extends StatefulWidget {
   const TelaAmizades({super.key});
@@ -16,7 +17,7 @@ class TelaAmizades extends StatefulWidget {
 class _TelaAmizadesState extends State<TelaAmizades> {
   String textoPesquisa = "";
   late Future<List<UsuarioViewModel>> todosOsUsuarios;
-  CatColors cores = CatColors(paleta: 4);
+  CatColors cores = CatColors(paleta: int.parse( localStorage.getItem('paleta') ?? '1'));
 
   @override
   void initState() {
@@ -34,14 +35,21 @@ class _TelaAmizadesState extends State<TelaAmizades> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: cores.corPrimaria,
+      backgroundColor: cores.primaria,
       appBar: AppBar(
-        title: const Text(
+        toolbarHeight: 120,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: cores.corPrimaria,
+        centerTitle: true,
+        title: Text(
           "Usuários",
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 64,
             fontWeight: FontWeight.bold,
             fontFamily: "Londrina",
+            color: cores.complementar,
           ),
         ),
         leading: Builder(
@@ -55,15 +63,14 @@ class _TelaAmizadesState extends State<TelaAmizades> {
           },
         ),
         backgroundColor: cores.corPrimaria,
-        centerTitle: true,
       ),
       drawer: Menulateralwidget(),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(40.0),
             child: TextField(
-              onChanged: onSearchChanged,
+              onChanged: onSearchChanged, 
               style: TextStyle(color: cores.complementar),
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: cores.complementar),
@@ -75,11 +82,11 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                 fillColor: cores.corSecundaria.withOpacity(0.15),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: cores.complementar, width: 1.2),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(32),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: cores.complementar, width: 2),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(32),
                 ),
               ),
             ),
@@ -87,10 +94,14 @@ class _TelaAmizadesState extends State<TelaAmizades> {
           Expanded(
             child: Container(
               clipBehavior: Clip.antiAlias,
-              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              margin: const EdgeInsets.fromLTRB(40, 40, 40, 64),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10)
+                color: cores.complementar.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: cores.secundaria,
+                  width: 1.2,
+                ),
               ),
               child: FutureBuilder<List<UsuarioViewModel>>(
                 future: todosOsUsuarios,
@@ -101,7 +112,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                     return Center(
                       child: Text(
                         "Erro: ${snapshot.error}",
-                        style: TextStyle(color: cores.complementar),
+                        style: TextStyle(color: cores.secundaria),
                       ),
                     );
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -126,18 +137,22 @@ class _TelaAmizadesState extends State<TelaAmizades> {
 
                   return ListView.separated(
                     itemCount: dados.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                      separatorBuilder: (context, __) {
+                        final width = MediaQuery.of(context).size.width * 0.7;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: width,
+                              height: 1,
+                              color: cores.secundaria,
+                            ),
+                          ),
+                        );
+                      },
                     itemBuilder: (context, index) {
                       final usuario = dados[index];
-                      // final perfil = PerfilViewModel(
-                      //   idUsuario: usuario.id,
-                      //   nome: usuario.nome,
-                      //   email: usuario.email,
-                      //   pontos: usuario.pontos,
-                      //   saldo: usuario.saldo,
-                      //   biogradia: usuario.biografia
-                      //   gatoEquipado: , //GET GATO EQUIPADO POR ID
-                      // );
                       return ListTile(
                         title: Text(
                           usuario.nome,
@@ -153,7 +168,7 @@ class _TelaAmizadesState extends State<TelaAmizades> {
                               biografia: usuario.biografia,
                               gatoEquipado: null, //GET GATO EQUIPADO POR ID
                             );
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushNamed(
                               context,
                               AppRotas.perfil,
                               arguments: {'user': perfil, 'outroUser': true},

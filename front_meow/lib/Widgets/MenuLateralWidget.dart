@@ -43,38 +43,38 @@ class _MenulateralwidgetState extends State<Menulateralwidget> {
                 icon: Icons.home,
                 text: 'Tela Inicial',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.inicial),
+                    Navigator.pushNamed(context, AppRotas.inicial),
               ),
               _buildDrawerItem(
                 icon: Icons.emoji_events,
                 text: 'Criar Meta',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.criarMeta),
+                    Navigator.pushNamed(context, AppRotas.criarMeta),
               ),
               _buildDrawerItem(
                 icon: Icons.inventory_2,
                 text: 'Gaveta',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.gaveta),
+                    Navigator.pushNamed(context, AppRotas.gaveta),
               ),
               _buildDrawerItem(
                 icon: Icons.attach_money,
                 text: 'Transações',
-                onTap: () => Navigator.pushReplacementNamed(
+                onTap: () => Navigator.pushNamed(
                     context, AppRotas.transacoes),
               ),
               _buildDrawerItem(
                 icon: Icons.pets,
                 text: 'Meus gatos',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.galeria),
+                    Navigator.pushNamed(context, AppRotas.galeria),
               ),
               _buildDrawerItem(
                 icon: Icons.person_outline,
                 text: 'Perfil',
                 onTap: () {
                   if (user != null) {
-                    Navigator.pushReplacementNamed(
+                    Navigator.pushNamed(
                       context,
                       AppRotas.perfil,
                       arguments: {'user': user, 'outroUser': false},
@@ -92,13 +92,13 @@ class _MenulateralwidgetState extends State<Menulateralwidget> {
                 icon: Icons.search,
                 text: 'Usuários',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.amizades),
+                    Navigator.pushNamed(context, AppRotas.amizades),
               ),
               _buildDrawerItem(
                 icon: Icons.move_to_inbox,
                 text: 'Caixa de Gatos',
                 onTap: () =>
-                    Navigator.pushReplacementNamed(context, AppRotas.gacha),
+                    Navigator.pushNamed(context, AppRotas.gacha),
               ),
               const Divider(color: Colors.black26),
               _buildDrawerItem(

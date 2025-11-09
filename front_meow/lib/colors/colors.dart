@@ -13,7 +13,7 @@ class CatColors {
         primaria = Color(0xFFF8EDEB);
         secundaria = Color(0xFFFFB5A7);
         tercearia = Color(0xFFFCD5CE);
-        complementar = Colors.white;
+        complementar = Colors.black;
       case 2:
         primaria = Color(0xFFECF0F1);
         secundaria = Color(0xFF2C3E50);
@@ -23,7 +23,7 @@ class CatColors {
         primaria = Color(0xFFF5DEB3); 
         secundaria = Color(0xFF166534);
         tercearia = Color(0xFFEA580C);
-        complementar = Colors.white;
+        complementar = const Color.fromARGB(255, 0, 0, 0);
       case 4:
         primaria     = Color(0xFF374151);
         secundaria   = Color(0xFFF97316);
