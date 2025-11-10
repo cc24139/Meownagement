@@ -27,7 +27,10 @@ public class TransacaoController : ControllerBase
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.Parse(id);
-        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId && t.IdRecorrencia != null).ToListAsync();
+        //mostrar apenas as proximas recorrentes ou a ultima feita
+        var listTransacoes = await db.Transacao.Where(t => t.IdUsuario == userId && t.IdRecorrencia != null && (
+        t.Feita == 'N' || (t.Feita == 'S' && t.DataFinalizacao.Date >= DateTime.Now.Date)
+        )).ToListAsync();
         return Ok(listTransacoes);
     }
 

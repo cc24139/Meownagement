@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:front_meow/Widgets/textfieldInputDinheiro.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:front_meow/services/RecorrenciaServices.dart';
+import 'package:front_meow/Widgets/SaldoWidget.dart';
 
 class TelaTransacoes extends StatefulWidget {
   const TelaTransacoes({super.key});
@@ -482,18 +483,8 @@ class _TelaTransacoesState extends State<TelaTransacoes> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            onPressed: _trocar,
-                            icon: Icon(
-                              Icons.visibility_off,
-                              color: cores.complementar,
-                              size: 25,
-                            ),
-                          ),
-                          Text(
-                            "Saldo",
-                            style: TextStyle(color: cores.complementar),
-                          ),
+                         
+                        SaldoWidget(cores: cores,),
                         ],
                       ),
                       const SizedBox(height: 20),
