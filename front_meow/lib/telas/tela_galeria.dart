@@ -59,11 +59,43 @@ class CardGato extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                bloqueado
+              Builder(builder: (context) {
+                Color borderColor;
+                switch (raridade) {
+                  case 3:
+                    borderColor = Colors.blue;
+                    break;
+                  case 4:
+                    borderColor = Colors.purple;
+                    break;
+                  case 5:
+                    borderColor = Colors.orange;
+                    break;
+                  case 6:
+                    borderColor = Colors.red;
+                    break;
+                  default:
+                    borderColor = Colors.transparent;
+                }
+
+                final imagePath = bloqueado
                     ? 'assets/images/$imagem/${imagem}PequenaPB.jpg'
-                    : 'assets/images/$imagem/${imagem}Pequena.jpg',
-              ),
+                    : 'assets/images/$imagem/${imagem}Pequena.jpg';
+
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: borderColor, width: 2),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              }),
               const SizedBox(height: 10),
               Text(nome),
               if (!bloqueado)
@@ -85,7 +117,7 @@ class CardGato extends StatelessWidget {
                       ? CatColors(
                           paleta: int.parse(localStorage.getItem("paleta")!),
                         )
-                      : CatColors(paleta: 5),
+                      : CatColors(paleta: int.parse(localStorage.getItem("paleta")!)-1),
                 ),
             ],
           ),
@@ -179,17 +211,20 @@ class _TelaGaleriaState extends State<TelaGaleria> {
                       runSpacing: 8, // espaço vertical entre as linhas
                       alignment: WrapAlignment.center,
                       children: gatosDesbloqueados.map((gato) {
-                        return CardGato(
-                          id: gato.idGato,
-                          nome: gato.nome,
-                          imagem: gato.nomeImagem,
-                          raridade: gato.raridade,
-                          equipado: gato.idGato == idGatoEquipado,
-                          onEquipar: () => _equiparGato(
-                            idGato: gato.idGato,
-                            codPaleta: gato.codPaleta,
+                        return SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.45,  
+                          child: CardGato(
+                            id: gato.idGato,
+                            nome: gato.nome,
+                            imagem: gato.nomeImagem,
+                            raridade: gato.raridade,
+                            equipado: gato.idGato == idGatoEquipado,
+                            onEquipar: () => _equiparGato(
+                              idGato: gato.idGato,
+                              codPaleta: gato.codPaleta,
+                            ),
+                            bloqueado: false,
                           ),
-                          bloqueado: false,
                         );
                       }).toList(),
                     ),

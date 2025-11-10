@@ -79,7 +79,7 @@ class ElevatedButtonWidget extends StatelessWidget {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
         padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+          const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         ),
         minimumSize: WidgetStateProperty.all(
           Size(_getButtonWidth() ?? 150, _getButtonHeight() ?? 45),
